@@ -1,0 +1,1 @@
+# Whisky Palette CLI
