@@ -12,9 +12,13 @@ import {
 
 import Icon_Star from "../public/icons/icons/icon_star.svg";
 
-export default function Card_Rc_Whisky_Long() {
+interface Props {
+    press: () => void;
+}
+
+export default function Card_Rc_Whisky_Long(props: Props) {
     return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={props.press}>
             <View
                 style={{
                     width: 150,

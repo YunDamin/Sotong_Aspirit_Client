@@ -196,1004 +196,1084 @@ export default function MainPage_Whisky({ navigation }: any) {
     const whisky = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
     return (
-        <View style={styles.page}>
-            {/* 필터 모달 */}
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={isFilterModalVisible}
-                onRequestClose={() => {
-                    toggleFilterModal();
-                }}
-            >
-                <View
-                    style={{
-                        width: "100%",
-                        height: "100%",
-                        display: "flex",
-                        flexDirection: "column-reverse",
-                        justifyContent: "center",
-                        alignItems: "center",
-                    }}
-                >
-                    <View
-                        style={{
-                            width: "100%",
-                            height: "100%",
-                            position: "absolute",
-                            top: 0,
-                            backgroundColor: "#000000",
-                            opacity: 0.7,
-                        }}
-                    />
-                    <View
-                        style={{
-                            paddingLeft: 20,
-                            paddingRight: 20,
-                            width: "100%",
-                            flex: 1,
-                            marginTop: 100,
-                            backgroundColor: "#ffffff",
-                            borderTopLeftRadius: 20,
-                            borderTopRightRadius: 20,
+        <>
+            <SafeAreaView style={{ flex: 0, backgroundColor: "#974B1A" }} />
+            <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+                <View style={styles.page}>
+                    {/* 필터 모달 */}
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={isFilterModalVisible}
+                        onRequestClose={() => {
+                            toggleFilterModal();
                         }}
                     >
-                        {/* 필터 탭 */}
                         <View
                             style={{
                                 width: "100%",
-                                height: 20,
-                                marginTop: 20,
-                                flexDirection: "row",
-                                justifyContent: "space-between",
+                                height: "100%",
+                                display: "flex",
+                                flexDirection: "column-reverse",
+                                justifyContent: "center",
                                 alignItems: "center",
                             }}
                         >
-                            <TouchableOpacity
-                                onPress={() => {
-                                    if (filterCategory === "filter")
-                                        toggleFilterModal();
-                                    else setFilterCategory("filter");
-                                }}
-                            >
-                                <Text
-                                    style={{
-                                        fontFamily: "Spoqa Han Sans Neo",
-                                        fontWeight: "400",
-                                        fontSize: 14,
-                                        color: "#000000",
-                                    }}
-                                >
-                                    취소
-                                </Text>
-                            </TouchableOpacity>
-                            <Text
+                            <View
                                 style={{
-                                    fontFamily: "Spoqa Han Sans Neo",
-                                    fontWeight: "700",
-                                    fontSize: 16,
-                                    color: "#000000",
+                                    width: "100%",
+                                    height: "100%",
+                                    position: "absolute",
+                                    top: 0,
+                                    backgroundColor: "#000000",
+                                    opacity: 0.7,
+                                }}
+                            />
+                            <View
+                                style={{
+                                    paddingLeft: 20,
+                                    paddingRight: 20,
+                                    width: "100%",
+                                    flex: 1,
+                                    marginTop: 100,
+                                    backgroundColor: "#ffffff",
+                                    borderTopLeftRadius: 20,
+                                    borderTopRightRadius: 20,
                                 }}
                             >
-                                {
-                                    {
-                                        filter: "필터",
-                                        country: "국가",
-                                        kind: "종류",
-                                        color: "색",
-                                        smell: "향",
-                                        taste: "맛",
-                                        age: "숙성",
-                                    }[filterCategory]
-                                }
-                            </Text>
-                            <TouchableOpacity
-                                disabled={!isAbleReset(filterCategory)}
-                                onPress={() => {
-                                    filterReset(filterCategory);
-                                    if (filterCategory === "filter")
-                                        toggleFilterModal();
-                                    else setFilterCategory("filter");
-                                }}
-                            >
-                                <Text
+                                {/* 필터 탭 */}
+                                <View
                                     style={{
-                                        fontFamily: "Spoqa Han Sans Neo",
-                                        fontWeight: "400",
-                                        fontSize: 14,
-                                        color: isAbleReset(filterCategory)
-                                            ? "#000000"
-                                            : "#BABABA",
+                                        width: "100%",
+                                        height: 20,
+                                        marginTop: 20,
+                                        flexDirection: "row",
+                                        justifyContent: "space-between",
+                                        alignItems: "center",
                                     }}
                                 >
-                                    초기화
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
-                        <ScrollView
-                            style={{
-                                marginTop: 20,
-                            }}
-                        >
-                            {filterCategory === "filter" ? (
-                                <View>
-                                    <Text
-                                        style={{
-                                            fontFamily: "Spoqa Han Sans Neo",
-                                            fontWeight: "400",
-                                            fontSize: 12,
-                                            color: "#000000",
-                                        }}
-                                    >
-                                        국가
-                                    </Text>
                                     <TouchableOpacity
-                                        style={{
-                                            marginTop: 10,
-                                            marginBottom: 10,
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            alignItems: "center",
-                                            justifyContent: "space-between",
-                                        }}
                                         onPress={() => {
-                                            setFilterCategory("country");
+                                            if (filterCategory === "filter")
+                                                toggleFilterModal();
+                                            else setFilterCategory("filter");
                                         }}
                                     >
                                         <Text
                                             style={{
                                                 fontFamily:
                                                     "Spoqa Han Sans Neo",
-                                                fontWeight: "500",
+                                                fontWeight: "400",
                                                 fontSize: 14,
-                                                color:
-                                                    filterDictionary.country
-                                                        .length > 0
-                                                        ? "#000000"
-                                                        : "#BABABA",
+                                                color: "#000000",
                                             }}
                                         >
-                                            {filterDictionary.country.length > 0
-                                                ? filterDictionary.country.join(
-                                                      ", "
-                                                  ).length > 16
-                                                    ? filterDictionary.country
-                                                          .join(", ")
-                                                          .substring(0, 16) +
-                                                      "..."
-                                                    : filterDictionary.country.join(
-                                                          ", "
-                                                      )
-                                                : "전체"}
+                                            취소
                                         </Text>
-                                        <Btn_OnOff_Right_Arrow />
                                     </TouchableOpacity>
-                                    <View
-                                        style={{
-                                            width: "100%",
-                                            height: 1,
-                                            backgroundColor: "#E4E4E4",
-                                        }}
-                                    />
                                     <Text
                                         style={{
                                             fontFamily: "Spoqa Han Sans Neo",
-                                            fontWeight: "400",
-                                            fontSize: 12,
+                                            fontWeight: "700",
+                                            fontSize: 16,
                                             color: "#000000",
-                                            marginTop: 20,
                                         }}
                                     >
-                                        종류
+                                        {
+                                            {
+                                                filter: "필터",
+                                                country: "국가",
+                                                kind: "종류",
+                                                color: "색",
+                                                smell: "향",
+                                                taste: "맛",
+                                                age: "숙성",
+                                            }[filterCategory]
+                                        }
                                     </Text>
                                     <TouchableOpacity
-                                        style={{
-                                            marginTop: 10,
-                                            marginBottom: 10,
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            alignItems: "center",
-                                            justifyContent: "space-between",
-                                        }}
+                                        disabled={!isAbleReset(filterCategory)}
                                         onPress={() => {
-                                            setFilterCategory("kind");
+                                            filterReset(filterCategory);
+                                            if (filterCategory === "filter")
+                                                toggleFilterModal();
+                                            else setFilterCategory("filter");
                                         }}
                                     >
                                         <Text
                                             style={{
                                                 fontFamily:
                                                     "Spoqa Han Sans Neo",
-                                                fontWeight: "500",
+                                                fontWeight: "400",
                                                 fontSize: 14,
-                                                color:
-                                                    filterDictionary.kind
-                                                        .length > 0
-                                                        ? "#000000"
-                                                        : "#BABABA",
+                                                color: isAbleReset(
+                                                    filterCategory
+                                                )
+                                                    ? "#000000"
+                                                    : "#BABABA",
                                             }}
                                         >
-                                            {filterDictionary.kind.length > 0
-                                                ? filterDictionary.kind.join(
-                                                      ", "
-                                                  ).length > 16
-                                                    ? filterDictionary.kind
-                                                          .join(", ")
-                                                          .substring(0, 16) +
-                                                      "..."
-                                                    : filterDictionary.kind.join(
-                                                          ", "
-                                                      )
-                                                : "전체"}
+                                            초기화
                                         </Text>
-                                        <Btn_OnOff_Right_Arrow />
                                     </TouchableOpacity>
-                                    <View
-                                        style={{
-                                            width: "100%",
-                                            height: 1,
-                                            backgroundColor: "#E4E4E4",
-                                        }}
-                                    />
-                                    <Text
-                                        style={{
-                                            fontFamily: "Spoqa Han Sans Neo",
-                                            fontWeight: "400",
-                                            fontSize: 12,
-                                            color: "#000000",
-                                            marginTop: 20,
-                                        }}
-                                    >
-                                        색
-                                    </Text>
-                                    <TouchableOpacity
-                                        style={{
-                                            marginTop: 10,
-                                            marginBottom: 10,
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            alignItems: "center",
-                                            justifyContent: "space-between",
-                                        }}
-                                        onPress={() => {
-                                            setFilterCategory("color");
-                                        }}
-                                    >
-                                        <Text
-                                            style={{
-                                                fontFamily:
-                                                    "Spoqa Han Sans Neo",
-                                                fontWeight: "500",
-                                                fontSize: 14,
-                                                color:
-                                                    filterDictionary.color
-                                                        .length > 0
-                                                        ? "#000000"
-                                                        : "#BABABA",
-                                            }}
-                                        >
-                                            {filterDictionary.color.length > 0
-                                                ? filterDictionary.color.join(
-                                                      ", "
-                                                  ).length > 16
-                                                    ? filterDictionary.color
-                                                          .join(", ")
-                                                          .substring(0, 16) +
-                                                      "..."
-                                                    : filterDictionary.color.join(
-                                                          ", "
-                                                      )
-                                                : "전체"}
-                                        </Text>
-                                        <Btn_OnOff_Right_Arrow />
-                                    </TouchableOpacity>
-                                    <View
-                                        style={{
-                                            width: "100%",
-                                            height: 1,
-                                            backgroundColor: "#E4E4E4",
-                                        }}
-                                    />
-                                    <Text
-                                        style={{
-                                            fontFamily: "Spoqa Han Sans Neo",
-                                            fontWeight: "400",
-                                            fontSize: 12,
-                                            color: "#000000",
-                                            marginTop: 20,
-                                        }}
-                                    >
-                                        향
-                                    </Text>
-                                    <TouchableOpacity
-                                        style={{
-                                            marginTop: 10,
-                                            marginBottom: 10,
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            alignItems: "center",
-                                            justifyContent: "space-between",
-                                        }}
-                                        onPress={() => {
-                                            setFilterCategory("smell");
-                                        }}
-                                    >
-                                        <Text
-                                            style={{
-                                                fontFamily:
-                                                    "Spoqa Han Sans Neo",
-                                                fontWeight: "500",
-                                                fontSize: 14,
-                                                color:
-                                                    filterDictionary.smell
-                                                        .length > 0
-                                                        ? "#000000"
-                                                        : "#BABABA",
-                                            }}
-                                        >
-                                            {filterDictionary.smell.length > 0
-                                                ? filterDictionary.smell.join(
-                                                      ", "
-                                                  ).length > 16
-                                                    ? filterDictionary.smell
-                                                          .join(", ")
-                                                          .substring(0, 16) +
-                                                      "..."
-                                                    : filterDictionary.smell.join(
-                                                          ", "
-                                                      )
-                                                : "전체"}
-                                        </Text>
-                                        <Btn_OnOff_Right_Arrow />
-                                    </TouchableOpacity>
-                                    <View
-                                        style={{
-                                            width: "100%",
-                                            height: 1,
-                                            backgroundColor: "#E4E4E4",
-                                        }}
-                                    />
-                                    <Text
-                                        style={{
-                                            fontFamily: "Spoqa Han Sans Neo",
-                                            fontWeight: "400",
-                                            fontSize: 12,
-                                            color: "#000000",
-                                            marginTop: 20,
-                                        }}
-                                    >
-                                        맛
-                                    </Text>
-                                    <TouchableOpacity
-                                        style={{
-                                            marginTop: 10,
-                                            marginBottom: 10,
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            alignItems: "center",
-                                            justifyContent: "space-between",
-                                        }}
-                                        onPress={() => {
-                                            setFilterCategory("taste");
-                                        }}
-                                    >
-                                        <Text
-                                            style={{
-                                                fontFamily:
-                                                    "Spoqa Han Sans Neo",
-                                                fontWeight: "500",
-                                                fontSize: 14,
-                                                color:
-                                                    filterDictionary.taste
-                                                        .length > 0
-                                                        ? "#000000"
-                                                        : "#BABABA",
-                                            }}
-                                        >
-                                            {filterDictionary.taste.length > 0
-                                                ? filterDictionary.taste.join(
-                                                      ", "
-                                                  ).length > 16
-                                                    ? filterDictionary.taste
-                                                          .join(", ")
-                                                          .substring(0, 16) +
-                                                      "..."
-                                                    : filterDictionary.taste.join(
-                                                          ", "
-                                                      )
-                                                : "전체"}
-                                        </Text>
-                                        <Btn_OnOff_Right_Arrow />
-                                    </TouchableOpacity>
-                                    <View
-                                        style={{
-                                            width: "100%",
-                                            height: 1,
-                                            backgroundColor: "#E4E4E4",
-                                        }}
-                                    />
-                                    <Text
-                                        style={{
-                                            fontFamily: "Spoqa Han Sans Neo",
-                                            fontWeight: "400",
-                                            fontSize: 12,
-                                            color: "#000000",
-                                            marginTop: 20,
-                                        }}
-                                    >
-                                        숙성
-                                    </Text>
-                                    <TouchableOpacity
-                                        style={{
-                                            marginTop: 10,
-                                            marginBottom: 10,
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            alignItems: "center",
-                                            justifyContent: "space-between",
-                                        }}
-                                        onPress={() => {
-                                            setFilterCategory("age");
-                                        }}
-                                    >
-                                        <Text
-                                            style={{
-                                                fontFamily:
-                                                    "Spoqa Han Sans Neo",
-                                                fontWeight: "500",
-                                                fontSize: 14,
-                                                color:
-                                                    filterDictionary.age
-                                                        .length > 0
-                                                        ? "#000000"
-                                                        : "#BABABA",
-                                            }}
-                                        >
-                                            {filterDictionary.age.length > 0
-                                                ? filterDictionary.age.join(
-                                                      ", "
-                                                  ).length > 16
-                                                    ? filterDictionary.age
-                                                          .join(", ")
-                                                          .substring(0, 16) +
-                                                      "..."
-                                                    : filterDictionary.age.join(
-                                                          ", "
-                                                      )
-                                                : "전체"}
-                                        </Text>
-                                        <Btn_OnOff_Right_Arrow />
-                                    </TouchableOpacity>
-                                    <View
-                                        style={{
-                                            width: "100%",
-                                            height: 1,
-                                            backgroundColor: "#E4E4E4",
-                                        }}
-                                    />
                                 </View>
-                            ) : (
-                                <View>
-                                    {filter.current[filterCategory].map(
-                                        (item) => (
-                                            <View key={item.id}>
-                                                <TouchableOpacity
+                                <ScrollView
+                                    style={{
+                                        marginTop: 20,
+                                    }}
+                                >
+                                    {filterCategory === "filter" ? (
+                                        <View>
+                                            <Text
+                                                style={{
+                                                    fontFamily:
+                                                        "Spoqa Han Sans Neo",
+                                                    fontWeight: "400",
+                                                    fontSize: 12,
+                                                    color: "#000000",
+                                                }}
+                                            >
+                                                국가
+                                            </Text>
+                                            <TouchableOpacity
+                                                style={{
+                                                    marginTop: 10,
+                                                    marginBottom: 10,
+                                                    display: "flex",
+                                                    flexDirection: "row",
+                                                    alignItems: "center",
+                                                    justifyContent:
+                                                        "space-between",
+                                                }}
+                                                onPress={() => {
+                                                    setFilterCategory(
+                                                        "country"
+                                                    );
+                                                }}
+                                            >
+                                                <Text
                                                     style={{
-                                                        marginTop: 10,
-                                                        marginBottom: 10,
-                                                        display: "flex",
-                                                        flexDirection: "row",
-                                                        alignItems: "center",
-                                                        justifyContent:
-                                                            "space-between",
-                                                        height: 40,
-                                                    }}
-                                                    onPress={() => {
-                                                        setFilter(
-                                                            filterCategory,
-                                                            item.value
-                                                        );
+                                                        fontFamily:
+                                                            "Spoqa Han Sans Neo",
+                                                        fontWeight: "500",
+                                                        fontSize: 14,
+                                                        color:
+                                                            filterDictionary
+                                                                .country
+                                                                .length > 0
+                                                                ? "#000000"
+                                                                : "#BABABA",
                                                     }}
                                                 >
-                                                    <Text
-                                                        style={{
-                                                            fontFamily:
-                                                                "Spoqa Han Sans Neo",
-                                                            fontWeight: "500",
-                                                            fontSize: 14,
-                                                            color: filterDictionary[
+                                                    {filterDictionary.country
+                                                        .length > 0
+                                                        ? filterDictionary.country.join(
+                                                              ", "
+                                                          ).length > 16
+                                                            ? filterDictionary.country
+                                                                  .join(", ")
+                                                                  .substring(
+                                                                      0,
+                                                                      16
+                                                                  ) + "..."
+                                                            : filterDictionary.country.join(
+                                                                  ", "
+                                                              )
+                                                        : "전체"}
+                                                </Text>
+                                                <Btn_OnOff_Right_Arrow />
+                                            </TouchableOpacity>
+                                            <View
+                                                style={{
+                                                    width: "100%",
+                                                    height: 1,
+                                                    backgroundColor: "#E4E4E4",
+                                                }}
+                                            />
+                                            <Text
+                                                style={{
+                                                    fontFamily:
+                                                        "Spoqa Han Sans Neo",
+                                                    fontWeight: "400",
+                                                    fontSize: 12,
+                                                    color: "#000000",
+                                                    marginTop: 20,
+                                                }}
+                                            >
+                                                종류
+                                            </Text>
+                                            <TouchableOpacity
+                                                style={{
+                                                    marginTop: 10,
+                                                    marginBottom: 10,
+                                                    display: "flex",
+                                                    flexDirection: "row",
+                                                    alignItems: "center",
+                                                    justifyContent:
+                                                        "space-between",
+                                                }}
+                                                onPress={() => {
+                                                    setFilterCategory("kind");
+                                                }}
+                                            >
+                                                <Text
+                                                    style={{
+                                                        fontFamily:
+                                                            "Spoqa Han Sans Neo",
+                                                        fontWeight: "500",
+                                                        fontSize: 14,
+                                                        color:
+                                                            filterDictionary
+                                                                .kind.length > 0
+                                                                ? "#000000"
+                                                                : "#BABABA",
+                                                    }}
+                                                >
+                                                    {filterDictionary.kind
+                                                        .length > 0
+                                                        ? filterDictionary.kind.join(
+                                                              ", "
+                                                          ).length > 16
+                                                            ? filterDictionary.kind
+                                                                  .join(", ")
+                                                                  .substring(
+                                                                      0,
+                                                                      16
+                                                                  ) + "..."
+                                                            : filterDictionary.kind.join(
+                                                                  ", "
+                                                              )
+                                                        : "전체"}
+                                                </Text>
+                                                <Btn_OnOff_Right_Arrow />
+                                            </TouchableOpacity>
+                                            <View
+                                                style={{
+                                                    width: "100%",
+                                                    height: 1,
+                                                    backgroundColor: "#E4E4E4",
+                                                }}
+                                            />
+                                            <Text
+                                                style={{
+                                                    fontFamily:
+                                                        "Spoqa Han Sans Neo",
+                                                    fontWeight: "400",
+                                                    fontSize: 12,
+                                                    color: "#000000",
+                                                    marginTop: 20,
+                                                }}
+                                            >
+                                                색
+                                            </Text>
+                                            <TouchableOpacity
+                                                style={{
+                                                    marginTop: 10,
+                                                    marginBottom: 10,
+                                                    display: "flex",
+                                                    flexDirection: "row",
+                                                    alignItems: "center",
+                                                    justifyContent:
+                                                        "space-between",
+                                                }}
+                                                onPress={() => {
+                                                    setFilterCategory("color");
+                                                }}
+                                            >
+                                                <Text
+                                                    style={{
+                                                        fontFamily:
+                                                            "Spoqa Han Sans Neo",
+                                                        fontWeight: "500",
+                                                        fontSize: 14,
+                                                        color:
+                                                            filterDictionary
+                                                                .color.length >
+                                                            0
+                                                                ? "#000000"
+                                                                : "#BABABA",
+                                                    }}
+                                                >
+                                                    {filterDictionary.color
+                                                        .length > 0
+                                                        ? filterDictionary.color.join(
+                                                              ", "
+                                                          ).length > 16
+                                                            ? filterDictionary.color
+                                                                  .join(", ")
+                                                                  .substring(
+                                                                      0,
+                                                                      16
+                                                                  ) + "..."
+                                                            : filterDictionary.color.join(
+                                                                  ", "
+                                                              )
+                                                        : "전체"}
+                                                </Text>
+                                                <Btn_OnOff_Right_Arrow />
+                                            </TouchableOpacity>
+                                            <View
+                                                style={{
+                                                    width: "100%",
+                                                    height: 1,
+                                                    backgroundColor: "#E4E4E4",
+                                                }}
+                                            />
+                                            <Text
+                                                style={{
+                                                    fontFamily:
+                                                        "Spoqa Han Sans Neo",
+                                                    fontWeight: "400",
+                                                    fontSize: 12,
+                                                    color: "#000000",
+                                                    marginTop: 20,
+                                                }}
+                                            >
+                                                향
+                                            </Text>
+                                            <TouchableOpacity
+                                                style={{
+                                                    marginTop: 10,
+                                                    marginBottom: 10,
+                                                    display: "flex",
+                                                    flexDirection: "row",
+                                                    alignItems: "center",
+                                                    justifyContent:
+                                                        "space-between",
+                                                }}
+                                                onPress={() => {
+                                                    setFilterCategory("smell");
+                                                }}
+                                            >
+                                                <Text
+                                                    style={{
+                                                        fontFamily:
+                                                            "Spoqa Han Sans Neo",
+                                                        fontWeight: "500",
+                                                        fontSize: 14,
+                                                        color:
+                                                            filterDictionary
+                                                                .smell.length >
+                                                            0
+                                                                ? "#000000"
+                                                                : "#BABABA",
+                                                    }}
+                                                >
+                                                    {filterDictionary.smell
+                                                        .length > 0
+                                                        ? filterDictionary.smell.join(
+                                                              ", "
+                                                          ).length > 16
+                                                            ? filterDictionary.smell
+                                                                  .join(", ")
+                                                                  .substring(
+                                                                      0,
+                                                                      16
+                                                                  ) + "..."
+                                                            : filterDictionary.smell.join(
+                                                                  ", "
+                                                              )
+                                                        : "전체"}
+                                                </Text>
+                                                <Btn_OnOff_Right_Arrow />
+                                            </TouchableOpacity>
+                                            <View
+                                                style={{
+                                                    width: "100%",
+                                                    height: 1,
+                                                    backgroundColor: "#E4E4E4",
+                                                }}
+                                            />
+                                            <Text
+                                                style={{
+                                                    fontFamily:
+                                                        "Spoqa Han Sans Neo",
+                                                    fontWeight: "400",
+                                                    fontSize: 12,
+                                                    color: "#000000",
+                                                    marginTop: 20,
+                                                }}
+                                            >
+                                                맛
+                                            </Text>
+                                            <TouchableOpacity
+                                                style={{
+                                                    marginTop: 10,
+                                                    marginBottom: 10,
+                                                    display: "flex",
+                                                    flexDirection: "row",
+                                                    alignItems: "center",
+                                                    justifyContent:
+                                                        "space-between",
+                                                }}
+                                                onPress={() => {
+                                                    setFilterCategory("taste");
+                                                }}
+                                            >
+                                                <Text
+                                                    style={{
+                                                        fontFamily:
+                                                            "Spoqa Han Sans Neo",
+                                                        fontWeight: "500",
+                                                        fontSize: 14,
+                                                        color:
+                                                            filterDictionary
+                                                                .taste.length >
+                                                            0
+                                                                ? "#000000"
+                                                                : "#BABABA",
+                                                    }}
+                                                >
+                                                    {filterDictionary.taste
+                                                        .length > 0
+                                                        ? filterDictionary.taste.join(
+                                                              ", "
+                                                          ).length > 16
+                                                            ? filterDictionary.taste
+                                                                  .join(", ")
+                                                                  .substring(
+                                                                      0,
+                                                                      16
+                                                                  ) + "..."
+                                                            : filterDictionary.taste.join(
+                                                                  ", "
+                                                              )
+                                                        : "전체"}
+                                                </Text>
+                                                <Btn_OnOff_Right_Arrow />
+                                            </TouchableOpacity>
+                                            <View
+                                                style={{
+                                                    width: "100%",
+                                                    height: 1,
+                                                    backgroundColor: "#E4E4E4",
+                                                }}
+                                            />
+                                            <Text
+                                                style={{
+                                                    fontFamily:
+                                                        "Spoqa Han Sans Neo",
+                                                    fontWeight: "400",
+                                                    fontSize: 12,
+                                                    color: "#000000",
+                                                    marginTop: 20,
+                                                }}
+                                            >
+                                                숙성
+                                            </Text>
+                                            <TouchableOpacity
+                                                style={{
+                                                    marginTop: 10,
+                                                    marginBottom: 10,
+                                                    display: "flex",
+                                                    flexDirection: "row",
+                                                    alignItems: "center",
+                                                    justifyContent:
+                                                        "space-between",
+                                                }}
+                                                onPress={() => {
+                                                    setFilterCategory("age");
+                                                }}
+                                            >
+                                                <Text
+                                                    style={{
+                                                        fontFamily:
+                                                            "Spoqa Han Sans Neo",
+                                                        fontWeight: "500",
+                                                        fontSize: 14,
+                                                        color:
+                                                            filterDictionary.age
+                                                                .length > 0
+                                                                ? "#000000"
+                                                                : "#BABABA",
+                                                    }}
+                                                >
+                                                    {filterDictionary.age
+                                                        .length > 0
+                                                        ? filterDictionary.age.join(
+                                                              ", "
+                                                          ).length > 16
+                                                            ? filterDictionary.age
+                                                                  .join(", ")
+                                                                  .substring(
+                                                                      0,
+                                                                      16
+                                                                  ) + "..."
+                                                            : filterDictionary.age.join(
+                                                                  ", "
+                                                              )
+                                                        : "전체"}
+                                                </Text>
+                                                <Btn_OnOff_Right_Arrow />
+                                            </TouchableOpacity>
+                                            <View
+                                                style={{
+                                                    width: "100%",
+                                                    height: 1,
+                                                    backgroundColor: "#E4E4E4",
+                                                }}
+                                            />
+                                        </View>
+                                    ) : (
+                                        <View>
+                                            {filter.current[filterCategory].map(
+                                                (item) => (
+                                                    <View key={item.id}>
+                                                        <TouchableOpacity
+                                                            style={{
+                                                                marginTop: 10,
+                                                                marginBottom: 10,
+                                                                display: "flex",
+                                                                flexDirection:
+                                                                    "row",
+                                                                alignItems:
+                                                                    "center",
+                                                                justifyContent:
+                                                                    "space-between",
+                                                                height: 40,
+                                                            }}
+                                                            onPress={() => {
+                                                                setFilter(
+                                                                    filterCategory,
+                                                                    item.value
+                                                                );
+                                                            }}
+                                                        >
+                                                            <Text
+                                                                style={{
+                                                                    fontFamily:
+                                                                        "Spoqa Han Sans Neo",
+                                                                    fontWeight:
+                                                                        "500",
+                                                                    fontSize: 14,
+                                                                    color: filterDictionary[
+                                                                        filterCategory
+                                                                    ].includes(
+                                                                        item.value
+                                                                    )
+                                                                        ? "#000000"
+                                                                        : "#BABABA",
+                                                                }}
+                                                            >
+                                                                {item.value}
+                                                            </Text>
+                                                            {filterDictionary[
                                                                 filterCategory
                                                             ].includes(
                                                                 item.value
-                                                            )
-                                                                ? "#000000"
-                                                                : "#BABABA",
-                                                        }}
-                                                    >
-                                                        {item.value}
-                                                    </Text>
-                                                    {filterDictionary[
-                                                        filterCategory
-                                                    ].includes(item.value) && (
-                                                        <Btn_Check />
-                                                    )}
-                                                </TouchableOpacity>
-                                                <View
-                                                    style={{
-                                                        width: "100%",
-                                                        height: 1,
-                                                        backgroundColor:
-                                                            "#E4E4E4",
-                                                    }}
-                                                />
-                                            </View>
-                                        )
+                                                            ) && <Btn_Check />}
+                                                        </TouchableOpacity>
+                                                        <View
+                                                            style={{
+                                                                width: "100%",
+                                                                height: 1,
+                                                                backgroundColor:
+                                                                    "#E4E4E4",
+                                                            }}
+                                                        />
+                                                    </View>
+                                                )
+                                            )}
+                                        </View>
                                     )}
-                                </View>
-                            )}
-                        </ScrollView>
-                        <TouchableOpacity
+                                </ScrollView>
+                                <TouchableOpacity
+                                    style={{
+                                        width: "100%",
+                                        height: 55,
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        borderRadius: 10,
+                                        marginBottom: 40,
+                                        backgroundColor: isAbleReset(
+                                            filterCategory
+                                        )
+                                            ? "#974B1A"
+                                            : "#BABABA",
+                                    }}
+                                    disabled={!isAbleReset(filterCategory)}
+                                    onPress={() => {
+                                        if (filterCategory === "filter")
+                                            toggleFilterModal();
+                                        else setFilterCategory("filter");
+                                    }}
+                                >
+                                    <Text
+                                        style={{
+                                            fontFamily: "Spoqa Han Sans Neo",
+                                            fontWeight: "500",
+                                            fontSize: 18,
+                                            color: "#ffffff",
+                                            textAlign: "center",
+                                        }}
+                                    >
+                                        선택 완료
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </Modal>
+                    {/* 정렬 선택 모달 */}
+                    <Modal
+                        animationType="fade"
+                        transparent={true}
+                        visible={isSortModalVisible}
+                        onRequestClose={() => {
+                            toggleSortModal();
+                        }}
+                    >
+                        <View
                             style={{
                                 width: "100%",
-                                height: 55,
+                                height: "100%",
                                 display: "flex",
                                 justifyContent: "center",
                                 alignItems: "center",
-                                borderRadius: 10,
-                                marginBottom: 40,
-                                backgroundColor: isAbleReset(filterCategory)
-                                    ? "#974B1A"
-                                    : "#BABABA",
-                            }}
-                            disabled={!isAbleReset(filterCategory)}
-                            onPress={() => {
-                                if (filterCategory === "filter")
-                                    toggleFilterModal();
-                                else setFilterCategory("filter");
                             }}
                         >
-                            <Text
+                            <View
                                 style={{
-                                    fontFamily: "Spoqa Han Sans Neo",
-                                    fontWeight: "500",
-                                    fontSize: 18,
-                                    color: "#ffffff",
-                                    textAlign: "center",
+                                    width: "100%",
+                                    height: "100%",
+                                    position: "absolute",
+                                    top: 0,
+                                    backgroundColor: "#000000",
+                                    opacity: 0.7,
+                                }}
+                            />
+                            <View
+                                style={{
+                                    position: "absolute",
+                                    bottom: 0,
+                                    paddingLeft: 20,
+                                    paddingRight: 20,
+                                    width: "100%",
+                                    backgroundColor: "#ffffff",
+                                    borderTopLeftRadius: 20,
+                                    borderTopRightRadius: 20,
                                 }}
                             >
-                                선택 완료
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </Modal>
-            {/* 정렬 선택 모달 */}
-            <Modal
-                animationType="fade"
-                transparent={true}
-                visible={isSortModalVisible}
-                onRequestClose={() => {
-                    toggleSortModal();
-                }}
-            >
-                <View
-                    style={{
-                        width: "100%",
-                        height: "100%",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                    }}
-                >
-                    <View
-                        style={{
-                            width: "100%",
-                            height: "100%",
-                            position: "absolute",
-                            top: 0,
-                            backgroundColor: "#000000",
-                            opacity: 0.7,
-                        }}
-                    />
-                    <View
-                        style={{
-                            position: "absolute",
-                            bottom: 0,
-                            paddingLeft: 20,
-                            paddingRight: 20,
-                            width: "100%",
-                            backgroundColor: "#ffffff",
-                            borderTopLeftRadius: 20,
-                            borderTopRightRadius: 20,
-                        }}
-                    >
-                        <View style={{ height: 20 }} />
-                        <TouchableOpacity
-                            style={{
-                                marginTop: 10,
-                                marginBottom: 10,
-                                display: "flex",
-                                flexDirection: "row",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                            }}
-                            onPress={() => {
-                                setSortCategory("rate");
-                                toggleSortModal();
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    fontFamily: "Spoqa Han Sans Neo",
-                                    fontWeight: "500",
-                                    fontSize: 14,
-                                    color: "#000000",
-                                }}
-                            >
-                                평점순
-                            </Text>
-                            <View style={{ height: 40 }}>
-                                {sortCategory === "rate" && <Btn_Check />}
-                            </View>
-                        </TouchableOpacity>
-                        <View
-                            style={{
-                                width: "100%",
-                                height: 1,
-                                backgroundColor: "#EAEAEA",
-                            }}
-                        />
-                        <TouchableOpacity
-                            style={{
-                                marginTop: 10,
-                                marginBottom: 10,
-                                display: "flex",
-                                flexDirection: "row",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                            }}
-                            onPress={() => {
-                                setSortCategory("new");
-                                toggleSortModal();
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    fontFamily: "Spoqa Han Sans Neo",
-                                    fontWeight: "500",
-                                    fontSize: 14,
-                                    color: "#000000",
-                                }}
-                            >
-                                최신순
-                            </Text>
-                            <View style={{ height: 40 }}>
-                                {sortCategory === "new" && <Btn_Check />}
-                            </View>
-                        </TouchableOpacity>
-                        <View
-                            style={{
-                                width: "100%",
-                                height: 1,
-                                backgroundColor: "#EAEAEA",
-                            }}
-                        />
-                        <TouchableOpacity
-                            style={{
-                                marginTop: 10,
-                                marginBottom: 10,
-                                display: "flex",
-                                flexDirection: "row",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                            }}
-                            onPress={() => {
-                                setSortCategory("review");
-                                toggleSortModal();
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    fontFamily: "Spoqa Han Sans Neo",
-                                    fontWeight: "500",
-                                    fontSize: 14,
-                                    color: "#000000",
-                                }}
-                            >
-                                리뷰순
-                            </Text>
-                            <View style={{ height: 40 }}>
-                                {sortCategory === "review" && <Btn_Check />}
-                            </View>
-                        </TouchableOpacity>
-                        <View style={{ height: 30 }} />
-                    </View>
-                </View>
-            </Modal>
-            <View style={styles.top}>
-                {/* 얼룩 무늬 */}
-                <View
-                    style={{
-                        height: 150,
-                        position: "absolute",
-                        right: 0,
-                    }}
-                >
-                    <Bg_Cup />
-                </View>
-                {/* 위스키 콘텐츠 텍스트 및 알람 프로필 */}
-                <View
-                    style={{
-                        height: 40,
-                        display: "flex",
-                        justifyContent: "space-between",
-                        flexDirection: "row",
-                    }}
-                >
-                    <View
-                        style={{
-                            height: 40,
-                            display: "flex",
-                            justifyContent: "flex-start",
-                            alignItems: "center",
-                            flexDirection: "row",
-                        }}
-                    >
-                        <Text
-                            style={{
-                                fontFamily: "Spoqa Han Sans Neo",
-                                fontWeight: "300",
-                                fontSize: 20,
-                                color: "#ffffff",
-                            }}
-                        >
-                            위스키
-                        </Text>
-                        <Text
-                            style={{
-                                fontFamily: "Spoqa Han Sans Neo",
-                                fontWeight: "700",
-                                fontSize: 20,
-                                color: "#ffffff",
-                                marginLeft: 5,
-                            }}
-                        >
-                            리스트
-                        </Text>
-                        <View style={{ marginLeft: 5 }}>
-                            <Icon_Whisky />
-                        </View>
-                    </View>
-                    <View
-                        style={{
-                            height: 40,
-                            display: "flex",
-                            justifyContent: "flex-end",
-                            flexDirection: "row",
-                        }}
-                    >
-                        <TouchableOpacity style={{ width: 40, height: 40 }}>
-                            <Btn_Bell_On />
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{ width: 40, height: 40 }}>
-                            <Btn_My />
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                {/* 검색 필드 + 필터 */}
-                <View
-                    style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        marginTop: 35,
-                        width: "100%",
-                        height: 50,
-                        borderRadius: 10,
-                    }}
-                >
-                    {/* 검색 필드 */}
-                    <View
-                        style={{
-                            flex: 1,
-                            display: "flex",
-                            height: 50,
-                            borderRadius: 10,
-                            flexDirection: "row",
-                        }}
-                    >
-                        {/* 뒷 배경 */}
-                        <View
-                            style={{
-                                position: "absolute",
-                                top: 0,
-                                left: 0,
-                                width: "100%",
-                                height: 50,
-                                backgroundColor: "#ffffff",
-                                opacity: 0.1,
-                                borderRadius: 10,
-                            }}
-                        />
-                        <View
-                            style={{
-                                flex: 1,
-                                paddingLeft: 20,
-                                paddingRight: 15,
-                                height: 50,
-                            }}
-                        >
-                            {!isFocused && (
-                                <View
+                                <View style={{ height: 20 }} />
+                                <TouchableOpacity
                                     style={{
-                                        position: "absolute",
-                                        top: 0,
-                                        left: 0,
-                                        marginLeft: 20,
-                                        width: "100%",
-                                        height: 50,
+                                        marginTop: 10,
+                                        marginBottom: 10,
                                         display: "flex",
                                         flexDirection: "row",
                                         alignItems: "center",
                                         justifyContent: "space-between",
                                     }}
+                                    onPress={() => {
+                                        setSortCategory("rate");
+                                        toggleSortModal();
+                                    }}
                                 >
                                     <Text
                                         style={{
                                             fontFamily: "Spoqa Han Sans Neo",
-                                            fontWeight: "400",
+                                            fontWeight: "500",
                                             fontSize: 14,
-                                            color: "#ffffff",
+                                            color: "#000000",
                                         }}
                                     >
-                                        검색어 입력
+                                        평점순
                                     </Text>
-                                    <Btn_Search />
-                                </View>
-                            )}
-                            <TextInput
-                                style={{
-                                    height: 50,
-                                    display: "flex",
-                                    flexDirection: "row",
-                                    justifyContent: "center",
-                                }}
-                                onFocus={() => {
-                                    setIsFocused(true);
-                                }}
-                                onBlur={() => {
-                                    searchText === ""
-                                        ? setIsFocused(false)
-                                        : setIsFocused(true);
-                                }}
-                                onChangeText={(text) => {
-                                    setSearchText(text);
-                                }}
-                            />
-                        </View>
-                    </View>
-                    <TouchableOpacity
-                        style={{
-                            marginLeft: 10,
-                            width: 50,
-                            height: 50,
-                            borderRadius: 10,
-                            backgroundColor: "#ffffff",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                        }}
-                        onPress={() => {
-                            toggleFilterModal();
-                        }}
-                    >
-                        <Btn_Filter />
-                    </TouchableOpacity>
-                </View>
-            </View>
-            <Animated.View
-                style={[styles.container, { top: topPosition.current }]}
-            >
-                <ScrollView
-                    style={styles.scroll_container}
-                    onScroll={handleScroll}
-                    scrollEventThrottle={3}
-                    showsVerticalScrollIndicator={false}
-                >
-                    {/* 내용 탑 */}
-                    <View
-                        style={{
-                            marginTop: 10,
-                            width: "100%",
-                            height: 30,
-                            display: "flex",
-                            flexDirection: "row",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                        }}
-                    >
-                        <Text
-                            style={{
-                                fontFamily: "Spoqa Han Sans Neo",
-                                fontWeight: "700",
-                                fontSize: 16,
-                                color: "#000000",
-                                textAlign: "center",
-                            }}
-                        >
-                            <Text>전체 </Text>
-                            <Text
-                                style={{ color: "#D6690F" }}
-                            >{`(${825})`}</Text>
-                        </Text>
-                        <TouchableOpacity
-                            style={{
-                                width: 80,
-                                height: 30,
-                                borderRadius: 10,
-                                borderWidth: 1,
-                                borderColor: "#E4E4E4",
-                                backgroundColor: "#FFFFFF",
-                                paddingLeft: 10,
-                                paddingRight: 10,
-                                display: "flex",
-                                flexDirection: "row",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                            }}
-                            onPress={() => {
-                                toggleSortModal();
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    fontFamily: "Spoqa Han Sans Neo",
-                                    fontWeight: "500",
-                                    fontSize: 12,
-                                    color: "#000000",
-                                    textAlign: "center",
-                                }}
-                            >
-                                {
-                                    {
-                                        rate: "평점순",
-                                        new: "최신순",
-                                        review: "리뷰순",
-                                    }[sortCategory]
-                                }
-                            </Text>
-                            <View style={{ width: 14, height: 14 }}>
-                                <Btn_Drop_Black />
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    <View>
-                        {whisky
-                            .filter((_, index) => {
-                                return index % 2 === 0;
-                            })
-                            .map((_, index) => (
+                                    <View style={{ height: 40 }}>
+                                        {sortCategory === "rate" && (
+                                            <Btn_Check />
+                                        )}
+                                    </View>
+                                </TouchableOpacity>
                                 <View
-                                    key={index}
                                     style={{
-                                        display: "flex",
                                         width: "100%",
+                                        height: 1,
+                                        backgroundColor: "#EAEAEA",
+                                    }}
+                                />
+                                <TouchableOpacity
+                                    style={{
+                                        marginTop: 10,
+                                        marginBottom: 10,
+                                        display: "flex",
                                         flexDirection: "row",
+                                        alignItems: "center",
                                         justifyContent: "space-between",
-                                        marginTop: 20,
+                                    }}
+                                    onPress={() => {
+                                        setSortCategory("new");
+                                        toggleSortModal();
                                     }}
                                 >
-                                    <Card_Rc_Whisky_Long />
-                                    {whisky.length <= index * 2 + 1 ? null : (
-                                        <Card_Rc_Whisky_Long />
-                                    )}
+                                    <Text
+                                        style={{
+                                            fontFamily: "Spoqa Han Sans Neo",
+                                            fontWeight: "500",
+                                            fontSize: 14,
+                                            color: "#000000",
+                                        }}
+                                    >
+                                        최신순
+                                    </Text>
+                                    <View style={{ height: 40 }}>
+                                        {sortCategory === "new" && (
+                                            <Btn_Check />
+                                        )}
+                                    </View>
+                                </TouchableOpacity>
+                                <View
+                                    style={{
+                                        width: "100%",
+                                        height: 1,
+                                        backgroundColor: "#EAEAEA",
+                                    }}
+                                />
+                                <TouchableOpacity
+                                    style={{
+                                        marginTop: 10,
+                                        marginBottom: 10,
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        justifyContent: "space-between",
+                                    }}
+                                    onPress={() => {
+                                        setSortCategory("review");
+                                        toggleSortModal();
+                                    }}
+                                >
+                                    <Text
+                                        style={{
+                                            fontFamily: "Spoqa Han Sans Neo",
+                                            fontWeight: "500",
+                                            fontSize: 14,
+                                            color: "#000000",
+                                        }}
+                                    >
+                                        리뷰순
+                                    </Text>
+                                    <View style={{ height: 40 }}>
+                                        {sortCategory === "review" && (
+                                            <Btn_Check />
+                                        )}
+                                    </View>
+                                </TouchableOpacity>
+                                <View style={{ height: 30 }} />
+                            </View>
+                        </View>
+                    </Modal>
+                    <View style={styles.top}>
+                        {/* 얼룩 무늬 */}
+                        <View
+                            style={{
+                                height: 150,
+                                position: "absolute",
+                                right: 0,
+                            }}
+                        >
+                            <Bg_Cup />
+                        </View>
+                        {/* 위스키 콘텐츠 텍스트 및 알람 프로필 */}
+                        <View
+                            style={{
+                                height: 40,
+                                display: "flex",
+                                justifyContent: "space-between",
+                                flexDirection: "row",
+                            }}
+                        >
+                            <View
+                                style={{
+                                    height: 40,
+                                    display: "flex",
+                                    justifyContent: "flex-start",
+                                    alignItems: "center",
+                                    flexDirection: "row",
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        fontFamily: "Spoqa Han Sans Neo",
+                                        fontWeight: "300",
+                                        fontSize: 20,
+                                        color: "#ffffff",
+                                    }}
+                                >
+                                    위스키
+                                </Text>
+                                <Text
+                                    style={{
+                                        fontFamily: "Spoqa Han Sans Neo",
+                                        fontWeight: "700",
+                                        fontSize: 20,
+                                        color: "#ffffff",
+                                        marginLeft: 5,
+                                    }}
+                                >
+                                    리스트
+                                </Text>
+                                <View style={{ marginLeft: 5 }}>
+                                    <Icon_Whisky />
                                 </View>
-                            ))}
+                            </View>
+                            <View
+                                style={{
+                                    height: 40,
+                                    display: "flex",
+                                    justifyContent: "flex-end",
+                                    flexDirection: "row",
+                                }}
+                            >
+                                <TouchableOpacity
+                                    style={{ width: 40, height: 40 }}
+                                    onPress={() => {
+                                        navigation.navigate("SubPage_Alert");
+                                    }}
+                                >
+                                    <Btn_Bell_On />
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={{ width: 40, height: 40 }}
+                                    onPress={() => {
+                                        navigation.navigate("SubPage_MyPage");
+                                    }}
+                                >
+                                    <Btn_My />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        {/* 검색 필드 + 필터 */}
+                        <View
+                            style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                marginTop: 35,
+                                width: "100%",
+                                height: 50,
+                                borderRadius: 10,
+                            }}
+                        >
+                            {/* 검색 필드 */}
+                            <View
+                                style={{
+                                    flex: 1,
+                                    display: "flex",
+                                    height: 50,
+                                    borderRadius: 10,
+                                    flexDirection: "row",
+                                }}
+                            >
+                                {/* 뒷 배경 */}
+                                <View
+                                    style={{
+                                        position: "absolute",
+                                        top: 0,
+                                        left: 0,
+                                        width: "100%",
+                                        height: 50,
+                                        backgroundColor: "#ffffff",
+                                        opacity: 0.1,
+                                        borderRadius: 10,
+                                    }}
+                                />
+                                <View
+                                    style={{
+                                        flex: 1,
+                                        paddingLeft: 20,
+                                        paddingRight: 15,
+                                        height: 50,
+                                    }}
+                                >
+                                    {!isFocused && (
+                                        <View
+                                            style={{
+                                                position: "absolute",
+                                                top: 0,
+                                                left: 0,
+                                                marginLeft: 20,
+                                                width: "100%",
+                                                height: 50,
+                                                display: "flex",
+                                                flexDirection: "row",
+                                                alignItems: "center",
+                                                justifyContent: "space-between",
+                                            }}
+                                        >
+                                            <Text
+                                                style={{
+                                                    fontFamily:
+                                                        "Spoqa Han Sans Neo",
+                                                    fontWeight: "400",
+                                                    fontSize: 14,
+                                                    color: "#ffffff",
+                                                }}
+                                            >
+                                                검색어 입력
+                                            </Text>
+                                            <Btn_Search />
+                                        </View>
+                                    )}
+                                    <TextInput
+                                        style={{
+                                            height: 50,
+                                            display: "flex",
+                                            flexDirection: "row",
+                                            justifyContent: "center",
+                                        }}
+                                        onFocus={() => {
+                                            setIsFocused(true);
+                                        }}
+                                        onBlur={() => {
+                                            searchText === ""
+                                                ? setIsFocused(false)
+                                                : setIsFocused(true);
+                                        }}
+                                        onChangeText={(text) => {
+                                            setSearchText(text);
+                                        }}
+                                    />
+                                </View>
+                            </View>
+                            <TouchableOpacity
+                                style={{
+                                    marginLeft: 10,
+                                    width: 50,
+                                    height: 50,
+                                    borderRadius: 10,
+                                    backgroundColor: "#ffffff",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                }}
+                                onPress={() => {
+                                    toggleFilterModal();
+                                }}
+                            >
+                                <Btn_Filter />
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                    <View style={{ height: 40 }} />
-                    {/* 여분 */}
-                    <View style={{ height: 60 }} />
-                </ScrollView>
-            </Animated.View>
-        </View>
+                    <Animated.View
+                        style={[styles.container, { top: topPosition.current }]}
+                    >
+                        <ScrollView
+                            style={styles.scroll_container}
+                            onScroll={handleScroll}
+                            scrollEventThrottle={3}
+                            showsVerticalScrollIndicator={false}
+                        >
+                            {/* 내용 탑 */}
+                            <View
+                                style={{
+                                    marginTop: 10,
+                                    width: "100%",
+                                    height: 30,
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        fontFamily: "Spoqa Han Sans Neo",
+                                        fontWeight: "700",
+                                        fontSize: 16,
+                                        color: "#000000",
+                                        textAlign: "center",
+                                    }}
+                                >
+                                    <Text>전체 </Text>
+                                    <Text
+                                        style={{ color: "#D6690F" }}
+                                    >{`(${825})`}</Text>
+                                </Text>
+                                <TouchableOpacity
+                                    style={{
+                                        width: 80,
+                                        height: 30,
+                                        borderRadius: 10,
+                                        borderWidth: 1,
+                                        borderColor: "#E4E4E4",
+                                        backgroundColor: "#FFFFFF",
+                                        paddingLeft: 10,
+                                        paddingRight: 10,
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        justifyContent: "space-between",
+                                    }}
+                                    onPress={() => {
+                                        toggleSortModal();
+                                    }}
+                                >
+                                    <Text
+                                        style={{
+                                            fontFamily: "Spoqa Han Sans Neo",
+                                            fontWeight: "500",
+                                            fontSize: 12,
+                                            color: "#000000",
+                                            textAlign: "center",
+                                        }}
+                                    >
+                                        {
+                                            {
+                                                rate: "평점순",
+                                                new: "최신순",
+                                                review: "리뷰순",
+                                            }[sortCategory]
+                                        }
+                                    </Text>
+                                    <View style={{ width: 14, height: 14 }}>
+                                        <Btn_Drop_Black />
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                            <View>
+                                {whisky
+                                    .filter((_, index) => {
+                                        return index % 2 === 0;
+                                    })
+                                    .map((_, index) => (
+                                        <View
+                                            key={index}
+                                            style={{
+                                                display: "flex",
+                                                width: "100%",
+                                                flexDirection: "row",
+                                                justifyContent: "space-between",
+                                                marginTop: 20,
+                                            }}
+                                        >
+                                            <Card_Rc_Whisky_Long
+                                                press={() => {
+                                                    navigation.navigate(
+                                                        "SubPage_Whisky"
+                                                    );
+                                                }}
+                                            />
+                                            {whisky.length <=
+                                            index * 2 + 1 ? null : (
+                                                <Card_Rc_Whisky_Long
+                                                    press={() => {
+                                                        navigation.navigate(
+                                                            "SubPage_Whisky"
+                                                        );
+                                                    }}
+                                                />
+                                            )}
+                                        </View>
+                                    ))}
+                            </View>
+                            <View style={{ height: 40 }} />
+                            {/* 여분 */}
+                            <View style={{ height: 60 }} />
+                        </ScrollView>
+                    </Animated.View>
+                </View>
+            </SafeAreaView>
+        </>
     );
 }
 
@@ -1244,5 +1324,8 @@ const styles = StyleSheet.create({
         paddingTop: 20,
         paddingLeft: 20,
         paddingRight: 20,
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        overflow: "hidden",
     },
 });

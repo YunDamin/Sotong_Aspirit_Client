@@ -42,17 +42,17 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = whisky_palette_cli/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = whisky_palette_cli/main.m; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-whisky_palette_cli-whisky_palette_cliTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-whisky_palette_cli-whisky_palette_cliTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2BFA1CF4A4364CE9B0279474 /* SpoqaHanSansNeo-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SpoqaHanSansNeo-Light.otf"; path = "../assets/fonts/SpoqaHanSansNeo-Light.otf"; sourceTree = "<group>"; };
+		2BFA1CF4A4364CE9B0279474 /* SpoqaHanSansNeo-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SpoqaHanSansNeo-Light.otf"; path = "../assets/fonts/SpoqaHanSansNeo-Light.otf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-whisky_palette_cli.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-whisky_palette_cli.debug.xcconfig"; path = "Target Support Files/Pods-whisky_palette_cli/Pods-whisky_palette_cli.debug.xcconfig"; sourceTree = "<group>"; };
-		4B0FD169435C4E0CA9D7694A /* SpoqaHanSansNeo-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SpoqaHanSansNeo-Regular.otf"; path = "../assets/fonts/SpoqaHanSansNeo-Regular.otf"; sourceTree = "<group>"; };
+		4B0FD169435C4E0CA9D7694A /* SpoqaHanSansNeo-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SpoqaHanSansNeo-Regular.otf"; path = "../assets/fonts/SpoqaHanSansNeo-Regular.otf"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-whisky_palette_cli.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-whisky_palette_cli.release.xcconfig"; path = "Target Support Files/Pods-whisky_palette_cli/Pods-whisky_palette_cli.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-whisky_palette_cli-whisky_palette_cliTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-whisky_palette_cli-whisky_palette_cliTests.debug.xcconfig"; path = "Target Support Files/Pods-whisky_palette_cli-whisky_palette_cliTests/Pods-whisky_palette_cli-whisky_palette_cliTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-whisky_palette_cli.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-whisky_palette_cli.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7C447CE1A4DD41F586E25EE5 /* SpoqaHanSansNeo-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SpoqaHanSansNeo-Bold.otf"; path = "../assets/fonts/SpoqaHanSansNeo-Bold.otf"; sourceTree = "<group>"; };
+		7C447CE1A4DD41F586E25EE5 /* SpoqaHanSansNeo-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SpoqaHanSansNeo-Bold.otf"; path = "../assets/fonts/SpoqaHanSansNeo-Bold.otf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = whisky_palette_cli/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-whisky_palette_cli-whisky_palette_cliTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-whisky_palette_cli-whisky_palette_cliTests.release.xcconfig"; path = "Target Support Files/Pods-whisky_palette_cli-whisky_palette_cliTests/Pods-whisky_palette_cli-whisky_palette_cliTests.release.xcconfig"; sourceTree = "<group>"; };
-		B5A5F840FBDF4732AF63659B /* SpoqaHanSansNeo-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SpoqaHanSansNeo-Medium.otf"; path = "../assets/fonts/SpoqaHanSansNeo-Medium.otf"; sourceTree = "<group>"; };
-		BA7BD4B86A8745BEA70EC5D2 /* SpoqaHanSansNeo-Thin.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SpoqaHanSansNeo-Thin.otf"; path = "../assets/fonts/SpoqaHanSansNeo-Thin.otf"; sourceTree = "<group>"; };
+		B5A5F840FBDF4732AF63659B /* SpoqaHanSansNeo-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SpoqaHanSansNeo-Medium.otf"; path = "../assets/fonts/SpoqaHanSansNeo-Medium.otf"; sourceTree = "<group>"; };
+		BA7BD4B86A8745BEA70EC5D2 /* SpoqaHanSansNeo-Thin.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SpoqaHanSansNeo-Thin.otf"; path = "../assets/fonts/SpoqaHanSansNeo-Thin.otf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -158,7 +158,6 @@
 				BA7BD4B86A8745BEA70EC5D2 /* SpoqaHanSansNeo-Thin.otf */,
 			);
 			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
@@ -513,6 +512,7 @@
 			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-whisky_palette_cli.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
@@ -540,6 +540,7 @@
 			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-whisky_palette_cli.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = whisky_palette_cli/Info.plist;

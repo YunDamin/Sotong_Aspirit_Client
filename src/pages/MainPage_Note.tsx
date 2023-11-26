@@ -58,448 +58,526 @@ export default function MainPage_Note({ navigation }: any) {
     };
 
     return (
-        <View style={styles.page}>
-            {/* 제목 내용 카테고리 선택 모달 */}
-            <Modal
-                animationType="fade"
-                transparent={true}
-                visible={isCategoryModalVisible}
-                onRequestClose={() => {
-                    toggleCategoryModal();
-                }}
-            >
-                <View
-                    style={{
-                        width: "100%",
-                        height: "100%",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                    }}
-                >
-                    <View
-                        style={{
-                            width: "100%",
-                            height: "100%",
-                            position: "absolute",
-                            top: 0,
-                            backgroundColor: "#000000",
-                            opacity: 0.7,
-                        }}
-                    />
-                    <View
-                        style={{
-                            position: "absolute",
-                            bottom: 0,
-                            paddingLeft: 20,
-                            paddingRight: 20,
-                            width: "100%",
-                            backgroundColor: "#ffffff",
-                            borderTopLeftRadius: 20,
-                            borderTopRightRadius: 20,
-                        }}
-                    >
-                        <View style={{ height: 20 }} />
-                        <TouchableOpacity
-                            style={{
-                                marginTop: 10,
-                                marginBottom: 10,
-                                display: "flex",
-                                flexDirection: "row",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                            }}
-                            onPress={() => {
-                                setSearchCategory("all");
-                                toggleCategoryModal();
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    fontFamily: "Spoqa Han Sans Neo",
-                                    fontWeight: "500",
-                                    fontSize: 14,
-                                    color: "#000000",
-                                }}
-                            >
-                                제목+내용
-                            </Text>
-                            <View style={{ height: 40 }}>
-                                {searchCategory === "all" && <Btn_Check />}
-                            </View>
-                        </TouchableOpacity>
-                        <View
-                            style={{
-                                width: "100%",
-                                height: 1,
-                                backgroundColor: "#EAEAEA",
-                            }}
-                        />
-                        <TouchableOpacity
-                            style={{
-                                marginTop: 10,
-                                marginBottom: 10,
-                                display: "flex",
-                                flexDirection: "row",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                            }}
-                            onPress={() => {
-                                setSearchCategory("title");
-                                toggleCategoryModal();
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    fontFamily: "Spoqa Han Sans Neo",
-                                    fontWeight: "500",
-                                    fontSize: 14,
-                                    color: "#000000",
-                                }}
-                            >
-                                제목
-                            </Text>
-                            <View style={{ height: 40 }}>
-                                {searchCategory === "title" && <Btn_Check />}
-                            </View>
-                        </TouchableOpacity>
-                        <View
-                            style={{
-                                width: "100%",
-                                height: 1,
-                                backgroundColor: "#EAEAEA",
-                            }}
-                        />
-                        <TouchableOpacity
-                            style={{
-                                marginTop: 10,
-                                marginBottom: 10,
-                                display: "flex",
-                                flexDirection: "row",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                            }}
-                            onPress={() => {
-                                setSearchCategory("content");
-                                toggleCategoryModal();
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    fontFamily: "Spoqa Han Sans Neo",
-                                    fontWeight: "500",
-                                    fontSize: 14,
-                                    color: "#000000",
-                                }}
-                            >
-                                내용
-                            </Text>
-                            <View style={{ height: 40 }}>
-                                {searchCategory === "content" && <Btn_Check />}
-                            </View>
-                        </TouchableOpacity>
-                        <View style={{ height: 30 }} />
-                    </View>
-                </View>
-            </Modal>
-            {/* 정렬 선택 모달 */}
-            <Modal
-                animationType="fade"
-                transparent={true}
-                visible={isSortModalVisible}
-                onRequestClose={() => {
-                    toggleSortModal();
-                }}
-            >
-                <View
-                    style={{
-                        width: "100%",
-                        height: "100%",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                    }}
-                >
-                    <View
-                        style={{
-                            width: "100%",
-                            height: "100%",
-                            position: "absolute",
-                            top: 0,
-                            backgroundColor: "#000000",
-                            opacity: 0.7,
-                        }}
-                    />
-                    <View
-                        style={{
-                            position: "absolute",
-                            bottom: 0,
-                            paddingLeft: 20,
-                            paddingRight: 20,
-                            width: "100%",
-                            backgroundColor: "#ffffff",
-                            borderTopLeftRadius: 20,
-                            borderTopRightRadius: 20,
-                        }}
-                    >
-                        <View style={{ height: 20 }} />
-                        <TouchableOpacity
-                            style={{
-                                marginTop: 10,
-                                marginBottom: 10,
-                                display: "flex",
-                                flexDirection: "row",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                            }}
-                            onPress={() => {
-                                setSortCategory("new");
-                                toggleSortModal();
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    fontFamily: "Spoqa Han Sans Neo",
-                                    fontWeight: "500",
-                                    fontSize: 14,
-                                    color: "#000000",
-                                }}
-                            >
-                                최신순
-                            </Text>
-                            <View style={{ height: 40 }}>
-                                {sortCategory === "new" && <Btn_Check />}
-                            </View>
-                        </TouchableOpacity>
-                        <View
-                            style={{
-                                width: "100%",
-                                height: 1,
-                                backgroundColor: "#EAEAEA",
-                            }}
-                        />
-                        <TouchableOpacity
-                            style={{
-                                marginTop: 10,
-                                marginBottom: 10,
-                                display: "flex",
-                                flexDirection: "row",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                            }}
-                            onPress={() => {
-                                setSortCategory("new");
-                                toggleSortModal();
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    fontFamily: "Spoqa Han Sans Neo",
-                                    fontWeight: "500",
-                                    fontSize: 14,
-                                    color: "#000000",
-                                }}
-                            >
-                                ??
-                            </Text>
-                            <View style={{ height: 40 }}>
-                                {sortCategory === "" && <Btn_Check />}
-                            </View>
-                        </TouchableOpacity>
-                        <View
-                            style={{
-                                width: "100%",
-                                height: 1,
-                                backgroundColor: "#EAEAEA",
-                            }}
-                        />
-                        <TouchableOpacity
-                            style={{
-                                marginTop: 10,
-                                marginBottom: 10,
-                                display: "flex",
-                                flexDirection: "row",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                            }}
-                            onPress={() => {
-                                setSortCategory("new");
-                                toggleSortModal();
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    fontFamily: "Spoqa Han Sans Neo",
-                                    fontWeight: "500",
-                                    fontSize: 14,
-                                    color: "#000000",
-                                }}
-                            >
-                                ??
-                            </Text>
-                            <View style={{ height: 40 }}>
-                                {sortCategory === "" && <Btn_Check />}
-                            </View>
-                        </TouchableOpacity>
-                        <View style={{ height: 30 }} />
-                    </View>
-                </View>
-            </Modal>
-            <View style={styles.top}>
-                {/* 얼룩 무늬 */}
-                <View
-                    style={{
-                        height: 150,
-                        position: "absolute",
-                        right: 0,
-                    }}
-                >
-                    <Bg_Cup />
-                </View>
-                {/* 위스키 콘텐츠 텍스트 및 알람 프로필 */}
-                <View
-                    style={{
-                        height: 40,
-                        display: "flex",
-                        justifyContent: "space-between",
-                        flexDirection: "row",
-                    }}
-                >
-                    <View
-                        style={{
-                            height: 40,
-                            display: "flex",
-                            justifyContent: "flex-start",
-                            alignItems: "center",
-                            flexDirection: "row",
-                        }}
-                    >
-                        <Text
-                            style={{
-                                fontFamily: "Spoqa Han Sans Neo",
-                                fontWeight: "300",
-                                fontSize: 20,
-                                color: "#ffffff",
-                            }}
-                        >
-                            위스키
-                        </Text>
-                        <Text
-                            style={{
-                                fontFamily: "Spoqa Han Sans Neo",
-                                fontWeight: "700",
-                                fontSize: 20,
-                                color: "#ffffff",
-                                marginLeft: 5,
-                            }}
-                        >
-                            노트
-                        </Text>
-                        <View style={{ marginLeft: 5 }}>
-                            <Icon_Note />
-                        </View>
-                    </View>
-                    <View
-                        style={{
-                            height: 40,
-                            display: "flex",
-                            justifyContent: "flex-end",
-                            flexDirection: "row",
-                        }}
-                    >
-                        <TouchableOpacity style={{ width: 40, height: 40 }}>
-                            <Btn_Bell_On />
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{ width: 40, height: 40 }}>
-                            <Btn_My />
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                {/* 검색 필드 */}
-                <View
-                    style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        marginTop: 35,
-                        width: "100%",
-                        height: 50,
-                        borderRadius: 10,
-                    }}
-                >
-                    {/* 뒷 배경 */}
-                    <View
-                        style={{
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
-                            width: "100%",
-                            height: 50,
-                            backgroundColor: "#ffffff",
-                            opacity: 0.1,
-                            borderRadius: 10,
-                        }}
-                    />
-                    <TouchableOpacity
-                        style={{
-                            marginLeft: 15,
-                            flex: 1,
-                            display: "flex",
-                            flexDirection: "row",
-                            alignItems: "center",
-                            justifyContent: "flex-end",
-                            height: 50,
-                        }}
-                        onPress={() => {
+        <>
+            <SafeAreaView style={{ flex: 0, backgroundColor: "#974B1A" }} />
+            <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+                <View style={styles.page}>
+                    {/* 제목 내용 카테고리 선택 모달 */}
+                    <Modal
+                        animationType="fade"
+                        transparent={true}
+                        visible={isCategoryModalVisible}
+                        onRequestClose={() => {
                             toggleCategoryModal();
                         }}
                     >
-                        <Text
-                            style={{
-                                fontFamily: "Spoqa Han Sans Neo",
-                                fontWeight: "400",
-                                fontSize: 14,
-                                color: "#ffffff",
-                                textAlign: "center",
-                            }}
-                        >
-                            {
-                                {
-                                    all: "제목+내용",
-                                    title: "제목",
-                                    content: "내용",
-                                }[searchCategory]
-                            }
-                        </Text>
-                        <View style={{ marginLeft: 5 }}>
-                            <Btn_Drop />
-                        </View>
                         <View
                             style={{
-                                width: 1,
-                                height: 20,
-                                backgroundColor: "#ffffff",
-                                opacity: 0.1,
-                                marginLeft: 20,
+                                width: "100%",
+                                height: "100%",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
                             }}
-                        />
-                    </TouchableOpacity>
-                    <View
-                        style={{
-                            flex: 2,
-                            paddingLeft: 20,
-                            paddingRight: 15,
-                            height: 50,
+                        >
+                            <View
+                                style={{
+                                    width: "100%",
+                                    height: "100%",
+                                    position: "absolute",
+                                    top: 0,
+                                    backgroundColor: "#000000",
+                                    opacity: 0.7,
+                                }}
+                            />
+                            <View
+                                style={{
+                                    position: "absolute",
+                                    bottom: 0,
+                                    paddingLeft: 20,
+                                    paddingRight: 20,
+                                    width: "100%",
+                                    backgroundColor: "#ffffff",
+                                    borderTopLeftRadius: 20,
+                                    borderTopRightRadius: 20,
+                                }}
+                            >
+                                <View style={{ height: 20 }} />
+                                <TouchableOpacity
+                                    style={{
+                                        marginTop: 10,
+                                        marginBottom: 10,
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        justifyContent: "space-between",
+                                    }}
+                                    onPress={() => {
+                                        setSearchCategory("all");
+                                        toggleCategoryModal();
+                                    }}
+                                >
+                                    <Text
+                                        style={{
+                                            fontFamily: "Spoqa Han Sans Neo",
+                                            fontWeight: "500",
+                                            fontSize: 14,
+                                            color: "#000000",
+                                        }}
+                                    >
+                                        제목+내용
+                                    </Text>
+                                    <View style={{ height: 40 }}>
+                                        {searchCategory === "all" && (
+                                            <Btn_Check />
+                                        )}
+                                    </View>
+                                </TouchableOpacity>
+                                <View
+                                    style={{
+                                        width: "100%",
+                                        height: 1,
+                                        backgroundColor: "#EAEAEA",
+                                    }}
+                                />
+                                <TouchableOpacity
+                                    style={{
+                                        marginTop: 10,
+                                        marginBottom: 10,
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        justifyContent: "space-between",
+                                    }}
+                                    onPress={() => {
+                                        setSearchCategory("title");
+                                        toggleCategoryModal();
+                                    }}
+                                >
+                                    <Text
+                                        style={{
+                                            fontFamily: "Spoqa Han Sans Neo",
+                                            fontWeight: "500",
+                                            fontSize: 14,
+                                            color: "#000000",
+                                        }}
+                                    >
+                                        제목
+                                    </Text>
+                                    <View style={{ height: 40 }}>
+                                        {searchCategory === "title" && (
+                                            <Btn_Check />
+                                        )}
+                                    </View>
+                                </TouchableOpacity>
+                                <View
+                                    style={{
+                                        width: "100%",
+                                        height: 1,
+                                        backgroundColor: "#EAEAEA",
+                                    }}
+                                />
+                                <TouchableOpacity
+                                    style={{
+                                        marginTop: 10,
+                                        marginBottom: 10,
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        justifyContent: "space-between",
+                                    }}
+                                    onPress={() => {
+                                        setSearchCategory("content");
+                                        toggleCategoryModal();
+                                    }}
+                                >
+                                    <Text
+                                        style={{
+                                            fontFamily: "Spoqa Han Sans Neo",
+                                            fontWeight: "500",
+                                            fontSize: 14,
+                                            color: "#000000",
+                                        }}
+                                    >
+                                        내용
+                                    </Text>
+                                    <View style={{ height: 40 }}>
+                                        {searchCategory === "content" && (
+                                            <Btn_Check />
+                                        )}
+                                    </View>
+                                </TouchableOpacity>
+                                <View style={{ height: 30 }} />
+                            </View>
+                        </View>
+                    </Modal>
+                    {/* 정렬 선택 모달 */}
+                    <Modal
+                        animationType="fade"
+                        transparent={true}
+                        visible={isSortModalVisible}
+                        onRequestClose={() => {
+                            toggleSortModal();
                         }}
                     >
-                        {!isFocused && (
+                        <View
+                            style={{
+                                width: "100%",
+                                height: "100%",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}
+                        >
+                            <View
+                                style={{
+                                    width: "100%",
+                                    height: "100%",
+                                    position: "absolute",
+                                    top: 0,
+                                    backgroundColor: "#000000",
+                                    opacity: 0.7,
+                                }}
+                            />
+                            <View
+                                style={{
+                                    position: "absolute",
+                                    bottom: 0,
+                                    paddingLeft: 20,
+                                    paddingRight: 20,
+                                    width: "100%",
+                                    backgroundColor: "#ffffff",
+                                    borderTopLeftRadius: 20,
+                                    borderTopRightRadius: 20,
+                                }}
+                            >
+                                <View style={{ height: 20 }} />
+                                <TouchableOpacity
+                                    style={{
+                                        marginTop: 10,
+                                        marginBottom: 10,
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        justifyContent: "space-between",
+                                    }}
+                                    onPress={() => {
+                                        setSortCategory("new");
+                                        toggleSortModal();
+                                    }}
+                                >
+                                    <Text
+                                        style={{
+                                            fontFamily: "Spoqa Han Sans Neo",
+                                            fontWeight: "500",
+                                            fontSize: 14,
+                                            color: "#000000",
+                                        }}
+                                    >
+                                        최신순
+                                    </Text>
+                                    <View style={{ height: 40 }}>
+                                        {sortCategory === "new" && (
+                                            <Btn_Check />
+                                        )}
+                                    </View>
+                                </TouchableOpacity>
+                                <View
+                                    style={{
+                                        width: "100%",
+                                        height: 1,
+                                        backgroundColor: "#EAEAEA",
+                                    }}
+                                />
+                                <TouchableOpacity
+                                    style={{
+                                        marginTop: 10,
+                                        marginBottom: 10,
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        justifyContent: "space-between",
+                                    }}
+                                    onPress={() => {
+                                        setSortCategory("new");
+                                        toggleSortModal();
+                                    }}
+                                >
+                                    <Text
+                                        style={{
+                                            fontFamily: "Spoqa Han Sans Neo",
+                                            fontWeight: "500",
+                                            fontSize: 14,
+                                            color: "#000000",
+                                        }}
+                                    >
+                                        ??
+                                    </Text>
+                                    <View style={{ height: 40 }}>
+                                        {sortCategory === "" && <Btn_Check />}
+                                    </View>
+                                </TouchableOpacity>
+                                <View
+                                    style={{
+                                        width: "100%",
+                                        height: 1,
+                                        backgroundColor: "#EAEAEA",
+                                    }}
+                                />
+                                <TouchableOpacity
+                                    style={{
+                                        marginTop: 10,
+                                        marginBottom: 10,
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        justifyContent: "space-between",
+                                    }}
+                                    onPress={() => {
+                                        setSortCategory("new");
+                                        toggleSortModal();
+                                    }}
+                                >
+                                    <Text
+                                        style={{
+                                            fontFamily: "Spoqa Han Sans Neo",
+                                            fontWeight: "500",
+                                            fontSize: 14,
+                                            color: "#000000",
+                                        }}
+                                    >
+                                        ??
+                                    </Text>
+                                    <View style={{ height: 40 }}>
+                                        {sortCategory === "" && <Btn_Check />}
+                                    </View>
+                                </TouchableOpacity>
+                                <View style={{ height: 30 }} />
+                            </View>
+                        </View>
+                    </Modal>
+                    <View style={styles.top}>
+                        {/* 얼룩 무늬 */}
+                        <View
+                            style={{
+                                height: 150,
+                                position: "absolute",
+                                right: 0,
+                            }}
+                        >
+                            <Bg_Cup />
+                        </View>
+                        {/* 위스키 콘텐츠 텍스트 및 알람 프로필 */}
+                        <View
+                            style={{
+                                height: 40,
+                                display: "flex",
+                                justifyContent: "space-between",
+                                flexDirection: "row",
+                            }}
+                        >
+                            <View
+                                style={{
+                                    height: 40,
+                                    display: "flex",
+                                    justifyContent: "flex-start",
+                                    alignItems: "center",
+                                    flexDirection: "row",
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        fontFamily: "Spoqa Han Sans Neo",
+                                        fontWeight: "300",
+                                        fontSize: 20,
+                                        color: "#ffffff",
+                                    }}
+                                >
+                                    위스키
+                                </Text>
+                                <Text
+                                    style={{
+                                        fontFamily: "Spoqa Han Sans Neo",
+                                        fontWeight: "700",
+                                        fontSize: 20,
+                                        color: "#ffffff",
+                                        marginLeft: 5,
+                                    }}
+                                >
+                                    노트
+                                </Text>
+                                <View style={{ marginLeft: 5 }}>
+                                    <Icon_Note />
+                                </View>
+                            </View>
+                            <View
+                                style={{
+                                    height: 40,
+                                    display: "flex",
+                                    justifyContent: "flex-end",
+                                    flexDirection: "row",
+                                }}
+                            >
+                                <TouchableOpacity
+                                    style={{ width: 40, height: 40 }}
+                                    onPress={() => {
+                                        navigation.navigate("SubPage_Alert");
+                                    }}
+                                >
+                                    <Btn_Bell_On />
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={{ width: 40, height: 40 }}
+                                    onPress={() => {
+                                        navigation.navigate("SubPage_MyPage");
+                                    }}
+                                >
+                                    <Btn_My />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        {/* 검색 필드 */}
+                        <View
+                            style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                marginTop: 35,
+                                width: "100%",
+                                height: 50,
+                                borderRadius: 10,
+                            }}
+                        >
+                            {/* 뒷 배경 */}
                             <View
                                 style={{
                                     position: "absolute",
                                     top: 0,
                                     left: 0,
-                                    marginLeft: 20,
                                     width: "100%",
                                     height: 50,
+                                    backgroundColor: "#ffffff",
+                                    opacity: 0.1,
+                                    borderRadius: 10,
+                                }}
+                            />
+                            <TouchableOpacity
+                                style={{
+                                    marginLeft: 15,
+                                    flex: 1,
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                    justifyContent: "flex-end",
+                                    height: 50,
+                                }}
+                                onPress={() => {
+                                    toggleCategoryModal();
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        fontFamily: "Spoqa Han Sans Neo",
+                                        fontWeight: "400",
+                                        fontSize: 14,
+                                        color: "#ffffff",
+                                        textAlign: "center",
+                                    }}
+                                >
+                                    {
+                                        {
+                                            all: "제목+내용",
+                                            title: "제목",
+                                            content: "내용",
+                                        }[searchCategory]
+                                    }
+                                </Text>
+                                <View style={{ marginLeft: 5 }}>
+                                    <Btn_Drop />
+                                </View>
+                                <View
+                                    style={{
+                                        width: 1,
+                                        height: 20,
+                                        backgroundColor: "#ffffff",
+                                        opacity: 0.1,
+                                        marginLeft: 20,
+                                    }}
+                                />
+                            </TouchableOpacity>
+                            <View
+                                style={{
+                                    flex: 2,
+                                    paddingLeft: 20,
+                                    paddingRight: 15,
+                                    height: 50,
+                                }}
+                            >
+                                {!isFocused && (
+                                    <View
+                                        style={{
+                                            position: "absolute",
+                                            top: 0,
+                                            left: 0,
+                                            marginLeft: 20,
+                                            width: "100%",
+                                            height: 50,
+                                            display: "flex",
+                                            flexDirection: "row",
+                                            alignItems: "center",
+                                            justifyContent: "space-between",
+                                        }}
+                                    >
+                                        <Text
+                                            style={{
+                                                fontFamily:
+                                                    "Spoqa Han Sans Neo",
+                                                fontWeight: "400",
+                                                fontSize: 14,
+                                                color: "#ffffff",
+                                            }}
+                                        >
+                                            검색어 입력
+                                        </Text>
+                                        <Btn_Search />
+                                    </View>
+                                )}
+                                <TextInput
+                                    style={{
+                                        height: 50,
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        justifyContent: "center",
+                                    }}
+                                    onFocus={() => {
+                                        setIsFocused(true);
+                                    }}
+                                    onBlur={() => {
+                                        searchText === ""
+                                            ? setIsFocused(false)
+                                            : setIsFocused(true);
+                                    }}
+                                    onChangeText={(text) => {
+                                        setSearchText(text);
+                                    }}
+                                />
+                            </View>
+                        </View>
+                    </View>
+                    <Animated.View
+                        style={[styles.container, { top: topPosition.current }]}
+                    >
+                        <ScrollView
+                            style={styles.scroll_container}
+                            onScroll={handleScroll}
+                            scrollEventThrottle={3}
+                            showsVerticalScrollIndicator={false}
+                        >
+                            {/* 내용 탑 */}
+                            <View
+                                style={{
+                                    marginTop: 10,
+                                    width: "100%",
+                                    height: 30,
                                     display: "flex",
                                     flexDirection: "row",
                                     alignItems: "center",
@@ -509,118 +587,64 @@ export default function MainPage_Note({ navigation }: any) {
                                 <Text
                                     style={{
                                         fontFamily: "Spoqa Han Sans Neo",
-                                        fontWeight: "400",
-                                        fontSize: 14,
-                                        color: "#ffffff",
+                                        fontWeight: "700",
+                                        fontSize: 16,
+                                        color: "#000000",
+                                        textAlign: "center",
                                     }}
                                 >
-                                    검색어 입력
+                                    <Text>전체 </Text>
+                                    <Text
+                                        style={{ color: "#D6690F" }}
+                                    >{`(${825})`}</Text>
                                 </Text>
-                                <Btn_Search />
+                                <TouchableOpacity
+                                    style={{
+                                        width: 80,
+                                        height: 30,
+                                        borderRadius: 10,
+                                        borderWidth: 1,
+                                        borderColor: "#E4E4E4",
+                                        backgroundColor: "#FFFFFF",
+                                        paddingLeft: 10,
+                                        paddingRight: 10,
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        justifyContent: "space-between",
+                                    }}
+                                    onPress={() => {
+                                        toggleSortModal();
+                                    }}
+                                >
+                                    <Text
+                                        style={{
+                                            fontFamily: "Spoqa Han Sans Neo",
+                                            fontWeight: "500",
+                                            fontSize: 12,
+                                            color: "#000000",
+                                            textAlign: "center",
+                                        }}
+                                    >
+                                        {
+                                            {
+                                                new: "최신순",
+                                            }[sortCategory]
+                                        }
+                                    </Text>
+                                    <View style={{ width: 14, height: 14 }}>
+                                        <Btn_Drop_Black />
+                                    </View>
+                                </TouchableOpacity>
                             </View>
-                        )}
-                        <TextInput
-                            style={{
-                                height: 50,
-                                display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "center",
-                            }}
-                            onFocus={() => {
-                                setIsFocused(true);
-                            }}
-                            onBlur={() => {
-                                searchText === ""
-                                    ? setIsFocused(false)
-                                    : setIsFocused(true);
-                            }}
-                            onChangeText={(text) => {
-                                setSearchText(text);
-                            }}
-                        />
-                    </View>
+                            <View style={{ height: 40 }} />
+                            {/* 여분 */}
+                            <View style={{ height: 60 }} />
+                        </ScrollView>
+                    </Animated.View>
                 </View>
-            </View>
-            <Animated.View
-                style={[styles.container, { top: topPosition.current }]}
-            >
-                <ScrollView
-                    style={styles.scroll_container}
-                    onScroll={handleScroll}
-                    scrollEventThrottle={3}
-                    showsVerticalScrollIndicator={false}
-                >
-                    {/* 내용 탑 */}
-                    <View
-                        style={{
-                            marginTop: 10,
-                            width: "100%",
-                            height: 30,
-                            display: "flex",
-                            flexDirection: "row",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                        }}
-                    >
-                        <Text
-                            style={{
-                                fontFamily: "Spoqa Han Sans Neo",
-                                fontWeight: "700",
-                                fontSize: 16,
-                                color: "#000000",
-                                textAlign: "center",
-                            }}
-                        >
-                            <Text>전체 </Text>
-                            <Text
-                                style={{ color: "#D6690F" }}
-                            >{`(${825})`}</Text>
-                        </Text>
-                        <TouchableOpacity
-                            style={{
-                                width: 80,
-                                height: 30,
-                                borderRadius: 10,
-                                borderWidth: 1,
-                                borderColor: "#E4E4E4",
-                                backgroundColor: "#FFFFFF",
-                                paddingLeft: 10,
-                                paddingRight: 10,
-                                display: "flex",
-                                flexDirection: "row",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                            }}
-                            onPress={() => {
-                                toggleSortModal();
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    fontFamily: "Spoqa Han Sans Neo",
-                                    fontWeight: "500",
-                                    fontSize: 12,
-                                    color: "#000000",
-                                    textAlign: "center",
-                                }}
-                            >
-                                {
-                                    {
-                                        new: "최신순",
-                                    }[sortCategory]
-                                }
-                            </Text>
-                            <View style={{ width: 14, height: 14 }}>
-                                <Btn_Drop_Black />
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ height: 40 }} />
-                    {/* 여분 */}
-                    <View style={{ height: 60 }} />
-                </ScrollView>
-            </Animated.View>
-        </View>
+            </SafeAreaView>
+        </>
     );
 }
 
@@ -671,5 +695,8 @@ const styles = StyleSheet.create({
         paddingTop: 20,
         paddingLeft: 20,
         paddingRight: 20,
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        overflow: "hidden",
     },
 });
