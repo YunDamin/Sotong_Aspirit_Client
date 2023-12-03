@@ -8,6 +8,8 @@ import SubPage_Alert from "../pages/SubPage_Alert";
 import SubPage_MyPage from "../pages/SubPage_MyPage";
 // ? Tasting Note
 import SubPage_TastingNoteWriting from "../pages/SubPage_TastingNoteWriting";
+// ? Content
+import SubPage_Content from "../pages/SubPage_Content";
 
 // * SubNavigator
 import SubNavigator_Login from "./SubNavigator_Login";
@@ -41,6 +43,13 @@ export default function Navigator_Contents() {
             <Stack.Screen
                 name="SubPage_TastingNoteWriting"
                 component={SubPage_TastingNoteWriting}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name="SubPage_Content"
+                component={SubPage_Content}
                 options={{
                     headerShown: false,
                 }}

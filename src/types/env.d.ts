@@ -1,11 +1,3 @@
-export {};
-
-declare global {
-    namespace NodeJS {
-        interface ProcessEnv {
-            DB_PORT: number;
-            DB_USER: string;
-            ENV: "test" | "dev" | "prod";
-        }
-    }
+declare module "@env" {
+    export const API_KEY: string;
 }

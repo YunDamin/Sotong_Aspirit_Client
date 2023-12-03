@@ -77,6 +77,7 @@ export default function LoginPage_Main({ navigation }: any) {
                                 width: 320,
                                 height: 55,
                             }}
+                            placeholder="아이디(이메일) 입력"
                             {...id_field_props}
                         />
                         <View style={{ marginTop: 10 }} />
@@ -86,6 +87,7 @@ export default function LoginPage_Main({ navigation }: any) {
                                 height: 55,
                             }}
                             {...password_field_props}
+                            placeholder="비밀번호 입력"
                         />
                         <View
                             style={{

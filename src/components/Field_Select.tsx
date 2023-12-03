@@ -14,8 +14,8 @@ import {
 /**
  * Svgs
  */
-import Drop_Btn_On_Svg from "../public/icons/brn_drop_on.svg";
-import Drop_Btn_Off_Svg from "../public/icons/brn_drop_off.svg";
+import Drop_Btn_On_Svg from "../public/icons/btn/brn_drop_on.svg";
+import Drop_Btn_Off_Svg from "../public/icons/btn/brn_drop_off.svg";
 
 type PetSelectType = {
     id: number;
@@ -24,7 +24,6 @@ type PetSelectType = {
 
 type PetkyCheckySelectFieldProps = {
     label?: string;
-    isNeccesary: boolean;
     style?: StyleProp<TextStyle>;
     list: PetSelectType[];
     value: number;
@@ -34,8 +33,7 @@ type PetkyCheckySelectFieldProps = {
 type Props = PetkyCheckySelectFieldProps;
 
 export default function Field_Select(props: Props) {
-    const { label, style, isNeccesary, list, value, setValue, ...restOfProps } =
-        props;
+    const { label, style, list, value, setValue, ...restOfProps } = props;
     const [isClick, setIsClick] = React.useState(false);
 
     const clickAni = React.useRef(new Animated.Value(0)).current;
@@ -53,47 +51,38 @@ export default function Field_Select(props: Props) {
     }, [clickAni, isClick]);
 
     return (
-        <View>
-            <View style={[style]}>
-                <View style={[styles.selectView, { position: "absolute" }]}>
-                    <View
-                        style={[
-                            {
-                                backgroundColor: "#ffffff",
-                                position: "absolute",
-                                marginLeft: 10,
-                                paddingHorizontal: 5,
-                                top: -8,
-                            },
-                        ]}
-                    >
-                        <Text style={styles.label}>
-                            <Text>{label}</Text>
-                            {isNeccesary && (
-                                <Text style={{ color: "#e65b2c" }}>*</Text>
-                            )}
-                        </Text>
-                    </View>
-                </View>
-                <TouchableOpacity
-                    onPress={() => {
-                        setIsClick((prevClickState) => !prevClickState);
+        <View
+            style={{
+                width: 320,
+            }}
+        >
+            <TouchableOpacity
+                onPress={() => {
+                    setIsClick((prevClickState) => !prevClickState);
+                }}
+                style={[
+                    {
+                        width: 320,
+                        height: 55,
+                        borderWidth: 1,
+                        borderColor: "#000000",
+                        borderRadius: 10,
+                    },
+                    styles.selectedBtn,
+                ]}
+            >
+                <Text style={styles.selectedValueTxt}>
+                    {list.filter((list) => list.id === value)[0].name}
+                </Text>
+                <View
+                    style={{
+                        position: "absolute",
+                        right: 10,
                     }}
-                    style={[style, styles.selectedBtn]}
                 >
-                    <Text style={styles.selectedValueTxt}>
-                        {list.filter((list) => list.id === value)[0].name}
-                    </Text>
-                    <View
-                        style={{
-                            position: "absolute",
-                            right: 10,
-                        }}
-                    >
-                        {isClick ? <Drop_Btn_On_Svg /> : <Drop_Btn_Off_Svg />}
-                    </View>
-                </TouchableOpacity>
-            </View>
+                    {isClick ? <Drop_Btn_On_Svg /> : <Drop_Btn_Off_Svg />}
+                </View>
+            </TouchableOpacity>
             <Animated.View
                 style={{
                     width: "100%",
@@ -106,8 +95,9 @@ export default function Field_Select(props: Props) {
                 {isClick && (
                     <ScrollView
                         style={{
+                            marginTop: 10,
                             width: "100%",
-                            height: 120,
+                            height: 140,
                             borderWidth: 1,
                             borderRadius: 10,
                             marginBottom: 20,

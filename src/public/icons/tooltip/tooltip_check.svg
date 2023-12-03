@@ -1,4 +1,1 @@
-<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-<circle cx="7" cy="7" r="7" fill="#424242"/>
-<path d="M4 6.5L6.5 9L10 5" stroke="white" stroke-linejoin="bevel"/>
-</svg>
+<svg fill="none" height="14" viewBox="0 0 14 14" width="14" xmlns="http://www.w3.org/2000/svg"><circle cx="7" cy="7" fill="#424242" r="7"/><path d="m4 6.5 2.5 2.5 3.5-4" stroke="#fff" stroke-linejoin="bevel"/></svg>

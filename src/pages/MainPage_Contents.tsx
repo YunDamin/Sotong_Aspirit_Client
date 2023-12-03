@@ -48,9 +48,43 @@ const FloatingBtn = (props: Props) => {
 import { useRecoilState } from "recoil";
 
 import { login_data, login_state } from "../atoms/login_state";
+import {
+    content,
+    contents_news,
+    contents_guide,
+    contents_article,
+    contents_notice,
+} from "../atoms/get_contents";
+
+import axios from "axios";
+import { API_KEY } from "@env";
 
 export default function MainPage_Contents({ navigation }: any) {
     const [loginState, setLoginState] = useRecoilState<login_data>(login_state);
+
+    const [contentsNews, setContentsNews] =
+        useRecoilState<content[]>(contents_news);
+    const [contentsGuide, setContentsGuide] =
+        useRecoilState<content[]>(contents_guide);
+    const [contentsArticle, setContentsArticle] =
+        useRecoilState<content[]>(contents_article);
+    const [contentsNotice, setContentsNotice] =
+        useRecoilState<content[]>(contents_notice);
+
+    React.useEffect(() => {
+        axios.get(API_KEY + "/contents?type=news").then((res) => {
+            setContentsNews(res.data);
+        });
+        axios.get(API_KEY + "/contents?type=guide").then((res) => {
+            setContentsGuide(res.data);
+        });
+        axios.get(API_KEY + "/contents?type=article").then((res) => {
+            setContentsArticle(res.data);
+        });
+        axios.get(API_KEY + "/contents?type=notice").then((res) => {
+            setContentsNotice(res.data);
+        });
+    }, []);
 
     const [tabIndex, setTabIndex] = React.useState<number>(0);
 
@@ -380,13 +414,77 @@ export default function MainPage_Contents({ navigation }: any) {
                                             color: "#000000",
                                         }}
                                     >
-                                        위스키 뉴스 📰️
+                                        {
+                                            [
+                                                "위스키 뉴스 📰️",
+                                                "가이드",
+                                                "아티클",
+                                                "공지",
+                                            ][tabIndex]
+                                        }
                                     </Text>
                                 </View>
                             </View>
-                            {[0, 0, 0, 0, 0, 0, 0, 0].map((_, index) => {
-                                return <Card_News_Whisky_Big key={index} />;
-                            })}
+                            {tabIndex === 0 &&
+                                contentsNews.map((content, index) => {
+                                    return (
+                                        <Card_News_Whisky_Big
+                                            key={index}
+                                            content={content}
+                                            onPress={() => {
+                                                navigation.navigate(
+                                                    "SubPage_Content",
+                                                    { content: content }
+                                                );
+                                            }}
+                                        />
+                                    );
+                                })}
+                            {tabIndex === 1 &&
+                                contentsGuide.map((content, index) => {
+                                    return (
+                                        <Card_News_Whisky_Big
+                                            key={index}
+                                            content={content}
+                                            onPress={() => {
+                                                navigation.navigate(
+                                                    "SubPage_Content",
+                                                    { content: content }
+                                                );
+                                            }}
+                                        />
+                                    );
+                                })}
+                            {tabIndex === 2 &&
+                                contentsArticle.map((content, index) => {
+                                    return (
+                                        <Card_News_Whisky_Big
+                                            key={index}
+                                            content={content}
+                                            onPress={() => {
+                                                navigation.navigate(
+                                                    "SubPage_Content",
+                                                    { content: content }
+                                                );
+                                            }}
+                                        />
+                                    );
+                                })}
+                            {tabIndex === 3 &&
+                                contentsNotice.map((content, index) => {
+                                    return (
+                                        <Card_News_Whisky_Big
+                                            key={index}
+                                            content={content}
+                                            onPress={() => {
+                                                navigation.navigate(
+                                                    "SubPage_Content",
+                                                    { content: content }
+                                                );
+                                            }}
+                                        />
+                                    );
+                                })}
                             <View style={{ height: 40 }} />
                             {/* 여분 */}
                             <View style={{ height: 60 }} />

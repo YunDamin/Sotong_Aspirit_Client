@@ -7,6 +7,8 @@ import {
     TextInputProps,
     Animated,
     Easing,
+    Touchable,
+    TouchableOpacity,
 } from "react-native";
 
 type PetkyCheckyTextFieldProps = {
@@ -16,76 +18,141 @@ type PetkyCheckyTextFieldProps = {
     id: string;
     value: string;
     changeValue: (name: string, text: string) => void;
+    success?: boolean;
+    success_text?: string;
+    error?: boolean;
+    error_text?: string;
+    btn?: boolean;
+    btn_text?: string;
+    btn_onPress?: () => void;
 };
+
+// import Blue_C from "../public/icons/tooltip/blue_c.svg";
+// import Blue_S from "../public/icons/tooltip/blue_s.svg";
+// import Red_C from "../public/icons/tooltip/red_c.svg";
+// import Red_S from "../public/icons/tooltip/red_s.svg";
 
 type Props = TextInputProps & PetkyCheckyTextFieldProps;
 
 export default function Field_Text(props: Props) {
     const { label, style, isNeccesary, isDisabled, ...restOfProps } = props;
-    const [isFocused, setIsFocused] = React.useState(false);
-
-    const focusAni = React.useRef(new Animated.Value(0)).current;
-
-    React.useEffect(() => {
-        Animated.timing(focusAni, {
-            toValue: isFocused ? -8 : 20,
-            duration: 150,
-            easing: Easing.bezier(0.4, 0, 0.2, 1),
-            useNativeDriver: false,
-        }).start();
-    }, [focusAni, isFocused]);
 
     return (
-        <View style={[style, styles.inputView]}>
-            <Animated.View
+        <>
+            <View
                 style={[
-                    {
-                        backgroundColor: "#ffffff",
-                        position: "absolute",
-                        marginLeft: 10,
-                        paddingHorizontal: 5,
-                        top: isDisabled || props.value !== "" ? -8 : focusAni,
+                    styles.box,
+                    styles.inputView,
+                    props.success && {
+                        borderColor: "#0094E8",
+                    },
+                    props.error && {
+                        borderColor: "#D60F3F",
                     },
                 ]}
             >
-                <Text style={styles.label}>
-                    <Text>{label}</Text>
-                    {isNeccesary && <Text style={{ color: "#e65b2c" }}>*</Text>}
-                </Text>
-            </Animated.View>
-            <TextInput
-                style={styles.input}
-                {...restOfProps}
-                editable={!isDisabled}
-                onFocus={() => {
-                    setIsFocused(true);
-                }}
-                onBlur={() => {
-                    props.value === ""
-                        ? setIsFocused(false)
-                        : setIsFocused(true);
-                }}
-                onChangeText={(text) => props.changeValue(props.id, text)}
-            />
-            {isDisabled && (
-                <View
-                    style={[
-                        style,
-                        styles.inputView,
-                        {
-                            borderWidth: 0,
-                            position: "absolute",
-                            backgroundColor: "#000000",
-                            opacity: 0.08,
-                        },
-                    ]}
+                <TextInput
+                    style={styles.input}
+                    {...restOfProps}
+                    editable={!isDisabled}
+                    onChangeText={(text) => props.changeValue(props.id, text)}
                 />
+                {isDisabled && (
+                    <View
+                        style={[
+                            styles.box,
+                            styles.inputView,
+                            {
+                                borderWidth: 0,
+                                position: "absolute",
+                                backgroundColor: "#000000",
+                                opacity: 0.08,
+                            },
+                        ]}
+                    />
+                )}
+                {props.btn && (
+                    <TouchableOpacity
+                        style={{
+                            position: "absolute",
+                            right: 10,
+                            width: 65,
+                            height: 35,
+                            justifyContent: "center",
+                            alignItems: "center",
+                            backgroundColor: "#000000",
+                            borderRadius: 10,
+                        }}
+                    >
+                        <Text
+                            style={{
+                                fontFamily: "Spoqa Han Sans Neo",
+                                fontWeight: "400",
+                                fontSize: 12,
+                                color: "#FFFFFF",
+                                textAlign: "center",
+                            }}
+                        >
+                            {props.btn_text}
+                        </Text>
+                    </TouchableOpacity>
+                )}
+            </View>
+            {props.success && (
+                <View
+                    style={{
+                        width: 320,
+                        height: 16,
+                        marginTop: 4,
+                    }}
+                >
+                    <Text
+                        style={{
+                            fontFamily: "Spoqa Han Sans Neo",
+                            fontWeight: "400",
+                            fontSize: 12,
+                            color: "#0094E8",
+                            textAlign: "left",
+                        }}
+                    >
+                        {props.success_text}
+                    </Text>
+                </View>
             )}
-        </View>
+            {props.error && (
+                <View
+                    style={{
+                        width: 320,
+                        height: 16,
+                        marginTop: 4,
+                    }}
+                >
+                    <Text
+                        style={{
+                            fontFamily: "Spoqa Han Sans Neo",
+                            fontWeight: "400",
+                            fontSize: 12,
+                            color: "#D60F3F",
+                            textAlign: "left",
+                        }}
+                    >
+                        {props.error_text}
+                    </Text>
+                </View>
+            )}
+        </>
     );
 }
 
 const styles = StyleSheet.create({
+    box: {
+        marginTop: 10,
+        width: 320,
+        height: 55,
+        backgroundColor: "#F2F2F2",
+        borderRadius: 10,
+        paddingHorizontal: 10,
+    },
     inputView: {
         borderWidth: 1,
         borderColor: "#e4e4e4",
