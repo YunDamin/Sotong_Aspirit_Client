@@ -15,7 +15,9 @@ import ToolTip_Check from "../public/icons/tooltip/tooltip_check.svg";
 import LinearGradient from "react-native-linear-gradient";
 
 interface SelectBar_ColorProps {
-    select_elements: string[];
+    select_elements?: string[];
+    disable?: boolean;
+    index?: number;
 }
 
 const getColor = (index: number): string[] => {
@@ -31,7 +33,19 @@ const getColor = (index: number): string[] => {
 };
 
 export default function SelectBar_Color(props: SelectBar_ColorProps) {
-    const [selectElement, setSelctElement] = React.useState<number>(-1);
+    const [selectElement, setSelctElement] = React.useState<number>(
+        props.index ?? -1
+    );
+
+    const select_elements = props.select_elements ?? [
+        "투명한",
+        "짚",
+        "꿀",
+        "금",
+        "호박",
+        "카라멜",
+        "마호가니",
+    ];
 
     return (
         <View
@@ -56,9 +70,10 @@ export default function SelectBar_Color(props: SelectBar_ColorProps) {
                     },
                 ]}
             >
-                {props.select_elements.map((element, index) => {
+                {select_elements.map((element, index) => {
                     return (
                         <TouchableOpacity
+                            disabled={props.disable}
                             key={index}
                             style={[
                                 {
@@ -85,8 +100,7 @@ export default function SelectBar_Color(props: SelectBar_ColorProps) {
                                     index == 0 && {
                                         borderTopLeftRadius: 10,
                                     },
-                                    index ==
-                                        props.select_elements.length - 1 && {
+                                    index == select_elements.length - 1 && {
                                         borderTopRightRadius: 10,
                                     },
                                     index != selectElement && {
@@ -97,7 +111,7 @@ export default function SelectBar_Color(props: SelectBar_ColorProps) {
                                         borderTopRightRadius: 5,
                                         borderWidth: 1,
                                         borderColor: "#F7F7F7",
-                                        height: 60,
+                                        height: 70,
                                     },
                                 ]}
                                 useAngle={true}
@@ -138,9 +152,10 @@ export default function SelectBar_Color(props: SelectBar_ColorProps) {
                     alignItems: "center",
                 }}
             >
-                {props.select_elements.map((element, index) => {
+                {select_elements.map((element, index) => {
                     return (
                         <TouchableOpacity
+                            disabled={props.disable}
                             key={index}
                             style={{
                                 flex: 1,

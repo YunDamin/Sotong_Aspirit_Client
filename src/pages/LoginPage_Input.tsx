@@ -13,12 +13,17 @@ import {
 
 import Btn_OnOff_Arrow_Right from "../public/icons/btn/btn_onoff_right_arrow.svg";
 
+import DatePicker from "react-native-date-picker";
+
 // Navigator
 import CustomNavigator_Top from "../navigators/CustomNavigator_Top";
 
 // Components
 import Field_Text from "../components/Field_Text";
 import Field_Select from "../components/Field_Select";
+
+import axios from "axios";
+import { API_KEY } from "@env";
 
 export default function LoginPage_Input({ navigation }: any) {
     const [email, setEmail] = React.useState("");
@@ -42,6 +47,9 @@ export default function LoginPage_Input({ navigation }: any) {
 
     const [sex, setSex] = React.useState(0);
 
+    const [dateOpen, setDateOpen] = React.useState(false);
+    const [date, setDate] = React.useState(new Date());
+
     const [phone, setPhone] = React.useState("");
     const change_phone = (name: string, text: string) => {
         setPhone(text);
@@ -54,6 +62,29 @@ export default function LoginPage_Input({ navigation }: any) {
     const [nickname, setNickname] = React.useState("");
     const change_nickname = (name: string, text: string) => {
         setNickname(text);
+    };
+
+    const signUp = () => {
+        let month = date.getMonth() + 1;
+        let month_str = month < 10 ? "0" + month : month.toString();
+
+        axios
+            .post(API_KEY + "/users/signup", {
+                email: email,
+                password: password,
+                user_name: name,
+                sex: sex === 0 ? "M" : "F",
+                date: `${date.getFullYear()}${month_str}${date.getDate()}`,
+                phone_number: phone,
+                user_nick: nickname,
+            })
+            .then((res) => {
+                if (res.data.ok) {
+                    navigation.navigate("LoginPage_Thanks");
+                }
+            });
+
+        // navigation.navigate("LoginPage_Thanks");
     };
 
     return (
@@ -97,6 +128,13 @@ export default function LoginPage_Input({ navigation }: any) {
                             value={email}
                             changeValue={change_email}
                             placeholder="아이디(이메일)"
+                            success={false}
+                            success_text={"사용 가능한 이메일입니다."}
+                            error={true}
+                            error_text={"중복된 이메일입니다."}
+                            btn={true}
+                            btn_text={"중복확인"}
+                            btn_onPress={() => {}}
                         />
                         <View style={{ marginTop: 25 }} />
                         <Text style={{ width: 320, marginBottom: 10 }}>
@@ -178,6 +216,44 @@ export default function LoginPage_Input({ navigation }: any) {
                                 {" *"}
                             </Text>
                         </Text>
+                        <TouchableOpacity
+                            onPress={() => setDateOpen(true)}
+                            style={{
+                                width: 320,
+                                height: 55,
+                                borderWidth: 1,
+                                borderColor: "#e4e4e4",
+                                borderRadius: 10,
+                                justifyContent: "center",
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontFamily: "Spoqa Han Sans Neo",
+                                    fontWeight: "400",
+                                    fontSize: 14,
+                                    color: "#000000",
+                                    textAlign: "left",
+                                    marginLeft: 15,
+                                }}
+                            >
+                                {date.getFullYear()}.{date.getMonth() + 1}.{" "}
+                                {date.getDate()}
+                            </Text>
+                        </TouchableOpacity>
+                        <DatePicker
+                            modal
+                            mode="date"
+                            open={dateOpen}
+                            date={date}
+                            onConfirm={(date) => {
+                                setDateOpen(false);
+                                setDate(date);
+                            }}
+                            onCancel={() => {
+                                setDateOpen(false);
+                            }}
+                        />
                         <View style={{ marginTop: 25 }} />
                         <Text style={{ width: 320, marginBottom: 10 }}>
                             <Text style={styles.subtitle_text}>휴대폰번호</Text>
@@ -257,7 +333,7 @@ export default function LoginPage_Input({ navigation }: any) {
                 >
                     <TouchableOpacity
                         onPress={() => {
-                            navigation.navigate("LoginPage_Thanks");
+                            signUp();
                         }}
                         disabled={
                             !(
