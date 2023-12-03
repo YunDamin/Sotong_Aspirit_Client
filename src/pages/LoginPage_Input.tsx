@@ -16,37 +16,21 @@ import Btn_OnOff_Arrow_Right from "../public/icons/btn/btn_onoff_right_arrow.svg
 // Navigator
 import CustomNavigator_Top from "../navigators/CustomNavigator_Top";
 
-export default function SubPage_Whisky({ navigation }: any) {
+export default function LoginPage_Input({ navigation }: any) {
     return (
         <>
             <StatusBar barStyle="light-content" backgroundColor={"white"} />
             <SafeAreaView style={{ flex: 0, backgroundColor: "white" }}>
                 <CustomNavigator_Top
-                    title=""
+                    title="정보입력"
                     goBack={() => {
                         navigation.goBack();
                     }}
-                    whatBtn="share"
                 />
             </SafeAreaView>
-            <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-                <View
-                    style={{
-                        flex: 1,
-                        width: "100%",
-                    }}
-                >
-                    <ScrollView
-                        style={{
-                            flex: 1,
-                            width: "100%",
-                        }}
-                        scrollEventThrottle={16}
-                    >
-                        <Text>ss</Text>
-                    </ScrollView>
-                </View>
-            </SafeAreaView>
+            <SafeAreaView
+                style={{ flex: 1, backgroundColor: "white" }}
+            ></SafeAreaView>
         </>
     );
 }

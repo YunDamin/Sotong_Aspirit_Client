@@ -1,5 +1,13 @@
 import React from "react";
 
+import {
+    RecoilRoot,
+    atom,
+    selector,
+    useRecoilState,
+    useRecoilValue,
+} from "recoil";
+
 import { SafeAreaView, StatusBar, Alert } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -7,10 +15,6 @@ import { createWhiskyPaletteBottomTabNavigator } from "./src/navigators/CustomNa
 
 const Stack = createStackNavigator();
 const Tab = createWhiskyPaletteBottomTabNavigator();
-
-const LoginScreen = ({ navigation }: any) => {
-    return <></>;
-};
 
 import Navigator_Home from "./src/navigators/Navigator_Home";
 import Navigator_Note from "./src/navigators/Navigator_Note";
@@ -44,9 +48,18 @@ const MainScreen = ({ navigation }: any) => {
 import SplashPage from "./src/pages/SplashPage";
 import OnboardingPage from "./src/pages/OnBoardingPage";
 
+import SystemNavigationBar from "react-native-system-navigation-bar";
+import useInterval from "./src/useInterval";
+
 function App(): JSX.Element {
+    SystemNavigationBar.navigationHide();
+
+    useInterval(() => {
+        SystemNavigationBar.navigationHide();
+    }, 2000);
+
     return (
-        <>
+        <RecoilRoot>
             <NavigationContainer>
                 <Stack.Navigator initialRouteName="Splash">
                     <Stack.Screen
@@ -64,13 +77,6 @@ function App(): JSX.Element {
                         }}
                     />
                     <Stack.Screen
-                        name="Login"
-                        component={LoginScreen}
-                        options={{
-                            headerShown: false,
-                        }}
-                    />
-                    <Stack.Screen
                         name="Main"
                         component={MainScreen}
                         options={{
@@ -79,7 +85,7 @@ function App(): JSX.Element {
                     />
                 </Stack.Navigator>
             </NavigationContainer>
-        </>
+        </RecoilRoot>
     );
 }
 

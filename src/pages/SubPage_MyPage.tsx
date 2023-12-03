@@ -8,6 +8,7 @@ import {
     StyleSheet,
     ScrollView,
     TouchableOpacity,
+    StatusBar,
 } from "react-native";
 
 import Btn_OnOff_Arrow_Right from "../public/icons/btn/btn_onoff_right_arrow.svg";
@@ -18,6 +19,7 @@ import CustomNavigator_Top from "../navigators/CustomNavigator_Top";
 export default function SubPage_MyPage({ navigation }: any) {
     return (
         <>
+            <StatusBar barStyle="light-content" backgroundColor={"#FCECDE"} />
             <SafeAreaView style={{ flex: 0, backgroundColor: "#FCECDE" }}>
                 <CustomNavigator_Top
                     title="마이페이지"

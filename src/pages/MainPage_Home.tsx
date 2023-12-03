@@ -8,6 +8,7 @@ import {
     StyleSheet,
     ScrollView,
     TouchableOpacity,
+    StatusBar,
 } from "react-native";
 
 import Bg_Cup from "../public/icons/bg/cup.svg";
@@ -21,7 +22,38 @@ import Btn_My from "../public/icons/btn/btn_my.svg";
 import Card_Rc_Whisky from "../components/Card_Rc_Whisky";
 import Card_News_Whisky from "../components/Card_News_Whisky";
 
+import Btn_Floating from "../public/icons/btn/btn_floating.svg";
+import is_login from "../isLogin";
+
+interface Props {
+    press: () => void;
+}
+
+const FloatingBtn = (props: Props) => {
+    return (
+        <TouchableOpacity
+            style={{
+                width: 70,
+                height: 70,
+                position: "absolute",
+                bottom: 20,
+                right: 20,
+                backgroundColor: "transparent",
+            }}
+            onPress={props.press}
+        >
+            <Btn_Floating />
+        </TouchableOpacity>
+    );
+};
+
+import { useRecoilState } from "recoil";
+
+import { login_data, login_state } from "../atoms/login_state";
+
 export default function MainPage_Home({ navigation }: any) {
+    const [loginState, setLoginState] = useRecoilState<login_data>(login_state);
+
     const topPosition = React.useRef(new Animated.Value(150)).current;
 
     const handleScroll = (event: any) => {
@@ -36,6 +68,7 @@ export default function MainPage_Home({ navigation }: any) {
     return (
         <>
             <SafeAreaView style={{ flex: 0, backgroundColor: "#974B1A" }} />
+            <StatusBar barStyle="light-content" backgroundColor={"#974B1A"} />
             <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
                 <View style={styles.page}>
                     <View style={styles.top}>
@@ -464,6 +497,13 @@ export default function MainPage_Home({ navigation }: any) {
                         </ScrollView>
                     </Animated.View>
                 </View>
+                <FloatingBtn
+                    press={() => {
+                        if (loginState.is_login)
+                            navigation.navigate("SubPage_TastingNoteWriting");
+                        else navigation.navigate("SubNavigator_Login");
+                    }}
+                />
             </SafeAreaView>
         </>
     );

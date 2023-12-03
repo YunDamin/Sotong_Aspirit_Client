@@ -8,6 +8,7 @@ import {
     StyleSheet,
     ScrollView,
     TouchableOpacity,
+    StatusBar,
 } from "react-native";
 
 // Navigator
@@ -95,6 +96,7 @@ export default function SubPage_Alert({ navigation }: any) {
     return (
         <>
             <SafeAreaView style={{ flex: 0, backgroundColor: "white" }} />
+            <StatusBar barStyle="light-content" backgroundColor={"white"} />
             <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
                 <CustomNavigator_Top
                     title="알림"

@@ -7,6 +7,7 @@ import {
     SafeAreaView,
     StyleSheet,
     ScrollView,
+    StatusBar,
     TouchableOpacity,
 } from "react-native";
 
@@ -321,9 +322,8 @@ export default function OnboardingPage({ navigation }: any) {
 
     return (
         <>
-            <SafeAreaView
-                style={{ flex: 0, backgroundColor: "white" }}
-            ></SafeAreaView>
+            <SafeAreaView style={{ flex: 0, backgroundColor: "white" }} />
+            <StatusBar barStyle="light-content" backgroundColor={"white"} />
             <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
                 {index === 0 && (
                     <FirstPage press={() => setIndex(1)} skip={() => skip()} />

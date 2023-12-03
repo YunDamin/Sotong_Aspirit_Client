@@ -26,7 +26,38 @@ import Btn_Check from "../public/icons/btn/btn_check.svg";
 // Components
 import Card_News_Whisky_Big from "../components/Card_News_Whisky_Big";
 
+import Btn_Floating from "../public/icons/btn/btn_floating.svg";
+import is_login from "../isLogin";
+
+interface Props {
+    press: () => void;
+}
+
+const FloatingBtn = (props: Props) => {
+    return (
+        <TouchableOpacity
+            style={{
+                width: 70,
+                height: 70,
+                position: "absolute",
+                bottom: 20,
+                right: 20,
+                backgroundColor: "transparent",
+            }}
+            onPress={props.press}
+        >
+            <Btn_Floating />
+        </TouchableOpacity>
+    );
+};
+
+import { useRecoilState } from "recoil";
+
+import { login_data, login_state } from "../atoms/login_state";
+
 export default function MainPage_Note({ navigation }: any) {
+    const [loginState, setLoginState] = useRecoilState<login_data>(login_state);
+
     const [searchCategory, setSearchCategory] = React.useState<string>("all");
     const [searchText, setSearchText] = React.useState<string>("");
     const [isFocused, setIsFocused] = React.useState<boolean>(false);
@@ -643,6 +674,13 @@ export default function MainPage_Note({ navigation }: any) {
                         </ScrollView>
                     </Animated.View>
                 </View>
+                <FloatingBtn
+                    press={() => {
+                        if (loginState.is_login)
+                            navigation.navigate("SubPage_TastingNoteWriting");
+                        else navigation.navigate("SubNavigator_Login");
+                    }}
+                />
             </SafeAreaView>
         </>
     );

@@ -8,9 +8,12 @@ import {
     StyleSheet,
     ScrollView,
     TouchableOpacity,
+    StatusBar,
 } from "react-native";
-
+import FastImage from "react-native-fast-image";
 import LinearGradient from "react-native-linear-gradient";
+
+import Splash_Gif from "../public/splash.gif";
 
 export default function SplashPage({ navigation }: any) {
     const next = () => {
@@ -20,16 +23,15 @@ export default function SplashPage({ navigation }: any) {
     React.useEffect(() => {
         const timer = setTimeout(() => {
             next();
-        }, 2000);
+        }, 1800);
 
         return () => clearTimeout(timer);
     }, []);
 
     return (
         <>
-            <SafeAreaView
-                style={{ flex: 0, backgroundColor: "#974B1A" }}
-            ></SafeAreaView>
+            <SafeAreaView style={{ flex: 0, backgroundColor: "#974B1A" }} />
+            <StatusBar barStyle="light-content" backgroundColor={"#974B1A"} />
             <SafeAreaView style={{ flex: 1, backgroundColor: "#D6690F" }}>
                 <LinearGradient
                     colors={["#974B1A", "#D6690F"]}
@@ -37,7 +39,12 @@ export default function SplashPage({ navigation }: any) {
                         width: "100%",
                         height: "100%",
                     }}
-                ></LinearGradient>
+                >
+                    <FastImage
+                        style={{ width: "100%", height: "100%" }}
+                        source={Splash_Gif}
+                    />
+                </LinearGradient>
             </SafeAreaView>
         </>
     );
