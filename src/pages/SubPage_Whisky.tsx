@@ -800,28 +800,28 @@ export default function SubPage_Whisky({ navigation }: any) {
                                 des="(향)"
                                 rates={[
                                     {
-                                        name: "바디",
-                                        num: 3,
+                                        name: "복숭아",
+                                        num: 13,
                                     },
                                     {
-                                        name: "향",
-                                        num: 4,
+                                        name: "레몬",
+                                        num: 17,
                                     },
                                     {
-                                        name: "맛",
-                                        num: 3,
+                                        name: "블랙커런트 싹",
+                                        num: 12,
                                     },
                                     {
-                                        name: "가성비",
-                                        num: 4,
+                                        name: "훈연",
+                                        num: 14,
                                     },
                                     {
-                                        name: "인기도",
-                                        num: 4,
+                                        name: "피트",
+                                        num: 15,
                                     },
                                     {
-                                        name: "평점",
-                                        num: 4,
+                                        name: "바나나",
+                                        num: 9,
                                     },
                                 ]}
                             />
@@ -839,28 +839,28 @@ export default function SubPage_Whisky({ navigation }: any) {
                                 des="(맛)"
                                 rates={[
                                     {
-                                        name: "바디",
-                                        num: 3,
+                                        name: "복숭아",
+                                        num: 13,
                                     },
                                     {
-                                        name: "향",
-                                        num: 4,
+                                        name: "레몬",
+                                        num: 17,
                                     },
                                     {
-                                        name: "맛",
-                                        num: 3,
+                                        name: "블랙커런트 싹",
+                                        num: 12,
                                     },
                                     {
-                                        name: "가성비",
-                                        num: 4,
+                                        name: "훈연",
+                                        num: 14,
                                     },
                                     {
-                                        name: "인기도",
-                                        num: 4,
+                                        name: "피트",
+                                        num: 15,
                                     },
                                     {
-                                        name: "평점",
-                                        num: 4,
+                                        name: "바나나",
+                                        num: 9,
                                     },
                                 ]}
                             />
@@ -878,28 +878,28 @@ export default function SubPage_Whisky({ navigation }: any) {
                                 des="(맛)"
                                 rates={[
                                     {
-                                        name: "바디",
-                                        num: 3,
+                                        name: "복숭아",
+                                        num: 13,
                                     },
                                     {
-                                        name: "향",
-                                        num: 4,
+                                        name: "레몬",
+                                        num: 17,
                                     },
                                     {
-                                        name: "맛",
-                                        num: 3,
+                                        name: "블랙커런트 싹",
+                                        num: 12,
                                     },
                                     {
-                                        name: "가성비",
-                                        num: 4,
+                                        name: "훈연",
+                                        num: 14,
                                     },
                                     {
-                                        name: "인기도",
-                                        num: 4,
+                                        name: "피트",
+                                        num: 15,
                                     },
                                     {
-                                        name: "평점",
-                                        num: 4,
+                                        name: "바나나",
+                                        num: 9,
                                     },
                                 ]}
                             />

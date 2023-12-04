@@ -45,12 +45,12 @@ export default function Card_Graph(props: Props) {
     const sortedRates = getSortedRatesgetTopRates(props.rates);
 
     const topRates = getTopRates(props.rates);
-    const dataSets = topRates.map((rate, index) =>
+    const dataSets = topRates.map((_rate, index) =>
         index === 0
             ? {
                   label: "",
-                  values: topRates.map((_rate, c_index) => ({
-                      value: rate.num,
+                  values: topRates.map((c_rate, c_index) => ({
+                      value: c_rate.num,
                   })),
                   config: {
                       color: processColor("#D6690F"),
@@ -64,8 +64,13 @@ export default function Card_Graph(props: Props) {
             : {
                   label: "",
                   values: topRates.map((_rate, c_index) => ({
-                      value: 0,
+                      value: 0.0,
                   })),
+                  config: {
+                      color: processColor("#EDEDED"),
+
+                      lineWidth: 2,
+                  },
               }
     );
     const valueFormatter = topRates.map((rate) => rate.name);
@@ -166,6 +171,8 @@ export default function Card_Graph(props: Props) {
                                     valueFormatter: valueFormatter,
                                 }}
                                 yAxis={{ drawLabels: false }}
+                                webColor={processColor("#EDEDED")}
+                                webColorInner={processColor("#EDEDED")}
                             />
                         </View>
                         <View
@@ -298,7 +305,11 @@ export default function Card_Graph(props: Props) {
                             drawLabels: true,
                             valueFormatter: valueFormatter,
                         }}
-                        yAxis={{ drawLabels: false }}
+                        yAxis={{
+                            drawLabels: false,
+                        }}
+                        webColor={processColor("#EDEDED")}
+                        webColorInner={processColor("#EDEDED")}
                     />
                 </View>
             </View>

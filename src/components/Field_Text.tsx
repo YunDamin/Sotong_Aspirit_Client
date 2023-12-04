@@ -25,12 +25,15 @@ type PetkyCheckyTextFieldProps = {
     btn?: boolean;
     btn_text?: string;
     btn_onPress?: () => void;
+    is_review?: boolean;
 };
 
 // import Blue_C from "../public/icons/tooltip/blue_c.svg";
 // import Blue_S from "../public/icons/tooltip/blue_s.svg";
 // import Red_C from "../public/icons/tooltip/red_c.svg";
 // import Red_S from "../public/icons/tooltip/red_s.svg";
+import Error_Svg from "../public/icons/tooltip/error.svg";
+import Pass_Svg from "../public/icons/tooltip/pass.svg";
 
 type Props = TextInputProps & PetkyCheckyTextFieldProps;
 
@@ -48,6 +51,12 @@ export default function Field_Text(props: Props) {
                     },
                     props.error && {
                         borderColor: "#D60F3F",
+                    },
+                    style,
+                    props.is_review && {
+                        paddingTop: 10,
+                        paddingBottom: 10,
+                        justifyContent: "flex-start",
                     },
                 ]}
             >
@@ -104,8 +113,10 @@ export default function Field_Text(props: Props) {
                         width: 320,
                         height: 16,
                         marginTop: 4,
+                        flexDirection: "row",
                     }}
                 >
+                    <Pass_Svg />
                     <Text
                         style={{
                             fontFamily: "Spoqa Han Sans Neo",
@@ -113,6 +124,7 @@ export default function Field_Text(props: Props) {
                             fontSize: 12,
                             color: "#0094E8",
                             textAlign: "left",
+                            marginLeft: 4,
                         }}
                     >
                         {props.success_text}
@@ -125,8 +137,10 @@ export default function Field_Text(props: Props) {
                         width: 320,
                         height: 16,
                         marginTop: 4,
+                        flexDirection: "row",
                     }}
                 >
+                    <Error_Svg />
                     <Text
                         style={{
                             fontFamily: "Spoqa Han Sans Neo",
@@ -134,6 +148,7 @@ export default function Field_Text(props: Props) {
                             fontSize: 12,
                             color: "#D60F3F",
                             textAlign: "left",
+                            marginLeft: 4,
                         }}
                     >
                         {props.error_text}

@@ -108,7 +108,7 @@ export default function LoginPage_Input({ navigation }: any) {
                         }}
                     >
                         <View style={{ marginTop: 15 }} />
-                        <Text style={{ width: 320, marginBottom: 10 }}>
+                        <Text style={{ width: 320 }}>
                             <Text style={styles.subtitle_text}>
                                 아이디(이메일)
                             </Text>
@@ -137,7 +137,7 @@ export default function LoginPage_Input({ navigation }: any) {
                             btn_onPress={() => {}}
                         />
                         <View style={{ marginTop: 25 }} />
-                        <Text style={{ width: 320, marginBottom: 10 }}>
+                        <Text style={{ width: 320 }}>
                             <Text style={styles.subtitle_text}>비밀번호</Text>
                             <Text
                                 style={[
@@ -165,7 +165,7 @@ export default function LoginPage_Input({ navigation }: any) {
                             placeholder="비밀번호 한 번 더 입력"
                         />
                         <View style={{ marginTop: 25 }} />
-                        <Text style={{ width: 320, marginBottom: 10 }}>
+                        <Text style={{ width: 320 }}>
                             <Text style={styles.subtitle_text}>이름</Text>
                             <Text
                                 style={[
@@ -255,7 +255,7 @@ export default function LoginPage_Input({ navigation }: any) {
                             }}
                         />
                         <View style={{ marginTop: 25 }} />
-                        <Text style={{ width: 320, marginBottom: 10 }}>
+                        <Text style={{ width: 320 }}>
                             <Text style={styles.subtitle_text}>휴대폰번호</Text>
                             <Text
                                 style={[
@@ -295,7 +295,7 @@ export default function LoginPage_Input({ navigation }: any) {
                             error_text={"인증번호가 일치하지 않습니다."}
                         />
                         <View style={{ marginTop: 25 }} />
-                        <Text style={{ width: 320, marginBottom: 10 }}>
+                        <Text style={{ width: 320 }}>
                             <Text style={styles.subtitle_text}>닉네임</Text>
                             <Text
                                 style={[
