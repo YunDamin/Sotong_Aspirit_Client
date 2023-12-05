@@ -23,7 +23,15 @@ import CustomNavigator_Top from "../navigators/CustomNavigator_Top";
 
 import Field_Text from "../components/Field_Text";
 
+import axios from "axios";
+import { API_KEY } from "@env";
+
+import { useRecoilState } from "recoil";
+
+import { login_data, login_state } from "../atoms/login_state";
+
 export default function LoginPage_Main({ navigation }: any) {
+    const [loginState, setLoginState] = useRecoilState<login_data>(login_state);
     const [loginData, setLoginData] = React.useState({
         id: "",
         password: "",
@@ -47,6 +55,26 @@ export default function LoginPage_Main({ navigation }: any) {
         id: "password",
         value: loginData["password"],
         changeValue: handleChangeText,
+    };
+
+    const login = () => {
+        axios
+            .post(API_KEY + "/users/login", {
+                email: loginData["id"],
+                password: loginData["password"],
+                sns_type: "email",
+            })
+            .then((res) => {
+                if (res.data.ok) {
+                    setLoginState({
+                        is_login: true,
+                        user_id: res.data.uniq_id,
+                        accessToken: res.data.accessToken,
+                        refreshToken: res.data.refreshToken,
+                    });
+                    navigation.replace("MainPage_Home");
+                }
+            });
     };
 
     return (
@@ -122,6 +150,9 @@ export default function LoginPage_Main({ navigation }: any) {
                         </View>
                         <View style={{ marginTop: 20 }} />
                         <TouchableOpacity
+                            onPress={() => {
+                                login();
+                            }}
                             style={{
                                 width: 320,
                                 height: 55,

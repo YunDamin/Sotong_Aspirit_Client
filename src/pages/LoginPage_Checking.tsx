@@ -17,9 +17,11 @@ import Icon_Heart_Svg from "../public/icons/icons/icon_heart.svg";
 // Navigator
 import CustomNavigator_Top from "../navigators/CustomNavigator_Top";
 
-export default function LoginPage_Checking({ navigation }: any) {
+export default function LoginPage_Checking({ navigation, route }: any) {
     const next_step = () => {
-        navigation.navigate("LoginPage_Input");
+        navigation.navigate("LoginPage_Input", {
+            check: route.params.check,
+        });
     };
 
     return (

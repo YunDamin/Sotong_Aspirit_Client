@@ -25,11 +25,12 @@ import Field_Select from "../components/Field_Select";
 import axios from "axios";
 import { API_KEY } from "@env";
 
-export default function LoginPage_Input({ navigation }: any) {
+export default function LoginPage_Input({ navigation, route }: any) {
     const [email, setEmail] = React.useState("");
     const change_email = (name: string, text: string) => {
         setEmail(text);
     };
+    const [email_check, setEmail_check] = React.useState(0);
 
     const [password, setPassword] = React.useState("");
     const change_password = (name: string, text: string) => {
@@ -63,6 +64,39 @@ export default function LoginPage_Input({ navigation }: any) {
     const change_nickname = (name: string, text: string) => {
         setNickname(text);
     };
+    const [nickname_check, setNickname_check] = React.useState(0);
+
+    const check_email = () => {
+        axios
+            .post(API_KEY + "/users/check_email", {
+                email: email,
+            })
+            .then((res) => {
+                if (res.data.ok) {
+                    if (res.data.exists) {
+                        setEmail_check(1);
+                    } else {
+                        setEmail_check(2);
+                    }
+                }
+            });
+    };
+
+    const check_user_nick = () => {
+        axios
+            .post(API_KEY + "/users/check_user_nick", {
+                user_nick: nickname,
+            })
+            .then((res) => {
+                if (res.data.ok) {
+                    if (res.data.exists) {
+                        setNickname_check(1);
+                    } else {
+                        setNickname_check(2);
+                    }
+                }
+            });
+    };
 
     const signUp = () => {
         let month = date.getMonth() + 1;
@@ -77,6 +111,7 @@ export default function LoginPage_Input({ navigation }: any) {
                 date: `${date.getFullYear()}${month_str}${date.getDate()}`,
                 phone_number: phone,
                 user_nick: nickname,
+                yn: route.params.check,
             })
             .then((res) => {
                 if (res.data.ok) {
@@ -128,13 +163,15 @@ export default function LoginPage_Input({ navigation }: any) {
                             value={email}
                             changeValue={change_email}
                             placeholder="아이디(이메일)"
-                            success={false}
+                            success={email_check === 2}
                             success_text={"사용 가능한 이메일입니다."}
-                            error={true}
+                            error={email_check === 1}
                             error_text={"중복된 이메일입니다."}
                             btn={true}
                             btn_text={"중복확인"}
-                            btn_onPress={() => {}}
+                            btn_onPress={() => {
+                                check_email();
+                            }}
                         />
                         <View style={{ marginTop: 25 }} />
                         <Text style={{ width: 320 }}>
@@ -313,13 +350,15 @@ export default function LoginPage_Input({ navigation }: any) {
                             value={nickname}
                             changeValue={change_nickname}
                             placeholder="닉네임 입력"
-                            success={false}
+                            success={nickname_check === 2}
                             success_text={"사용 가능한 닉네임입니다."}
-                            error={true}
+                            error={nickname_check === 1}
                             error_text={"중복된 닉네임입니다."}
                             btn={true}
                             btn_text={"중복확인"}
-                            btn_onPress={() => {}}
+                            btn_onPress={() => {
+                                check_user_nick();
+                            }}
                         />
                     </View>
                     <View style={{ marginTop: 40 }} />
@@ -344,7 +383,9 @@ export default function LoginPage_Input({ navigation }: any) {
                                 phone != "" &&
                                 phone_check != "" &&
                                 nickname != "" &&
-                                password == password_check
+                                password == password_check &&
+                                email_check == 2 &&
+                                nickname_check == 2
                             )
                         }
                         style={[
@@ -364,7 +405,9 @@ export default function LoginPage_Input({ navigation }: any) {
                                 phone != "" &&
                                 phone_check != "" &&
                                 nickname != "" &&
-                                password == password_check && { opacity: 1 },
+                                password == password_check &&
+                                email_check == 2 &&
+                                nickname_check == 2 && { opacity: 1 },
                         ]}
                     >
                         <Text

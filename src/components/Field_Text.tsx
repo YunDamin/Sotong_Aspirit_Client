@@ -82,6 +82,7 @@ export default function Field_Text(props: Props) {
                 )}
                 {props.btn && (
                     <TouchableOpacity
+                        onPress={props.btn_onPress}
                         style={{
                             position: "absolute",
                             right: 10,

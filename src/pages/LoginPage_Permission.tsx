@@ -102,7 +102,9 @@ export default function LoginPage_Permission({ navigation }: any) {
                     </ScrollView>
                     <TouchableOpacity
                         onPress={() => {
-                            navigation.navigate("LoginPage_Checking");
+                            navigation.navigate("LoginPage_Checking", {
+                                check: checkeds[2],
+                            });
                         }}
                         disabled={!(checkeds[0] && checkeds[1])}
                         style={[
