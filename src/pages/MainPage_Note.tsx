@@ -452,15 +452,33 @@ export default function MainPage_Note({ navigation }: any) {
                                 <TouchableOpacity
                                     style={{ width: 40, height: 40 }}
                                     onPress={() => {
-                                        navigation.navigate("SubPage_Alert");
+                                        if (loginState.is_login)
+                                            navigation.navigate(
+                                                "SubPage_Alert"
+                                            );
+                                        else
+                                            navigation.navigate(
+                                                "SubNavigator_Login"
+                                            );
                                     }}
                                 >
-                                    <Btn_Bell_On />
+                                    {loginState.is_login ? (
+                                        <Btn_Bell_On />
+                                    ) : (
+                                        <Btn_Bell_Off />
+                                    )}
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={{ width: 40, height: 40 }}
                                     onPress={() => {
-                                        navigation.navigate("SubPage_MyPage");
+                                        if (loginState.is_login)
+                                            navigation.navigate(
+                                                "SubPage_MyPage"
+                                            );
+                                        else
+                                            navigation.navigate(
+                                                "SubNavigator_Login"
+                                            );
                                     }}
                                 >
                                     <Btn_My />

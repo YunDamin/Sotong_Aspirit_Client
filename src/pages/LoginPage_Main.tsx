@@ -29,9 +29,12 @@ import { API_KEY } from "@env";
 import { useRecoilState } from "recoil";
 
 import { login_data, login_state } from "../atoms/login_state";
+import { user, user_state } from "../atoms/get_user";
 
 export default function LoginPage_Main({ navigation }: any) {
     const [loginState, setLoginState] = useRecoilState<login_data>(login_state);
+    const [userState, setUserState] = useRecoilState<user>(user_state);
+
     const [loginData, setLoginData] = React.useState({
         id: "",
         password: "",
@@ -58,6 +61,7 @@ export default function LoginPage_Main({ navigation }: any) {
     };
 
     const login = () => {
+        console.log("Try Login");
         axios
             .post(API_KEY + "/users/login", {
                 email: loginData["id"],
@@ -72,7 +76,7 @@ export default function LoginPage_Main({ navigation }: any) {
                         accessToken: res.data.accessToken,
                         refreshToken: res.data.refreshToken,
                     });
-                    navigation.replace("MainPage_Home");
+                    navigation.replace("Main");
                 }
             });
     };

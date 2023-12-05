@@ -9,7 +9,10 @@ import {
     ScrollView,
     StatusBar,
     TouchableOpacity,
+    Image,
 } from "react-native";
+
+import { useFocusEffect } from "@react-navigation/native";
 
 import Btn_OnOff_Arrow_Right from "../public/icons/btn/btn_onoff_right_arrow.svg";
 
@@ -22,7 +25,33 @@ import CustomNavigator_Top from "../navigators/CustomNavigator_Top";
 import SelectBar_Color from "../components/SelectBar_Color";
 import Card_Graph from "../components/Card_Graph";
 
-export default function SubPage_Whisky({ navigation }: any) {
+import axios from "axios";
+import { API_KEY } from "@env";
+
+function transformArray(fruits: string[]) {
+    const counts: any = {};
+    fruits.forEach((fruit) => {
+        counts[fruit] = (counts[fruit] || 0) + 1;
+    });
+
+    return Object.keys(counts).map((key) => ({ name: key, num: counts[key] }));
+}
+
+export default function SubPage_Whisky({ navigation, route }: any) {
+    let whisky_id = route.params.whisky_id;
+
+    const [data, setData] = React.useState<any>(null);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            axios.get(API_KEY + "/whiskys/whisky/" + whisky_id).then((res) => {
+                setData(res.data?.data);
+            });
+
+            return () => {};
+        }, [])
+    );
+
     const get_color = (index: number): string => {
         if (index == 0) return "#FFFFFF";
         else if (index == 1) return "#F2DA6B";
@@ -33,6 +62,26 @@ export default function SubPage_Whisky({ navigation }: any) {
         else if (index == 6) return "#5D2518";
 
         return "#FFFFFF";
+    };
+    const get_color_index = (color: string): number => {
+        switch (color.trim()) {
+            case "투명한":
+                return 0;
+            case "짚":
+                return 1;
+            case "꿀":
+                return 2;
+            case "금":
+                return 3;
+            case "호박":
+                return 4;
+            case "카라멜":
+                return 5;
+            case "마호가니":
+                return 6;
+            default:
+                return 0;
+        }
     };
 
     return (
@@ -70,10 +119,18 @@ export default function SubPage_Whisky({ navigation }: any) {
                             <View
                                 style={{
                                     width: "100%",
-                                    height: 480,
+                                    height: 440,
                                     backgroundColor: "#000000",
                                 }}
-                            ></View>
+                            >
+                                {(data?.img_urls?.length ?? 0) > 0 && (
+                                    <Image
+                                        source={{ uri: data.img_urls[0] }}
+                                        height={440}
+                                        style={{ resizeMode: "cover" }}
+                                    />
+                                )}
+                            </View>
                             <Text
                                 style={{
                                     width: 320,
@@ -85,7 +142,7 @@ export default function SubPage_Whisky({ navigation }: any) {
                                     marginTop: 20,
                                 }}
                             >
-                                {"발렌타인"}
+                                {data?.name_kor}
                             </Text>
                             <Text
                                 style={{
@@ -98,7 +155,7 @@ export default function SubPage_Whisky({ navigation }: any) {
                                     marginTop: 5,
                                 }}
                             >
-                                {"Ballantine"}
+                                {data?.name_eng}
                             </Text>
                             <View
                                 style={{
@@ -119,7 +176,7 @@ export default function SubPage_Whisky({ navigation }: any) {
                                         width: 9,
                                     }}
                                     color={"#D6690F"}
-                                    rating={4.0}
+                                    rating={data?.note_av.toFixed(1) ?? 0}
                                 />
                                 <Text
                                     style={{
@@ -130,8 +187,12 @@ export default function SubPage_Whisky({ navigation }: any) {
                                         textAlign: "left",
                                     }}
                                 >
-                                    <Text>{"4.0"}</Text>
-                                    <Text>{" (1,012)"}</Text>
+                                    <Text>
+                                        {data?.note_av.toFixed(1) ?? ""}
+                                    </Text>
+                                    <Text>{` (${
+                                        data?.note_num.toLocaleString() ?? ""
+                                    })`}</Text>
                                 </Text>
                             </View>
                             <View
@@ -160,7 +221,7 @@ export default function SubPage_Whisky({ navigation }: any) {
                                 >
                                     <Text>{"도   수 : "}</Text>
                                     <Text style={{ fontWeight: "700" }}>
-                                        {"45.8도"}
+                                        {data?.abv ?? ""}
                                     </Text>
                                 </Text>
                                 <Text
@@ -175,7 +236,7 @@ export default function SubPage_Whisky({ navigation }: any) {
                                 >
                                     <Text>{"용   량 : "}</Text>
                                     <Text style={{ fontWeight: "700" }}>
-                                        {"750ml"}
+                                        {data?.ml ?? ""}
                                     </Text>
                                 </Text>
                                 <Text
@@ -190,7 +251,7 @@ export default function SubPage_Whisky({ navigation }: any) {
                                 >
                                     <Text>{"양조장 : "}</Text>
                                     <Text style={{ fontWeight: "700" }}>
-                                        {"Talisker Distillery"}
+                                        {data?.brewery_id.join(", ") ?? ""}
                                     </Text>
                                 </Text>
                                 <Text
@@ -204,7 +265,7 @@ export default function SubPage_Whisky({ navigation }: any) {
                                 >
                                     <Text>{"원산지 : "}</Text>
                                     <Text style={{ fontWeight: "700" }}>
-                                        {"스코틀랜드, 아일랜드"}
+                                        {data?.origin_dcds.join(", ") ?? ""}
                                     </Text>
                                 </Text>
                             </View>
@@ -243,10 +304,16 @@ export default function SubPage_Whisky({ navigation }: any) {
                                 >
                                     <View
                                         style={{
-                                            width: 25,
-                                            height: 25,
+                                            width: 24,
+                                            height: 24,
+                                            borderWidth: 1,
+                                            borderColor: "#EDEDED",
                                             borderRadius: 5,
-                                            backgroundColor: get_color(2),
+                                            backgroundColor: get_color(
+                                                get_color_index(
+                                                    data?.color_dcd[0] ?? ""
+                                                )
+                                            ),
                                             marginRight: 10,
                                         }}
                                     />
@@ -259,11 +326,16 @@ export default function SubPage_Whisky({ navigation }: any) {
                                             textAlign: "right",
                                         }}
                                     >
-                                        짚 (0.5)
+                                        {data?.color_dcd ?? ""}
                                     </Text>
                                 </View>
                             </View>
-                            <SelectBar_Color disable={true} index={2} />
+                            <SelectBar_Color
+                                disable={true}
+                                index={get_color_index(
+                                    data?.color_dcd[0] ?? ""
+                                )}
+                            />
                             <View
                                 style={{
                                     width: 320,
@@ -298,32 +370,42 @@ export default function SubPage_Whisky({ navigation }: any) {
                                 style={{
                                     width: 320,
                                     alignItems: "flex-start",
+                                    flexDirection: "row",
+                                    flexWrap: "wrap",
                                 }}
                             >
-                                <View
-                                    style={{
-                                        width: 38,
-                                        height: 25,
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        borderRadius: 5,
-                                        borderColor: "#EDEDED",
-                                        borderWidth: 1,
-                                        marginRight: 5,
-                                    }}
-                                >
-                                    <Text
-                                        style={{
-                                            fontFamily: "Spoqa Han Sans Neo",
-                                            fontWeight: "500",
-                                            fontSize: 12,
-                                            color: "#000000",
-                                            textAlign: "center",
-                                        }}
-                                    >
-                                        피트
-                                    </Text>
-                                </View>
+                                {data?.nose_dcds.map(
+                                    (item: any, index: any) => {
+                                        if (item == "") return null;
+                                        return (
+                                            <View
+                                                key={index}
+                                                style={{
+                                                    height: 25,
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                    borderRadius: 5,
+                                                    borderColor: "#EDEDED",
+                                                    borderWidth: 1,
+                                                    marginRight: 5,
+                                                }}
+                                            >
+                                                <Text
+                                                    style={{
+                                                        fontFamily:
+                                                            "Spoqa Han Sans Neo",
+                                                        fontWeight: "500",
+                                                        fontSize: 12,
+                                                        color: "#000000",
+                                                        textAlign: "center",
+                                                    }}
+                                                >
+                                                    {item}
+                                                </Text>
+                                            </View>
+                                        );
+                                    }
+                                ) ?? null}
                             </View>
                             <View
                                 style={{
@@ -359,32 +441,42 @@ export default function SubPage_Whisky({ navigation }: any) {
                                 style={{
                                     width: 320,
                                     alignItems: "flex-start",
+                                    flexDirection: "row",
+                                    flexWrap: "wrap",
                                 }}
                             >
-                                <View
-                                    style={{
-                                        width: 38,
-                                        height: 25,
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        borderRadius: 5,
-                                        borderColor: "#EDEDED",
-                                        borderWidth: 1,
-                                        marginRight: 5,
-                                    }}
-                                >
-                                    <Text
-                                        style={{
-                                            fontFamily: "Spoqa Han Sans Neo",
-                                            fontWeight: "500",
-                                            fontSize: 12,
-                                            color: "#000000",
-                                            textAlign: "center",
-                                        }}
-                                    >
-                                        복숭아
-                                    </Text>
-                                </View>
+                                {data?.palate_dcds.map(
+                                    (item: any, index: any) => {
+                                        if (item == "") return null;
+                                        return (
+                                            <View
+                                                key={index}
+                                                style={{
+                                                    height: 25,
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                    borderRadius: 5,
+                                                    borderColor: "#EDEDED",
+                                                    borderWidth: 1,
+                                                    marginRight: 5,
+                                                }}
+                                            >
+                                                <Text
+                                                    style={{
+                                                        fontFamily:
+                                                            "Spoqa Han Sans Neo",
+                                                        fontWeight: "500",
+                                                        fontSize: 12,
+                                                        color: "#000000",
+                                                        textAlign: "center",
+                                                    }}
+                                                >
+                                                    {item}
+                                                </Text>
+                                            </View>
+                                        );
+                                    }
+                                ) ?? null}
                             </View>
                             <View
                                 style={{
@@ -420,32 +512,42 @@ export default function SubPage_Whisky({ navigation }: any) {
                                 style={{
                                     width: 320,
                                     alignItems: "flex-start",
+                                    flexDirection: "row",
+                                    flexWrap: "wrap",
                                 }}
                             >
-                                <View
-                                    style={{
-                                        width: 38,
-                                        height: 25,
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        borderRadius: 5,
-                                        borderColor: "#EDEDED",
-                                        borderWidth: 1,
-                                        marginRight: 5,
-                                    }}
-                                >
-                                    <Text
-                                        style={{
-                                            fontFamily: "Spoqa Han Sans Neo",
-                                            fontWeight: "500",
-                                            fontSize: 12,
-                                            color: "#000000",
-                                            textAlign: "center",
-                                        }}
-                                    >
-                                        레몬
-                                    </Text>
-                                </View>
+                                {data?.finish_dcds.map(
+                                    (item: any, index: any) => {
+                                        if (item == "") return null;
+                                        return (
+                                            <View
+                                                key={index}
+                                                style={{
+                                                    height: 25,
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                    borderRadius: 5,
+                                                    borderColor: "#EDEDED",
+                                                    borderWidth: 1,
+                                                    marginRight: 5,
+                                                }}
+                                            >
+                                                <Text
+                                                    style={{
+                                                        fontFamily:
+                                                            "Spoqa Han Sans Neo",
+                                                        fontWeight: "500",
+                                                        fontSize: 12,
+                                                        color: "#000000",
+                                                        textAlign: "center",
+                                                    }}
+                                                >
+                                                    {item}
+                                                </Text>
+                                            </View>
+                                        );
+                                    }
+                                ) ?? null}
                             </View>
                             <View
                                 style={{
@@ -459,7 +561,6 @@ export default function SubPage_Whisky({ navigation }: any) {
                             <View
                                 style={{
                                     width: 320,
-                                    marginBottom: 10,
                                     flexDirection: "row",
                                     justifyContent: "space-between",
                                 }}
@@ -476,39 +577,59 @@ export default function SubPage_Whisky({ navigation }: any) {
                                     추천 페어링
                                 </Text>
                             </View>
-                            <View
-                                style={{
-                                    width: 320,
-                                    height: 55,
-                                    borderColor: "#EDEDED",
-                                    borderWidth: 1,
-                                    borderRadius: 10,
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <View
-                                    style={{
-                                        marginLeft: 10,
-                                        marginRight: 15,
-                                        width: 35,
-                                        height: 35,
-                                        borderRadius: 100,
-                                        backgroundColor: "#000000",
-                                    }}
-                                />
-                                <Text
-                                    style={{
-                                        fontFamily: "Spoqa Han Sans Neo",
-                                        fontWeight: "500",
-                                        fontSize: 14,
-                                        color: "#000000",
-                                        textAlign: "left",
-                                    }}
-                                >
-                                    생선
-                                </Text>
-                            </View>
+                            {data?.pairing_id.map((item: any, index: any) => {
+                                if (item == "") return null;
+                                return (
+                                    <View
+                                        key={index}
+                                        style={{
+                                            width: 320,
+                                            height: 55,
+                                            borderColor: "#EDEDED",
+                                            borderWidth: 1,
+                                            borderRadius: 10,
+                                            flexDirection: "row",
+                                            alignItems: "center",
+                                            marginTop: 10,
+                                        }}
+                                    >
+                                        <View
+                                            style={{
+                                                marginLeft: 10,
+                                                marginRight: 15,
+                                                width: 35,
+                                                height: 35,
+                                                borderRadius: 100,
+                                                backgroundColor: "#000000",
+                                                overflow: "hidden",
+                                            }}
+                                        >
+                                            <Image
+                                                source={{
+                                                    uri: data
+                                                        ?.pairing_image_urls_set[
+                                                        index
+                                                    ][0],
+                                                }}
+                                                height={35}
+                                                style={{ resizeMode: "cover" }}
+                                            />
+                                        </View>
+                                        <Text
+                                            style={{
+                                                fontFamily:
+                                                    "Spoqa Han Sans Neo",
+                                                fontWeight: "500",
+                                                fontSize: 14,
+                                                color: "#000000",
+                                                textAlign: "left",
+                                            }}
+                                        >
+                                            {item}
+                                        </Text>
+                                    </View>
+                                );
+                            }) ?? null}
                             <View
                                 style={{
                                     width: "100%",
@@ -538,46 +659,54 @@ export default function SubPage_Whisky({ navigation }: any) {
                                     양조장 정보
                                 </Text>
                             </View>
-                            <View
-                                style={{
-                                    marginTop: 10,
-                                    marginBottom: 20,
-                                    width: 320,
-                                    height: 35,
-                                    borderColor: "#EFEFEF",
-                                    borderWidth: 1,
-                                    borderRadius: 10,
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                }}
-                            >
-                                <Text
-                                    style={{
-                                        width: 320,
-                                        fontFamily: "Spoqa Han Sans Neo",
-                                        fontWeight: "700",
-                                        fontSize: 14,
-                                        color: "#000000",
-                                        textAlign: "center",
-                                    }}
-                                >
-                                    {"Talisker Distillery"}
-                                </Text>
-                            </View>
-                            <Text
-                                style={{
-                                    width: 320,
-                                    fontFamily: "Spoqa Han Sans Neo",
-                                    fontWeight: "400",
-                                    fontSize: 12,
-                                    color: "#000000",
-                                    textAlign: "left",
-                                }}
-                            >
-                                {
-                                    "스코틀랜드 스카이섬 Minginish반도 Carbost에 본사를 둔 섬 싱글 몰트 스카치 위스키 증류소입니다. 양조장 관련 정보 어쩌구 저쩌구 설명란입니다."
-                                }
-                            </Text>
+                            {data?.brewery_id.map((item: any, index: any) => {
+                                if (item == "") return null;
+                                return (
+                                    <View key={index}>
+                                        <View
+                                            style={{
+                                                marginTop: 10,
+                                                marginBottom: 20,
+                                                width: 320,
+                                                height: 35,
+                                                borderColor: "#EFEFEF",
+                                                borderWidth: 1,
+                                                borderRadius: 10,
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                            }}
+                                        >
+                                            <Text
+                                                style={{
+                                                    width: 320,
+                                                    fontFamily:
+                                                        "Spoqa Han Sans Neo",
+                                                    fontWeight: "700",
+                                                    fontSize: 14,
+                                                    color: "#000000",
+                                                    textAlign: "center",
+                                                }}
+                                            >
+                                                {item ?? ""}
+                                            </Text>
+                                        </View>
+                                        <Text
+                                            style={{
+                                                width: 320,
+                                                fontFamily:
+                                                    "Spoqa Han Sans Neo",
+                                                fontWeight: "400",
+                                                fontSize: 12,
+                                                color: "#000000",
+                                                textAlign: "left",
+                                            }}
+                                        >
+                                            {data.brewery_des[index] ?? ""}
+                                        </Text>
+                                    </View>
+                                );
+                            }) ?? null}
+
                             <View
                                 style={{
                                     width: "100%",
@@ -601,7 +730,7 @@ export default function SubPage_Whisky({ navigation }: any) {
                                 <Text>총 평점</Text>
                                 <Text
                                     style={{ color: "#D6690F" }}
-                                >{` (${1021})`}</Text>
+                                >{` (${data?.note_num.toLocaleString()})`}</Text>
                             </Text>
                             <View style={{ width: 320, flexDirection: "row" }}>
                                 <View
@@ -620,7 +749,7 @@ export default function SubPage_Whisky({ navigation }: any) {
                                             marginBottom: 10,
                                         }}
                                     >
-                                        {"4.0"}
+                                        {data?.note_av.toFixed(1) ?? ""}
                                     </Text>
                                     <StarRatingDisplay
                                         style={{
@@ -632,7 +761,7 @@ export default function SubPage_Whisky({ navigation }: any) {
                                             width: 9,
                                         }}
                                         color={"#D6690F"}
-                                        rating={4.0}
+                                        rating={data?.note_av.toFixed(1) ?? 0.0}
                                     />
                                 </View>
                                 <View
@@ -679,7 +808,10 @@ export default function SubPage_Whisky({ navigation }: any) {
                                                 width: 9,
                                             }}
                                             color={"#D6690F"}
-                                            rating={4.0}
+                                            rating={
+                                                data?.note_nose_av.toFixed(1) ??
+                                                0.0
+                                            }
                                         />
                                         <Text
                                             style={{
@@ -691,7 +823,8 @@ export default function SubPage_Whisky({ navigation }: any) {
                                                 textAlign: "left",
                                             }}
                                         >
-                                            {"4.0"}
+                                            {data?.note_nose_av.toFixed(1) ??
+                                                ""}
                                         </Text>
                                     </View>
                                     <View
@@ -724,7 +857,11 @@ export default function SubPage_Whisky({ navigation }: any) {
                                                 width: 9,
                                             }}
                                             color={"#D6690F"}
-                                            rating={4.0}
+                                            rating={
+                                                data?.note_palate_av.toFixed(
+                                                    1
+                                                ) ?? ""
+                                            }
                                         />
                                         <Text
                                             style={{
@@ -736,7 +873,8 @@ export default function SubPage_Whisky({ navigation }: any) {
                                                 textAlign: "left",
                                             }}
                                         >
-                                            {"3.0"}
+                                            {data?.note_palate_av.toFixed(1) ??
+                                                ""}
                                         </Text>
                                     </View>
                                     <View
@@ -769,7 +907,11 @@ export default function SubPage_Whisky({ navigation }: any) {
                                                 width: 9,
                                             }}
                                             color={"#D6690F"}
-                                            rating={4.0}
+                                            rating={
+                                                data?.note_finish_av.toFixed(
+                                                    1
+                                                ) ?? 0.0
+                                            }
                                         />
                                         <Text
                                             style={{
@@ -781,7 +923,8 @@ export default function SubPage_Whisky({ navigation }: any) {
                                                 textAlign: "left",
                                             }}
                                         >
-                                            {"3.0"}
+                                            {data?.note_finish_av.toFixed(1) ??
+                                                ""}
                                         </Text>
                                     </View>
                                 </View>
@@ -798,32 +941,9 @@ export default function SubPage_Whisky({ navigation }: any) {
                             <Card_Graph
                                 title="노즈"
                                 des="(향)"
-                                rates={[
-                                    {
-                                        name: "복숭아",
-                                        num: 13,
-                                    },
-                                    {
-                                        name: "레몬",
-                                        num: 17,
-                                    },
-                                    {
-                                        name: "블랙커런트 싹",
-                                        num: 12,
-                                    },
-                                    {
-                                        name: "훈연",
-                                        num: 14,
-                                    },
-                                    {
-                                        name: "피트",
-                                        num: 15,
-                                    },
-                                    {
-                                        name: "바나나",
-                                        num: 9,
-                                    },
-                                ]}
+                                rates={transformArray(
+                                    data?.note_nose_taste ?? []
+                                )}
                             />
                             <View
                                 style={{
@@ -837,32 +957,9 @@ export default function SubPage_Whisky({ navigation }: any) {
                             <Card_Graph
                                 title="팔레트"
                                 des="(맛)"
-                                rates={[
-                                    {
-                                        name: "복숭아",
-                                        num: 13,
-                                    },
-                                    {
-                                        name: "레몬",
-                                        num: 17,
-                                    },
-                                    {
-                                        name: "블랙커런트 싹",
-                                        num: 12,
-                                    },
-                                    {
-                                        name: "훈연",
-                                        num: 14,
-                                    },
-                                    {
-                                        name: "피트",
-                                        num: 15,
-                                    },
-                                    {
-                                        name: "바나나",
-                                        num: 9,
-                                    },
-                                ]}
+                                rates={transformArray(
+                                    data?.note_palate_taste ?? []
+                                )}
                             />
                             <View
                                 style={{
@@ -876,32 +973,9 @@ export default function SubPage_Whisky({ navigation }: any) {
                             <Card_Graph
                                 title="피니시"
                                 des="(맛)"
-                                rates={[
-                                    {
-                                        name: "복숭아",
-                                        num: 13,
-                                    },
-                                    {
-                                        name: "레몬",
-                                        num: 17,
-                                    },
-                                    {
-                                        name: "블랙커런트 싹",
-                                        num: 12,
-                                    },
-                                    {
-                                        name: "훈연",
-                                        num: 14,
-                                    },
-                                    {
-                                        name: "피트",
-                                        num: 15,
-                                    },
-                                    {
-                                        name: "바나나",
-                                        num: 9,
-                                    },
-                                ]}
+                                rates={transformArray(
+                                    data?.note_finish_taste ?? []
+                                )}
                             />
                             <View
                                 style={{
@@ -924,9 +998,9 @@ export default function SubPage_Whisky({ navigation }: any) {
                                 }}
                             >
                                 <Text>테이스팅 노트</Text>
-                                <Text
-                                    style={{ color: "#D6690F" }}
-                                >{` (${1021})`}</Text>
+                                <Text style={{ color: "#D6690F" }}>{` (${
+                                    data?.note_num.toLocaleString() ?? ""
+                                })`}</Text>
                             </Text>
                             <TouchableOpacity
                                 onPress={() => {}}

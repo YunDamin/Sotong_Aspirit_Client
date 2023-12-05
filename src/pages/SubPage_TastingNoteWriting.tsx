@@ -10,12 +10,19 @@ import {
     TouchableOpacity,
     StatusBar,
     Image,
+    Modal,
+    TextInput,
 } from "react-native";
 
+import { useFocusEffect } from "@react-navigation/native";
+
+import Btn_Search from "../public/icons/btn/search_black.svg";
 import Btn_OnOff_Arrow_Right from "../public/icons/btn/btn_onoff_right_arrow.svg";
 import Photo_Btn_OnOff_Svg from "../public/icons/photo/btn_onoff.svg";
 
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
+
+import Icon_Star from "../public/icons/icons/icon_star.svg";
 
 // Navigator
 import CustomNavigator_Top from "../navigators/CustomNavigator_Top";
@@ -28,6 +35,9 @@ type photoType = {
     name: string;
     uri: string;
 };
+
+import axios from "axios";
+import { API_KEY } from "@env";
 
 export default function SubPage_TastingNoteWriting({ navigation }: any) {
     const [review, setReview] = React.useState("");
@@ -79,6 +89,69 @@ export default function SubPage_TastingNoteWriting({ navigation }: any) {
 
     const next_step = () => {};
 
+    const [isWhiskyModalVisible, setWhiskyModaVisible] = React.useState(false);
+    const toggleWhiskyModal = () => {
+        setWhiskyModaVisible(!isWhiskyModalVisible);
+    };
+
+    const [selectedWhisky, setSelectedWhisky] = React.useState("");
+    const [whiskyData, setWhiskyData] = React.useState<any[]>([]);
+    const consonants = [
+        "ㄱ",
+        "ㄲ",
+        "ㄴ",
+        "ㄷ",
+        "ㄸ",
+        "ㄹ",
+        "ㅁ",
+        "ㅂ",
+        "ㅃ",
+        "ㅅ",
+        "ㅆ",
+        "ㅇ",
+        "ㅈ",
+        "ㅉ",
+        "ㅊ",
+        "ㅋ",
+        "ㅌ",
+        "ㅍ",
+        "ㅎ",
+    ];
+    function getFirstConsonant(char: string) {
+        const koreanBase = 0xac00;
+
+        const index = Math.floor((char.charCodeAt(0) - koreanBase) / 28 / 21);
+
+        return consonants[index] || null;
+    }
+    const [searchText, setSearchText] = React.useState<string>("");
+    const [isFocused, setIsFocused] = React.useState<boolean>(false);
+    const get_selected_whisky = () => {
+        if (selectedWhisky === "") {
+            return whiskyData[0];
+        }
+        const whisky = whiskyData.filter((whisky) => {
+            return whisky.whisky_id === selectedWhisky;
+        });
+        if (whisky.length === 0) {
+            return whiskyData[0];
+        }
+        return whisky[0];
+    };
+
+    useFocusEffect(
+        React.useCallback(() => {
+            axios.get(API_KEY + "/whiskys/").then((res) => {
+                setWhiskyData(
+                    res.data.sort((a: any, b: any) =>
+                        a.name_kor.localeCompare(b.name_kor, "ko")
+                    )
+                );
+            });
+            return () => {};
+        }, [])
+    );
+
     return (
         <>
             <StatusBar barStyle="light-content" backgroundColor={"white"} />
@@ -91,6 +164,239 @@ export default function SubPage_TastingNoteWriting({ navigation }: any) {
                 />
             </SafeAreaView>
             <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+                {/* 필터 모달 */}
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={isWhiskyModalVisible}
+                    onRequestClose={() => {
+                        toggleWhiskyModal();
+                    }}
+                >
+                    <View
+                        style={{
+                            width: "100%",
+                            height: "100%",
+                            display: "flex",
+                            flexDirection: "column-reverse",
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }}
+                    >
+                        <View
+                            style={{
+                                width: "100%",
+                                height: "100%",
+                                position: "absolute",
+                                top: 0,
+                                backgroundColor: "#000000",
+                                opacity: 0.7,
+                            }}
+                        />
+                        <View
+                            style={{
+                                paddingLeft: 20,
+                                paddingRight: 20,
+                                width: "100%",
+                                flex: 1,
+                                marginTop: 100,
+                                backgroundColor: "#ffffff",
+                                borderTopLeftRadius: 20,
+                                borderTopRightRadius: 20,
+                            }}
+                        >
+                            {/* 필터 탭 */}
+                            <View
+                                style={{
+                                    width: "100%",
+                                    height: 20,
+                                    marginTop: 20,
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        toggleWhiskyModal();
+                                    }}
+                                >
+                                    <Text
+                                        style={{
+                                            fontFamily: "Spoqa Han Sans Neo",
+                                            fontWeight: "400",
+                                            fontSize: 14,
+                                            color: "#000000",
+                                            position: "absolute",
+                                            left: 10,
+                                            top: -6,
+                                        }}
+                                    >
+                                        취소
+                                    </Text>
+                                </TouchableOpacity>
+                                <Text
+                                    style={{
+                                        fontFamily: "Spoqa Han Sans Neo",
+                                        fontWeight: "700",
+                                        fontSize: 16,
+                                        color: "#000000",
+                                        textAlign: "center",
+                                    }}
+                                >
+                                    위스키 선택
+                                </Text>
+                                <View />
+                            </View>
+                            {/* 선택 창 */}
+                            <ScrollView style={{ width: "100%" }}>
+                                <View
+                                    style={{
+                                        width: "100%",
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    <View
+                                        style={{
+                                            width: 320,
+                                            borderRadius: 10,
+                                            backgroundColor: "#FBF8F2",
+                                            height: 50,
+                                            marginTop: 20,
+                                            paddingLeft: 20,
+                                            position: "relative",
+                                        }}
+                                    >
+                                        <View
+                                            style={{
+                                                position: "absolute",
+                                                right: 5,
+                                                top: 5,
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                            }}
+                                        >
+                                            <Btn_Search />
+                                        </View>
+                                        <TextInput
+                                            placeholder="위스키명 입력"
+                                            style={{
+                                                height: 50,
+                                                display: "flex",
+                                                flexDirection: "row",
+                                                justifyContent: "center",
+                                                fontFamily:
+                                                    "Spoqa Han Sans Neo",
+                                                fontWeight: "400",
+                                                fontSize: 14,
+                                                color: "#000000",
+                                            }}
+                                            onFocus={() => {
+                                                setIsFocused(true);
+                                            }}
+                                            onBlur={() => {
+                                                searchText === ""
+                                                    ? setIsFocused(false)
+                                                    : setIsFocused(true);
+                                            }}
+                                            onChangeText={(text) => {
+                                                setSearchText(text);
+                                            }}
+                                        />
+                                    </View>
+                                    {consonants.map((consonant, index) => {
+                                        return (
+                                            <View
+                                                key={index}
+                                                style={{
+                                                    width: 320,
+                                                    alignItems: "center",
+                                                }}
+                                            >
+                                                <View
+                                                    style={{
+                                                        width: 20,
+                                                        height: 20,
+                                                        borderRadius: 5,
+                                                        backgroundColor:
+                                                            "#D6690F",
+                                                        alignItems: "center",
+                                                        justifyContent:
+                                                            "center",
+                                                        marginTop: 20,
+                                                        alignSelf: "flex-start",
+                                                    }}
+                                                >
+                                                    <Text
+                                                        style={{
+                                                            fontFamily:
+                                                                "Spoqa Han Sans Neo",
+                                                            fontWeight: "500",
+                                                            fontSize: 14,
+                                                            color: "white",
+                                                        }}
+                                                    >
+                                                        {consonant}
+                                                    </Text>
+                                                </View>
+
+                                                {whiskyData
+                                                    .filter(
+                                                        (whisky) =>
+                                                            getFirstConsonant(
+                                                                whisky.name_kor
+                                                            ) === consonant
+                                                    )
+                                                    .map((whisky, index) => {
+                                                        return (
+                                                            <View key={index}>
+                                                                <TouchableOpacity
+                                                                    onPress={() => {
+                                                                        setSelectedWhisky(
+                                                                            whisky.whisky_id
+                                                                        );
+                                                                        toggleWhiskyModal();
+                                                                    }}
+                                                                    key={index}
+                                                                    style={{
+                                                                        width: 320,
+                                                                        height: 40,
+                                                                        marginTop: 5,
+                                                                        marginBottom: 5,
+                                                                        justifyContent:
+                                                                            "center",
+                                                                    }}
+                                                                >
+                                                                    <Text
+                                                                        style={{
+                                                                            fontFamily:
+                                                                                "Spoqa Han Sans Neo",
+                                                                            fontWeight:
+                                                                                "500",
+                                                                            fontSize: 14,
+                                                                            color: "#000000",
+                                                                        }}
+                                                                    >{`${whisky.name_kor} (${whisky.name_eng})`}</Text>
+                                                                </TouchableOpacity>
+                                                                <View
+                                                                    style={{
+                                                                        width: 320,
+                                                                        height: 1,
+                                                                        backgroundColor:
+                                                                            "#EAEAEA",
+                                                                    }}
+                                                                />
+                                                            </View>
+                                                        );
+                                                    })}
+                                            </View>
+                                        );
+                                    })}
+                                </View>
+                            </ScrollView>
+                        </View>
+                    </View>
+                </Modal>
                 <ScrollView style={{ width: "100%" }}>
                     <View
                         style={{
@@ -99,30 +405,128 @@ export default function SubPage_TastingNoteWriting({ navigation }: any) {
                             justifyContent: "center",
                         }}
                     >
-                        <TouchableOpacity
-                            style={[
-                                {
+                        {selectedWhisky !== "" ? (
+                            <View
+                                style={{
                                     width: 320,
                                     height: 110,
                                     marginTop: 25,
-                                    backgroundColor: "#FBF8F2",
-                                },
-                                styles.border_box,
-                            ]}
-                        >
-                            <Text
+                                    borderColor: "#EDEDED",
+                                    borderWidth: 1,
+                                    borderRadius: 20,
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                    justifyContent: "flex-start",
+                                    paddingLeft: 20,
+                                }}
+                            >
+                                <View
+                                    style={{
+                                        width: 60,
+                                        height: 80,
+                                        borderRadius: 5,
+                                        overflow: "hidden",
+                                    }}
+                                >
+                                    <Image
+                                        source={{
+                                            uri: get_selected_whisky()
+                                                .img_urls[0],
+                                        }}
+                                        height={80}
+                                        style={{ resizeMode: "cover" }}
+                                    />
+                                </View>
+                                <View style={{ marginLeft: 25 }}>
+                                    <Text
+                                        style={{
+                                            fontFamily: "Spoqa Han Sans Neo",
+                                            fontWeight: "700",
+                                            fontSize: 14,
+                                            color: "#000000",
+                                        }}
+                                    >
+                                        {get_selected_whisky().name_kor}
+                                    </Text>
+                                    <Text
+                                        style={{
+                                            fontFamily: "Spoqa Han Sans Neo",
+                                            fontWeight: "400",
+                                            fontSize: 12,
+                                            color: "#888888",
+                                        }}
+                                    >
+                                        {get_selected_whisky().name_eng}
+                                    </Text>
+                                    <View
+                                        style={{
+                                            marginTop: 10,
+                                            flexDirection: "row",
+                                            height: 20,
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <Icon_Star />
+                                        <Text
+                                            style={{
+                                                fontFamily:
+                                                    "Spoqa Han Sans Neo",
+                                                fontWeight: "700",
+                                                fontSize: 12,
+                                                color: "#000000",
+                                                marginLeft: 5,
+                                                textAlign: "center",
+                                            }}
+                                        >{`${get_selected_whisky().note_av.toFixed(
+                                            1
+                                        )} (${get_selected_whisky().note_num.toLocaleString()})`}</Text>
+                                    </View>
+                                </View>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        setSelectedWhisky("");
+                                    }}
+                                    style={{
+                                        width: 27,
+                                        height: 27,
+                                        position: "absolute",
+                                        top: -5,
+                                        right: -5,
+                                    }}
+                                >
+                                    <Photo_Btn_OnOff_Svg />
+                                </TouchableOpacity>
+                            </View>
+                        ) : (
+                            <TouchableOpacity
+                                onPress={() => {
+                                    toggleWhiskyModal();
+                                }}
                                 style={[
-                                    styles.text,
                                     {
-                                        fontWeight: "500",
-                                        fontSize: 14,
-                                        color: "#000000",
+                                        width: 320,
+                                        height: 110,
+                                        marginTop: 25,
+                                        backgroundColor: "#FBF8F2",
                                     },
+                                    styles.border_box,
                                 ]}
                             >
-                                + 위스키 선택
-                            </Text>
-                        </TouchableOpacity>
+                                <Text
+                                    style={[
+                                        styles.text,
+                                        {
+                                            fontWeight: "500",
+                                            fontSize: 14,
+                                            color: "#000000",
+                                        },
+                                    ]}
+                                >
+                                    + 위스키 선택
+                                </Text>
+                            </TouchableOpacity>
+                        )}
+
                         <View style={{ marginTop: 40 }} />
                         <Text style={{ width: 320, marginBottom: 5 }}>
                             <Text style={styles.subtitle_text}>색</Text>

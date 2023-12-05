@@ -37,6 +37,10 @@ export default function SelectBar_Color(props: SelectBar_ColorProps) {
         props.index ?? -1
     );
 
+    React.useEffect(() => {
+        setSelctElement(props.index ?? -1);
+    }, [props.index]);
+
     const select_elements = props.select_elements ?? [
         "투명한",
         "짚",

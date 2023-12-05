@@ -16,7 +16,12 @@ import Btn_OnOff_Arrow_Right from "../public/icons/btn/btn_onoff_right_arrow.svg
 // Navigator
 import CustomNavigator_Top from "../navigators/CustomNavigator_Top";
 
+import { useRecoilState } from "recoil";
+import { user, user_state } from "../atoms/get_user";
+
 export default function SubPage_MyPage({ navigation }: any) {
+    const [userState, setUserState] = useRecoilState<user>(user_state);
+
     return (
         <>
             <StatusBar barStyle="light-content" backgroundColor={"#FCECDE"} />
@@ -49,7 +54,7 @@ export default function SubPage_MyPage({ navigation }: any) {
                             marginBottom: 5,
                         }}
                     >
-                        김위스키
+                        {userState.user_nick_name}
                     </Text>
                     <Text
                         style={{
@@ -60,7 +65,7 @@ export default function SubPage_MyPage({ navigation }: any) {
                             marginBottom: 16,
                         }}
                     >
-                        wis@naver.com
+                        {userState.user_email}
                     </Text>
                     <TouchableOpacity
                         style={{

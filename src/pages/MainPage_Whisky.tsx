@@ -16,6 +16,7 @@ import Bg_Cup from "../public/icons/bg/cup.svg";
 import Icon_Whisky from "../public/icons/icons/icon_whisky_svg.svg";
 import Btn_Setting from "../public/icons/btn/btn_setting.svg";
 import Btn_Bell_On from "../public/icons/btn/btn_bell_on.svg";
+import Btn_Bell_Off from "../public/icons/btn/btn_bell_off.svg";
 import Btn_OnOff_Right_Arrow from "../public/icons/btn/btn_onoff_right_arrow.svg";
 import Btn_My from "../public/icons/btn/btn_my.svg";
 import Btn_Drop from "../public/icons/btn/btn_drop.svg";
@@ -1059,15 +1060,33 @@ export default function MainPage_Whisky({ navigation }: any) {
                                 <TouchableOpacity
                                     style={{ width: 40, height: 40 }}
                                     onPress={() => {
-                                        navigation.navigate("SubPage_Alert");
+                                        if (loginState.is_login)
+                                            navigation.navigate(
+                                                "SubPage_Alert"
+                                            );
+                                        else
+                                            navigation.navigate(
+                                                "SubNavigator_Login"
+                                            );
                                     }}
                                 >
-                                    <Btn_Bell_On />
+                                    {loginState.is_login ? (
+                                        <Btn_Bell_On />
+                                    ) : (
+                                        <Btn_Bell_Off />
+                                    )}
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={{ width: 40, height: 40 }}
                                     onPress={() => {
-                                        navigation.navigate("SubPage_MyPage");
+                                        if (loginState.is_login)
+                                            navigation.navigate(
+                                                "SubPage_MyPage"
+                                            );
+                                        else
+                                            navigation.navigate(
+                                                "SubNavigator_Login"
+                                            );
                                     }}
                                 >
                                     <Btn_My />

@@ -10,6 +10,8 @@ import {
     TouchableOpacity,
 } from "react-native";
 
+import { useFocusEffect } from "@react-navigation/native";
+
 import Bg_Cup from "../public/icons/bg/cup.svg";
 import Icon_Contents from "../public/icons/icons/icon_contents.svg";
 import Btn_Setting from "../public/icons/btn/btn_setting.svg";
@@ -59,8 +61,11 @@ import {
 import axios from "axios";
 import { API_KEY } from "@env";
 
+import { user, user_state } from "../atoms/get_user";
+
 export default function MainPage_Contents({ navigation }: any) {
     const [loginState, setLoginState] = useRecoilState<login_data>(login_state);
+    const [userState, setUserState] = useRecoilState<user>(user_state);
 
     const [contentsNews, setContentsNews] =
         useRecoilState<content[]>(contents_news);
@@ -71,20 +76,24 @@ export default function MainPage_Contents({ navigation }: any) {
     const [contentsNotice, setContentsNotice] =
         useRecoilState<content[]>(contents_notice);
 
-    React.useEffect(() => {
-        axios.get(API_KEY + "/contents?type=news").then((res) => {
-            setContentsNews(res.data);
-        });
-        axios.get(API_KEY + "/contents?type=guide").then((res) => {
-            setContentsGuide(res.data);
-        });
-        axios.get(API_KEY + "/contents?type=article").then((res) => {
-            setContentsArticle(res.data);
-        });
-        axios.get(API_KEY + "/contents?type=notice").then((res) => {
-            setContentsNotice(res.data);
-        });
-    }, []);
+    useFocusEffect(
+        React.useCallback(() => {
+            axios.get(API_KEY + "/contents?type=news").then((res) => {
+                setContentsNews(res.data);
+            });
+            axios.get(API_KEY + "/contents?type=guide").then((res) => {
+                setContentsGuide(res.data);
+            });
+            axios.get(API_KEY + "/contents?type=article").then((res) => {
+                setContentsArticle(res.data);
+            });
+            axios.get(API_KEY + "/contents?type=notice").then((res) => {
+                setContentsNotice(res.data);
+            });
+
+            return () => {};
+        }, [])
+    );
 
     const [tabIndex, setTabIndex] = React.useState<number>(0);
 
@@ -169,15 +178,33 @@ export default function MainPage_Contents({ navigation }: any) {
                                 <TouchableOpacity
                                     style={{ width: 40, height: 40 }}
                                     onPress={() => {
-                                        navigation.navigate("SubPage_Alert");
+                                        if (loginState.is_login)
+                                            navigation.navigate(
+                                                "SubPage_Alert"
+                                            );
+                                        else
+                                            navigation.navigate(
+                                                "SubNavigator_Login"
+                                            );
                                     }}
                                 >
-                                    <Btn_Bell_On />
+                                    {loginState.is_login ? (
+                                        <Btn_Bell_On />
+                                    ) : (
+                                        <Btn_Bell_Off />
+                                    )}
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={{ width: 40, height: 40 }}
                                     onPress={() => {
-                                        navigation.navigate("SubPage_MyPage");
+                                        if (loginState.is_login)
+                                            navigation.navigate(
+                                                "SubPage_MyPage"
+                                            );
+                                        else
+                                            navigation.navigate(
+                                                "SubNavigator_Login"
+                                            );
                                     }}
                                 >
                                     <Btn_My />
@@ -213,7 +240,9 @@ export default function MainPage_Contents({ navigation }: any) {
                                         marginTop: 5,
                                     }}
                                 >
-                                    환영합니다. 김스키님
+                                    {loginState.is_login
+                                        ? `환영합니다. ${userState.user_nick_name}님`
+                                        : "로그인이 필요합니다."}
                                 </Text>
                                 <Text
                                     style={{
@@ -225,11 +254,21 @@ export default function MainPage_Contents({ navigation }: any) {
                                         marginTop: 5,
                                     }}
                                 >
-                                    <Text>작성노트 </Text>
-                                    <Text>73</Text>
-                                    <Text> · </Text>
-                                    <Text>평균평점 </Text>
-                                    <Text>4.5</Text>
+                                    {loginState.is_login ? (
+                                        <>
+                                            <Text>작성노트 </Text>
+                                            <Text>
+                                                {userState.user_notes.length.toLocaleString()}
+                                            </Text>
+                                            <Text> · </Text>
+                                            <Text>평균평점 </Text>
+                                            <Text>
+                                                {userState.user_av.toFixed(1)}
+                                            </Text>
+                                        </>
+                                    ) : (
+                                        "로그인이 필요합니다."
+                                    )}
                                 </Text>
                             </View>
                             <TouchableOpacity style={{ width: 25, height: 25 }}>

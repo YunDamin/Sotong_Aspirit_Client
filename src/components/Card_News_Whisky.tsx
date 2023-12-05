@@ -8,6 +8,7 @@ import {
     StyleSheet,
     ScrollView,
     TouchableOpacity,
+    Image,
 } from "react-native";
 
 import Icon_Star from "../public/icons/icons/icon_star.svg";
@@ -43,8 +44,17 @@ export default function Card_News_Whisky(props: Props) {
                     marginRight: 20,
                     borderRadius: 20,
                     backgroundColor: "#757575",
+                    overflow: "hidden",
                 }}
-            ></View>
+            >
+                {props.content.image_urls.length > 0 && (
+                    <Image
+                        source={{ uri: props.content.image_urls[0] }}
+                        height={150}
+                        style={{ resizeMode: "cover" }}
+                    />
+                )}
+            </View>
             <Text
                 style={{
                     fontFamily: "Spoqa Han Sans Neo",

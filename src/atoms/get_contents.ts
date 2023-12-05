@@ -4,6 +4,7 @@ export type content = {
     title: string;
     content: string;
     date: string;
+    image_urls: string[];
 };
 
 export const contents_news = atom<content[]>({

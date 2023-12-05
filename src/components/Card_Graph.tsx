@@ -80,7 +80,7 @@ export default function Card_Graph(props: Props) {
         setModaVisible(!isModalVisible);
     };
 
-    return (
+    return props.rates.length === 0 ? null : (
         <>
             <Modal
                 animationType="slide"
