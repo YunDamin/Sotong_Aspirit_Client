@@ -473,6 +473,7 @@ export default function Card_TasteNote_Whisky(props: Props) {
                 {note?.nose?.map((data: any, index: number) => {
                     return (
                         <View
+                            key={index}
                             style={{
                                 height: 25,
                                 paddingLeft: 5,
@@ -521,6 +522,7 @@ export default function Card_TasteNote_Whisky(props: Props) {
                 {note?.palate?.map((data: any, index: number) => {
                     return (
                         <View
+                            key={index}
                             style={{
                                 height: 25,
                                 paddingLeft: 5,
@@ -569,6 +571,7 @@ export default function Card_TasteNote_Whisky(props: Props) {
                 {note?.finish?.map((data: any, index: number) => {
                     return (
                         <View
+                            key={index}
                             style={{
                                 height: 25,
                                 paddingLeft: 5,
