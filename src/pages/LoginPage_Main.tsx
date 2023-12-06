@@ -31,6 +31,9 @@ import { useRecoilState } from "recoil";
 import { login_data, login_state } from "../atoms/login_state";
 import { user, user_state } from "../atoms/get_user";
 
+// Utils
+import { setData } from "../utils/AsyncStorage";
+
 export default function LoginPage_Main({ navigation }: any) {
     const [loginState, setLoginState] = useRecoilState<login_data>(login_state);
     const [userState, setUserState] = useRecoilState<user>(user_state);
@@ -72,10 +75,18 @@ export default function LoginPage_Main({ navigation }: any) {
                 if (res.data.ok) {
                     setLoginState({
                         is_login: true,
+                        login_type: res.data.login_type,
                         user_id: res.data.uniq_id,
                         accessToken: res.data.accessToken,
                         refreshToken: res.data.refreshToken,
+                        survey: res.data.survey,
                     });
+
+                    setData("user_id", res.data.uniq_id);
+                    setData("login_type", res.data.login_type);
+                    setData("accessToken", res.data.accessToken);
+                    setData("refreshToken", res.data.refreshToken);
+
                     console.log("Login Success");
                     navigation.replace("Main");
                 }

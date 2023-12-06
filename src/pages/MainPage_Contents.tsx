@@ -79,6 +79,12 @@ export default function MainPage_Contents({ navigation }: any) {
     useFocusEffect(
         React.useCallback(() => {
             console.log("MainPage_Contents Focus");
+
+            if (loginState.is_login && !loginState.survey) {
+                console.log("Go to SurveyPage_Main");
+                navigation.navigate("SurveyPage_Main");
+            }
+
             axios.get(API_KEY + "/contents?type=news").then((res) => {
                 setContentsNews(res.data);
             });

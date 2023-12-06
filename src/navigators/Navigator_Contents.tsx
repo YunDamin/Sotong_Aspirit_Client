@@ -11,6 +11,9 @@ import SubPage_TastingNoteWriting from "../pages/SubPage_TastingNoteWriting";
 // ? Content
 import SubPage_Content from "../pages/SubPage_Content";
 
+// ? Survey
+import SurveyPage_Main from "../pages/SurveyPage_Main";
+
 // * SubNavigator
 import SubNavigator_Login from "./SubNavigator_Login";
 
@@ -57,6 +60,11 @@ export default function Navigator_Contents() {
             <Stack.Screen
                 name="SubNavigator_Login"
                 component={SubNavigator_Login}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="SurveyPage_Main"
+                component={SurveyPage_Main}
                 options={{ headerShown: false }}
             />
         </Stack.Navigator>

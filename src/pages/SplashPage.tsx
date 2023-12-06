@@ -15,9 +15,18 @@ import LinearGradient from "react-native-linear-gradient";
 
 import Splash_Gif from "../public/splash.gif";
 
+// Utils
+import { getData } from "../utils/AsyncStorage";
+
 export default function SplashPage({ navigation }: any) {
     const next = () => {
-        navigation.replace("Onboarding");
+        getData("notFirst").then((res) => {
+            if (!res) {
+                navigation.replace("Onboarding");
+            } else {
+                navigation.replace("Main");
+            }
+        });
     };
 
     React.useEffect(() => {

@@ -276,6 +276,12 @@ export default function MainPage_Whisky({ navigation }: any) {
     useFocusEffect(
         React.useCallback(() => {
             console.log("MainPage_Whisky Focus");
+
+            if (loginState.is_login && !loginState.survey) {
+                console.log("Go to SurveyPage_Main");
+                navigation.navigate("SurveyPage_Main");
+            }
+
             axios.get(API_KEY + "/whiskys/").then((res) => {
                 setWhiskyState(res.data);
             });

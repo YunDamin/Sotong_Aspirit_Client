@@ -15,6 +15,9 @@ import First_Svg from "../public/icons/onboarding/first.svg";
 import Second_Svg from "../public/icons/onboarding/second.svg";
 import Third_Svg from "../public/icons/onboarding/third.svg";
 
+// Utils
+import { setData } from "../utils/AsyncStorage";
+
 interface PageProps {
     press: () => void;
     skip: () => void;
@@ -318,6 +321,7 @@ export default function OnboardingPage({ navigation }: any) {
 
     const skip = () => {
         navigation.replace("Main");
+        setData("notFirst", "true");
     };
 
     return (

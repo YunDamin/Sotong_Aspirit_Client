@@ -12,6 +12,9 @@ import SubPage_TastingNoteWriting from "../pages/SubPage_TastingNoteWriting";
 // ? Whisky
 import SubPage_Whisky from "../pages/SubPage_Whisky";
 
+// ? Survey
+import SurveyPage_Main from "../pages/SurveyPage_Main";
+
 // * SubNavigator
 import SubNavigator_Login from "./SubNavigator_Login";
 
@@ -59,6 +62,11 @@ export default function Navigator_Note() {
                 options={{
                     headerShown: false,
                 }}
+            />
+            <Stack.Screen
+                name="SurveyPage_Main"
+                component={SurveyPage_Main}
+                options={{ headerShown: false }}
             />
         </Stack.Navigator>
     );

@@ -66,6 +66,9 @@ import { API_KEY } from "@env";
 import { user, user_state } from "../atoms/get_user";
 import { whisky, whisky_state } from "../atoms/get_whisky";
 
+// Utils
+import { getData } from "../utils/AsyncStorage";
+
 export default function MainPage_Home({ navigation }: any) {
     const [loginState, setLoginState] = useRecoilState<login_data>(login_state);
     const [userState, setUserState] = useRecoilState<user>(user_state);
@@ -83,6 +86,12 @@ export default function MainPage_Home({ navigation }: any) {
     useFocusEffect(
         React.useCallback(() => {
             console.log("MainPage_Home Focus");
+
+            if (loginState.is_login && !loginState.survey) {
+                console.log("Go to SurveyPage_Main");
+                navigation.navigate("SurveyPage_Main");
+            }
+
             axios.get(API_KEY + "/contents?type=news").then((res) => {
                 setContentsNews(res.data);
             });

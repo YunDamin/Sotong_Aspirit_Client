@@ -125,6 +125,12 @@ export default function MainPage_Note({ navigation }: any) {
     useFocusEffect(
         React.useCallback(() => {
             console.log("MainPage_Note Focus");
+
+            if (loginState.is_login && !loginState.survey) {
+                console.log("Go to SurveyPage_Main");
+                navigation.navigate("SurveyPage_Main");
+            }
+
             axios.get(API_KEY + "/notes/").then((res) => {
                 setNotes(res.data?.data);
                 setViewNoteData(res.data?.data.slice().reverse().slice(0, 4));
