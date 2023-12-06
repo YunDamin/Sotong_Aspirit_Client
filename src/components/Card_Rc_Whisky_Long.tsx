@@ -8,13 +8,17 @@ import {
     StyleSheet,
     ScrollView,
     TouchableOpacity,
+    Image,
 } from "react-native";
 
 import Icon_Star from "../public/icons/icons/icon_star.svg";
 
 interface Props {
+    whisky: whisky;
     press: () => void;
 }
+
+import { whisky } from "../atoms/get_whisky";
 
 export default function Card_Rc_Whisky_Long(props: Props) {
     return (
@@ -25,8 +29,15 @@ export default function Card_Rc_Whisky_Long(props: Props) {
                     height: 200,
                     borderRadius: 20,
                     backgroundColor: "#757575",
+                    overflow: "hidden",
                 }}
-            ></View>
+            >
+                <Image
+                    source={{ uri: props.whisky.img_urls[0] }}
+                    height={200}
+                    style={{ resizeMode: "cover" }}
+                />
+            </View>
             <Text
                 style={{
                     fontFamily: "Spoqa Han Sans Neo",
@@ -36,7 +47,7 @@ export default function Card_Rc_Whisky_Long(props: Props) {
                     marginTop: 15,
                 }}
             >
-                잭다니엘
+                {props.whisky.name_kor}
             </Text>
             <Text
                 style={{
@@ -46,7 +57,7 @@ export default function Card_Rc_Whisky_Long(props: Props) {
                     color: "#888888",
                 }}
             >
-                Jack Daniel's
+                {props.whisky.name_eng}
             </Text>
             <View
                 style={{
@@ -68,7 +79,9 @@ export default function Card_Rc_Whisky_Long(props: Props) {
                         textAlign: "center",
                     }}
                 >
-                    4.0 (1,058)
+                    {`${props.whisky.note_av.toFixed(
+                        1
+                    )} (${props.whisky.note_num.toLocaleString()})`}
                 </Text>
             </View>
         </TouchableOpacity>

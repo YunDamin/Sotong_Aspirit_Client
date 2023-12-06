@@ -9,6 +9,8 @@ import SubPage_Alert from "../pages/SubPage_Alert";
 import SubPage_MyPage from "../pages/SubPage_MyPage";
 // ? Tasting Note
 import SubPage_TastingNoteWriting from "../pages/SubPage_TastingNoteWriting";
+// ? Whisky
+import SubPage_Whisky from "../pages/SubPage_Whisky";
 
 // * SubNavigator
 import SubNavigator_Login from "./SubNavigator_Login";
@@ -50,6 +52,13 @@ export default function Navigator_Note() {
                 name="SubNavigator_Login"
                 component={SubNavigator_Login}
                 options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="SubPage_Whisky"
+                component={SubPage_Whisky}
+                options={{
+                    headerShown: false,
+                }}
             />
         </Stack.Navigator>
     );

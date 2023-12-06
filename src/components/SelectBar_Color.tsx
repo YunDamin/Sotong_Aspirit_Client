@@ -18,6 +18,7 @@ interface SelectBar_ColorProps {
     select_elements?: string[];
     disable?: boolean;
     index?: number;
+    setIndex?: (index: number) => void;
 }
 
 const getColor = (index: number): string[] => {
@@ -89,6 +90,7 @@ export default function SelectBar_Color(props: SelectBar_ColorProps) {
                             ]}
                             onPress={() => {
                                 setSelctElement(index);
+                                props.setIndex?.(index);
                             }}
                         >
                             <LinearGradient

@@ -24,6 +24,7 @@ import CustomNavigator_Top from "../navigators/CustomNavigator_Top";
 // Components
 import SelectBar_Color from "../components/SelectBar_Color";
 import Card_Graph from "../components/Card_Graph";
+import Card_TasteNote_Whisky from "../components/Card_TasteNote_Whisky";
 
 import axios from "axios";
 import { API_KEY } from "@env";
@@ -41,11 +42,20 @@ export default function SubPage_Whisky({ navigation, route }: any) {
     let whisky_id = route.params.whisky_id;
 
     const [data, setData] = React.useState<any>(null);
+    const [noteData, setNoteData] = React.useState<any>([]);
+    const [viewNoteData, setViewNoteData] = React.useState<any>([]);
+    const [view, setView] = React.useState(0);
 
     useFocusEffect(
         React.useCallback(() => {
             axios.get(API_KEY + "/whiskys/whisky/" + whisky_id).then((res) => {
                 setData(res.data?.data);
+            });
+
+            axios.get(API_KEY + "/notes/whisky/" + whisky_id).then((res) => {
+                setNoteData(res.data?.data);
+                setViewNoteData(res.data?.data.slice().reverse().slice(0, 4));
+                setView(view + 4);
             });
 
             return () => {};
@@ -1002,8 +1012,29 @@ export default function SubPage_Whisky({ navigation, route }: any) {
                                     data?.note_num.toLocaleString() ?? ""
                                 })`}</Text>
                             </Text>
+                            {viewNoteData.map((data: any, index: any) => {
+                                return (
+                                    <Card_TasteNote_Whisky
+                                        key={index}
+                                        tasting_id={data.tasting_id}
+                                        user_id={data.user_id}
+                                        onPress={() => {}}
+                                    />
+                                );
+                            })}
                             <TouchableOpacity
-                                onPress={() => {}}
+                                onPress={() => {
+                                    if (noteData.length > view) {
+                                        setViewNoteData([
+                                            ...viewNoteData,
+                                            ...noteData
+                                                .slice()
+                                                .reverse()
+                                                .slice(view, view + 4),
+                                        ]);
+                                        setView(view + 4);
+                                    }
+                                }}
                                 style={[
                                     {
                                         width: 320,

@@ -76,6 +76,7 @@ export default function LoginPage_Main({ navigation }: any) {
                         accessToken: res.data.accessToken,
                         refreshToken: res.data.refreshToken,
                     });
+                    console.log("Login Success");
                     navigation.replace("Main");
                 }
             });

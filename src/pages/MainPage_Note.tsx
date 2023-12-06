@@ -12,6 +12,8 @@ import {
     Modal,
 } from "react-native";
 
+import { useFocusEffect } from "@react-navigation/native";
+
 import Bg_Cup from "../public/icons/bg/cup.svg";
 import Icon_Note from "../public/icons/icons/icon_note.svg";
 import Btn_Setting from "../public/icons/btn/btn_setting.svg";
@@ -55,6 +57,10 @@ import { useRecoilState } from "recoil";
 
 import { login_data, login_state } from "../atoms/login_state";
 
+import axios from "axios";
+import { API_KEY } from "@env";
+import Card_TasteNote_Whisky from "../components/Card_TasteNote_Whisky";
+
 export default function MainPage_Note({ navigation }: any) {
     const [loginState, setLoginState] = useRecoilState<login_data>(login_state);
 
@@ -68,6 +74,24 @@ export default function MainPage_Note({ navigation }: any) {
 
     const topPosition = React.useRef(new Animated.Value(150));
 
+    const [loading, setLoading] = React.useState(false);
+    const loadMoreData = () => {
+        if (!loading) {
+            setLoading(true);
+
+            setViewNoteData([
+                ...viewNoteData,
+                ...notes
+                    .slice()
+                    .reverse()
+                    .slice(view, view + 4),
+            ]);
+            setView(view + 4);
+
+            setLoading(false);
+        }
+    };
+
     const handleScroll = (event: any) => {
         const scrollY = event.nativeEvent.contentOffset.y;
         Animated.timing(topPosition.current, {
@@ -75,6 +99,12 @@ export default function MainPage_Note({ navigation }: any) {
             duration: 50,
             useNativeDriver: false,
         }).start();
+
+        const height = event.nativeEvent.layoutMeasurement.height;
+        const contentHeight = event.nativeEvent.contentSize.height;
+        if (scrollY + height >= contentHeight - 20) {
+            loadMoreData();
+        }
     };
 
     const [isCategoryModalVisible, setCategoryModaVisible] =
@@ -87,6 +117,23 @@ export default function MainPage_Note({ navigation }: any) {
     const toggleSortModal = () => {
         setSortModalVisible(!isSortModalVisible);
     };
+
+    const [notes, setNotes] = React.useState<any>([]);
+    const [viewNoteData, setViewNoteData] = React.useState<any>([]);
+    const [view, setView] = React.useState(0);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            console.log("MainPage_Note Focus");
+            axios.get(API_KEY + "/notes/").then((res) => {
+                setNotes(res.data?.data);
+                setViewNoteData(res.data?.data.slice().reverse().slice(0, 4));
+                setView(view + 4);
+            });
+
+            return () => {};
+        }, [])
+    );
 
     return (
         <>
@@ -342,7 +389,7 @@ export default function MainPage_Note({ navigation }: any) {
                                             color: "#000000",
                                         }}
                                     >
-                                        ??
+                                        준비중입니다.
                                     </Text>
                                     <View style={{ height: 40 }}>
                                         {sortCategory === "" && <Btn_Check />}
@@ -377,7 +424,7 @@ export default function MainPage_Note({ navigation }: any) {
                                             color: "#000000",
                                         }}
                                     >
-                                        ??
+                                        준비중입니다.
                                     </Text>
                                     <View style={{ height: 40 }}>
                                         {sortCategory === "" && <Btn_Check />}
@@ -624,71 +671,106 @@ export default function MainPage_Note({ navigation }: any) {
                             {/* 내용 탑 */}
                             <View
                                 style={{
-                                    marginTop: 10,
                                     width: "100%",
-                                    height: 30,
-                                    display: "flex",
-                                    flexDirection: "row",
+                                    flexDirection: "column",
                                     alignItems: "center",
-                                    justifyContent: "space-between",
                                 }}
                             >
-                                <Text
+                                <View
                                     style={{
-                                        fontFamily: "Spoqa Han Sans Neo",
-                                        fontWeight: "700",
-                                        fontSize: 16,
-                                        color: "#000000",
-                                        textAlign: "center",
-                                    }}
-                                >
-                                    <Text>전체 </Text>
-                                    <Text
-                                        style={{ color: "#D6690F" }}
-                                    >{`(${825})`}</Text>
-                                </Text>
-                                <TouchableOpacity
-                                    style={{
-                                        width: 80,
+                                        marginTop: 10,
+                                        width: "100%",
                                         height: 30,
-                                        borderRadius: 10,
-                                        borderWidth: 1,
-                                        borderColor: "#E4E4E4",
-                                        backgroundColor: "#FFFFFF",
-                                        paddingLeft: 10,
-                                        paddingRight: 10,
                                         display: "flex",
                                         flexDirection: "row",
                                         alignItems: "center",
                                         justifyContent: "space-between",
                                     }}
-                                    onPress={() => {
-                                        toggleSortModal();
-                                    }}
                                 >
                                     <Text
                                         style={{
                                             fontFamily: "Spoqa Han Sans Neo",
-                                            fontWeight: "500",
-                                            fontSize: 12,
+                                            fontWeight: "700",
+                                            fontSize: 16,
                                             color: "#000000",
                                             textAlign: "center",
                                         }}
                                     >
-                                        {
-                                            {
-                                                new: "최신순",
-                                            }[sortCategory]
-                                        }
+                                        <Text>전체 </Text>
+                                        <Text style={{ color: "#D6690F" }}>{`(${
+                                            notes?.length?.toLocaleString() ??
+                                            "0"
+                                        })`}</Text>
                                     </Text>
-                                    <View style={{ width: 14, height: 14 }}>
-                                        <Btn_Drop_Black />
-                                    </View>
-                                </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={{
+                                            width: 80,
+                                            height: 30,
+                                            borderRadius: 10,
+                                            borderWidth: 1,
+                                            borderColor: "#E4E4E4",
+                                            backgroundColor: "#FFFFFF",
+                                            paddingLeft: 10,
+                                            paddingRight: 10,
+                                            display: "flex",
+                                            flexDirection: "row",
+                                            alignItems: "center",
+                                            justifyContent: "space-between",
+                                        }}
+                                        onPress={() => {
+                                            toggleSortModal();
+                                        }}
+                                    >
+                                        <Text
+                                            style={{
+                                                fontFamily:
+                                                    "Spoqa Han Sans Neo",
+                                                fontWeight: "500",
+                                                fontSize: 12,
+                                                color: "#000000",
+                                                textAlign: "center",
+                                            }}
+                                        >
+                                            {
+                                                {
+                                                    new: "최신순",
+                                                }[sortCategory]
+                                            }
+                                        </Text>
+                                        <View style={{ width: 14, height: 14 }}>
+                                            <Btn_Drop_Black />
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={{ height: 40 }} />
+                                {viewNoteData?.map(
+                                    (note: any, index: number) => {
+                                        return (
+                                            <Card_TasteNote_Whisky
+                                                key={index}
+                                                tasting_id={
+                                                    note?.tasting_id ?? ""
+                                                }
+                                                user_id={note?.user_id ?? ""}
+                                                whisky_id={
+                                                    note?.whisky_id ?? ""
+                                                }
+                                                onPress={() => {
+                                                    navigation.navigate(
+                                                        "SubPage_Whisky",
+                                                        {
+                                                            whisky_id:
+                                                                note?.whisky_id ??
+                                                                "",
+                                                        }
+                                                    );
+                                                }}
+                                            />
+                                        );
+                                    }
+                                )}
+                                <View style={{ height: 60 }} />
                             </View>
-                            <View style={{ height: 40 }} />
-                            {/* 여분 */}
-                            <View style={{ height: 60 }} />
                         </ScrollView>
                     </Animated.View>
                 </View>

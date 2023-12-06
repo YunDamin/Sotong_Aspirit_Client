@@ -82,6 +82,7 @@ export default function MainPage_Home({ navigation }: any) {
 
     useFocusEffect(
         React.useCallback(() => {
+            console.log("MainPage_Home Focus");
             axios.get(API_KEY + "/contents?type=news").then((res) => {
                 setContentsNews(res.data);
             });
@@ -341,6 +342,8 @@ export default function MainPage_Home({ navigation }: any) {
                                 style={{ marginTop: 20 }}
                             >
                                 {whiskyState
+                                    .slice()
+                                    .reverse()
                                     .slice(0, 10)
                                     .map((whisky, index) => {
                                         return (
@@ -530,6 +533,7 @@ export default function MainPage_Home({ navigation }: any) {
                                 style={{ marginTop: 20 }}
                             >
                                 {whiskyState
+                                    .slice()
                                     .sort((a, b) => b.note_num - a.note_num)
                                     .slice(0, 10)
                                     .map((whisky, index) => {
@@ -596,6 +600,7 @@ export default function MainPage_Home({ navigation }: any) {
                                 style={{ marginTop: 20 }}
                             >
                                 {whiskyState
+                                    .slice()
                                     .sort((a, b) => b.note_av - a.note_av)
                                     .slice(0, 10)
                                     .map((whisky, index) => {

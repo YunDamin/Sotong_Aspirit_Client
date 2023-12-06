@@ -16,7 +16,7 @@ import Icon_Star from "../public/icons/icons/icon_star.svg";
 
 import { content } from "../atoms/get_contents";
 
-import { RadarChart } from "react-native-charts-wrapper";
+import { RadarChart, PieChart } from "react-native-charts-wrapper";
 
 type Rate = {
     name: string;
@@ -158,22 +158,52 @@ export default function Card_Graph(props: Props) {
                                 justifyContent: "flex-start",
                             }}
                         >
-                            <RadarChart
-                                style={{
-                                    width: 300,
-                                    height: 300,
-                                }}
-                                data={{
-                                    dataSets: dataSets,
-                                }}
-                                xAxis={{
-                                    drawLabels: true,
-                                    valueFormatter: valueFormatter,
-                                }}
-                                yAxis={{ drawLabels: false }}
-                                webColor={processColor("#EDEDED")}
-                                webColorInner={processColor("#EDEDED")}
-                            />
+                            {props.rates.length < 3 ? (
+                                <PieChart
+                                    style={{
+                                        width: 280,
+                                        height: 280,
+                                        marginBottom: 20,
+                                    }}
+                                    data={{
+                                        dataSets: [
+                                            {
+                                                values: props.rates.map(
+                                                    (rate) => {
+                                                        return {
+                                                            label: rate.name,
+                                                            value: rate.num,
+                                                        };
+                                                    }
+                                                ),
+                                                label: "",
+                                                config: {
+                                                    color: processColor(
+                                                        "#D6690F"
+                                                    ),
+                                                },
+                                            },
+                                        ],
+                                    }}
+                                />
+                            ) : (
+                                <RadarChart
+                                    style={{
+                                        width: 300,
+                                        height: 300,
+                                    }}
+                                    data={{
+                                        dataSets: dataSets,
+                                    }}
+                                    xAxis={{
+                                        drawLabels: true,
+                                        valueFormatter: valueFormatter,
+                                    }}
+                                    yAxis={{ drawLabels: false }}
+                                    webColor={processColor("#EDEDED")}
+                                    webColorInner={processColor("#EDEDED")}
+                                />
+                            )}
                         </View>
                         <View
                             style={{
@@ -293,24 +323,50 @@ export default function Card_Graph(props: Props) {
                         justifyContent: "flex-start",
                     }}
                 >
-                    <RadarChart
-                        style={{
-                            width: 300,
-                            height: 300,
-                        }}
-                        data={{
-                            dataSets: dataSets,
-                        }}
-                        xAxis={{
-                            drawLabels: true,
-                            valueFormatter: valueFormatter,
-                        }}
-                        yAxis={{
-                            drawLabels: false,
-                        }}
-                        webColor={processColor("#EDEDED")}
-                        webColorInner={processColor("#EDEDED")}
-                    />
+                    {props.rates.length < 3 ? (
+                        <PieChart
+                            style={{
+                                width: 280,
+                                height: 280,
+                                marginBottom: 20,
+                            }}
+                            data={{
+                                dataSets: [
+                                    {
+                                        values: props.rates.map((rate) => {
+                                            return {
+                                                label: rate.name,
+                                                value: rate.num,
+                                            };
+                                        }),
+                                        label: "",
+                                        config: {
+                                            color: processColor("#D6690F"),
+                                        },
+                                    },
+                                ],
+                            }}
+                        />
+                    ) : (
+                        <RadarChart
+                            style={{
+                                width: 300,
+                                height: 300,
+                            }}
+                            data={{
+                                dataSets: dataSets,
+                            }}
+                            xAxis={{
+                                drawLabels: true,
+                                valueFormatter: valueFormatter,
+                            }}
+                            yAxis={{
+                                drawLabels: false,
+                            }}
+                            webColor={processColor("#EDEDED")}
+                            webColorInner={processColor("#EDEDED")}
+                        />
+                    )}
                 </View>
             </View>
         </>

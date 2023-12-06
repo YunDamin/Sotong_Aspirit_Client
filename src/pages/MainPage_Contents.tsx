@@ -78,6 +78,7 @@ export default function MainPage_Contents({ navigation }: any) {
 
     useFocusEffect(
         React.useCallback(() => {
+            console.log("MainPage_Contents Focus");
             axios.get(API_KEY + "/contents?type=news").then((res) => {
                 setContentsNews(res.data);
             });

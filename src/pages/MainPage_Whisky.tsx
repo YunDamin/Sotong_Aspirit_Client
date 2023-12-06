@@ -12,6 +12,8 @@ import {
     Modal,
 } from "react-native";
 
+import { useFocusEffect } from "@react-navigation/native";
+
 import Bg_Cup from "../public/icons/bg/cup.svg";
 import Icon_Whisky from "../public/icons/icons/icon_whisky_svg.svg";
 import Btn_Setting from "../public/icons/btn/btn_setting.svg";
@@ -57,6 +59,11 @@ import { useRecoilState } from "recoil";
 
 import { login_data, login_state } from "../atoms/login_state";
 
+import axios from "axios";
+import { API_KEY } from "@env";
+
+import { whisky, whisky_state } from "../atoms/get_whisky";
+
 export default function MainPage_Whisky({ navigation }: any) {
     const [loginState, setLoginState] = useRecoilState<login_data>(login_state);
 
@@ -69,6 +76,23 @@ export default function MainPage_Whisky({ navigation }: any) {
 
     const topPosition = React.useRef(new Animated.Value(150));
 
+    const [viewWhiskyData, setViewWhiskyData] = React.useState<whisky[]>([]);
+    const [view, setView] = React.useState(0);
+    const [loading, setLoading] = React.useState(false);
+    const loadMoreData = () => {
+        if (!loading) {
+            setLoading(true);
+
+            setViewWhiskyData([
+                ...viewWhiskyData,
+                ...get_whisky().slice(view, view + 4),
+            ]);
+            setView(view + 4);
+
+            setLoading(false);
+        }
+    };
+
     const handleScroll = (event: any) => {
         const scrollY = event.nativeEvent.contentOffset.y;
         Animated.timing(topPosition.current, {
@@ -76,6 +100,11 @@ export default function MainPage_Whisky({ navigation }: any) {
             duration: 50,
             useNativeDriver: false,
         }).start();
+        const height = event.nativeEvent.layoutMeasurement.height;
+        const contentHeight = event.nativeEvent.contentSize.height;
+        if (scrollY + height >= contentHeight - 20) {
+            loadMoreData();
+        }
     };
 
     const [isFilterModalVisible, setFilterModaVisible] = React.useState(false);
@@ -225,7 +254,45 @@ export default function MainPage_Whisky({ navigation }: any) {
         setSortModalVisible(!isSortModalVisible);
     };
 
-    const whisky = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    const get_whisky = (): whisky[] => {
+        if (sortCategory === "rate") {
+            return whiskyState.slice().sort((a, b) => {
+                return b.note_av - a.note_av;
+            });
+        } else if (sortCategory === "new") {
+            return whiskyState.slice().reverse();
+        } else if (sortCategory === "review") {
+            return whiskyState.slice().sort((a, b) => {
+                return b.note_num - a.note_num;
+            });
+        }
+
+        return whiskyState;
+    };
+
+    const [whiskyState, setWhiskyState] =
+        useRecoilState<whisky[]>(whisky_state);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            console.log("MainPage_Whisky Focus");
+            axios.get(API_KEY + "/whiskys/").then((res) => {
+                setWhiskyState(res.data);
+            });
+
+            return () => {};
+        }, [])
+    );
+
+    React.useEffect(() => {
+        setViewWhiskyData(get_whisky().slice(0, 4));
+        setView(4);
+    }, [whiskyState]);
+
+    React.useEffect(() => {
+        setViewWhiskyData(get_whisky().slice(0, 4));
+        setView(4);
+    }, [sortCategory]);
 
     return (
         <>
@@ -1237,7 +1304,7 @@ export default function MainPage_Whisky({ navigation }: any) {
                                     <Text>전체 </Text>
                                     <Text
                                         style={{ color: "#D6690F" }}
-                                    >{`(${825})`}</Text>
+                                    >{`(${whiskyState.length.toLocaleString()})`}</Text>
                                 </Text>
                                 <TouchableOpacity
                                     style={{
@@ -1281,11 +1348,11 @@ export default function MainPage_Whisky({ navigation }: any) {
                                 </TouchableOpacity>
                             </View>
                             <View>
-                                {whisky
+                                {viewWhiskyData
                                     .filter((_, index) => {
                                         return index % 2 === 0;
                                     })
-                                    .map((_, index) => (
+                                    .map((whisky, index) => (
                                         <View
                                             key={index}
                                             style={{
@@ -1297,18 +1364,35 @@ export default function MainPage_Whisky({ navigation }: any) {
                                             }}
                                         >
                                             <Card_Rc_Whisky_Long
+                                                whisky={whisky}
                                                 press={() => {
                                                     navigation.navigate(
-                                                        "SubPage_Whisky"
+                                                        "SubPage_Whisky",
+                                                        {
+                                                            whisky_id:
+                                                                whisky.whisky_id,
+                                                        }
                                                     );
                                                 }}
                                             />
-                                            {whisky.length <=
+                                            {viewWhiskyData.length <=
                                             index * 2 + 1 ? null : (
                                                 <Card_Rc_Whisky_Long
+                                                    whisky={
+                                                        viewWhiskyData[
+                                                            index * 2 + 1
+                                                        ]
+                                                    }
                                                     press={() => {
                                                         navigation.navigate(
-                                                            "SubPage_Whisky"
+                                                            "SubPage_Whisky",
+                                                            {
+                                                                whisky_id:
+                                                                    viewWhiskyData[
+                                                                        index +
+                                                                            1
+                                                                    ].whisky_id,
+                                                            }
                                                         );
                                                     }}
                                                 />
