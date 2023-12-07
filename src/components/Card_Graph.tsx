@@ -134,13 +134,14 @@ export default function Card_Graph(props: Props) {
                                 style={{
                                     position: "absolute",
                                     right: 10,
+                                    top: -10,
                                 }}
                             >
                                 <Text
                                     style={{
                                         fontFamily: "Spoqa Han Sans Neo",
                                         fontWeight: "800",
-                                        fontSize: 20,
+                                        fontSize: 30,
                                         color: "#000000",
                                     }}
                                 >
@@ -185,6 +186,7 @@ export default function Card_Graph(props: Props) {
                                             },
                                         ],
                                     }}
+                                    chartDescription={{ text: "" }}
                                 />
                             ) : (
                                 <RadarChart
@@ -202,6 +204,7 @@ export default function Card_Graph(props: Props) {
                                     yAxis={{ drawLabels: false }}
                                     webColor={processColor("#EDEDED")}
                                     webColorInner={processColor("#EDEDED")}
+                                    chartDescription={{ text: "" }}
                                 />
                             )}
                         </View>
@@ -346,6 +349,7 @@ export default function Card_Graph(props: Props) {
                                     },
                                 ],
                             }}
+                            chartDescription={{ text: "" }}
                         />
                     ) : (
                         <RadarChart
@@ -363,6 +367,7 @@ export default function Card_Graph(props: Props) {
                             yAxis={{
                                 drawLabels: false,
                             }}
+                            chartDescription={{ text: "" }}
                             webColor={processColor("#EDEDED")}
                             webColorInner={processColor("#EDEDED")}
                         />

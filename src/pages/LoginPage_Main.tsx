@@ -136,22 +136,11 @@ export default function LoginPage_Main({ navigation }: any) {
                         <View
                             style={{
                                 width: 320,
-                                justifyContent: "space-between",
+                                justifyContent: "flex-end",
                                 flexDirection: "row",
                                 marginTop: 10,
                             }}
                         >
-                            <View>
-                                <TouchableOpacity
-                                    onPress={() =>
-                                        navigation.navigate(
-                                            "LoginPage_Permission"
-                                        )
-                                    }
-                                >
-                                    <Text style={styles.text}>회원가입</Text>
-                                </TouchableOpacity>
-                            </View>
                             <View style={{ flexDirection: "row" }}>
                                 <TouchableOpacity>
                                     <Text style={styles.text}>아이디 찾기</Text>
@@ -192,6 +181,17 @@ export default function LoginPage_Main({ navigation }: any) {
                         </TouchableOpacity>
                     </View>
                     <View style={{ width: "100%", alignItems: "center" }}>
+                        <View style={{ marginBottom: 80 }}>
+                            <TouchableOpacity
+                                onPress={() =>
+                                    navigation.navigate("LoginPage_Permission")
+                                }
+                            >
+                                <Text style={styles.text}>
+                                    이메일로 시작하기
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
                         <Text
                             style={{
                                 fontFamily: "Spoqa Han Sans Neo",
@@ -228,6 +228,7 @@ export default function LoginPage_Main({ navigation }: any) {
                             </TouchableOpacity>
                         </View>
                     </View>
+                    <View style={{ marginTop: 0 }} />
                 </View>
             </SafeAreaView>
         </>

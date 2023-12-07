@@ -392,12 +392,13 @@ export default function SubPage_Whisky({ navigation, route }: any) {
                                                 key={index}
                                                 style={{
                                                     height: 25,
-                                                    alignItems: "center",
-                                                    justifyContent: "center",
+                                                    paddingLeft: 5,
+                                                    paddingRight: 5,
+                                                    borderWidth: 1,
                                                     borderRadius: 5,
                                                     borderColor: "#EDEDED",
-                                                    borderWidth: 1,
-                                                    marginRight: 5,
+                                                    justifyContent: "center",
+                                                    marginRight: 7,
                                                 }}
                                             >
                                                 <Text
@@ -407,7 +408,7 @@ export default function SubPage_Whisky({ navigation, route }: any) {
                                                         fontWeight: "500",
                                                         fontSize: 12,
                                                         color: "#000000",
-                                                        textAlign: "center",
+                                                        textAlign: "left",
                                                     }}
                                                 >
                                                     {item}
@@ -463,12 +464,13 @@ export default function SubPage_Whisky({ navigation, route }: any) {
                                                 key={index}
                                                 style={{
                                                     height: 25,
-                                                    alignItems: "center",
-                                                    justifyContent: "center",
+                                                    paddingLeft: 5,
+                                                    paddingRight: 5,
+                                                    borderWidth: 1,
                                                     borderRadius: 5,
                                                     borderColor: "#EDEDED",
-                                                    borderWidth: 1,
-                                                    marginRight: 5,
+                                                    justifyContent: "center",
+                                                    marginRight: 7,
                                                 }}
                                             >
                                                 <Text
@@ -534,12 +536,13 @@ export default function SubPage_Whisky({ navigation, route }: any) {
                                                 key={index}
                                                 style={{
                                                     height: 25,
-                                                    alignItems: "center",
-                                                    justifyContent: "center",
+                                                    paddingLeft: 5,
+                                                    paddingRight: 5,
+                                                    borderWidth: 1,
                                                     borderRadius: 5,
                                                     borderColor: "#EDEDED",
-                                                    borderWidth: 1,
-                                                    marginRight: 5,
+                                                    justifyContent: "center",
+                                                    marginRight: 7,
                                                 }}
                                             >
                                                 <Text
@@ -765,6 +768,9 @@ export default function SubPage_Whisky({ navigation, route }: any) {
                                         style={{
                                             width: 120,
                                             justifyContent: "center",
+                                            position: "absolute",
+                                            bottom: 15,
+                                            left: -5,
                                         }}
                                         starSize={20}
                                         starStyle={{
@@ -1043,6 +1049,7 @@ export default function SubPage_Whisky({ navigation, route }: any) {
                                         alignItems: "center",
                                         justifyContent: "center",
                                         borderRadius: 15,
+                                        marginBottom: 20,
                                     },
                                 ]}
                             >

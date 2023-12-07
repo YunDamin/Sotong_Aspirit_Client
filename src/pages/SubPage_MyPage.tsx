@@ -222,7 +222,9 @@ export default function SubPage_MyPage({ navigation }: any) {
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={() => {
-                                    navigation.navigate("SubPage_Profile");
+                                    navigation.navigate("SubPage_Profile", {
+                                        user_id: loginState.user_id,
+                                    });
                                 }}
                                 style={{
                                     flexDirection: "row",

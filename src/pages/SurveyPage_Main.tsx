@@ -469,7 +469,7 @@ export default function SurveyPage_Main({ navigation, route }: any) {
                                             color: "#000000",
                                         }}
                                     >
-                                        취소
+                                        {tabIndex === 0 ? "취소" : "뒤로"}
                                     </Text>
                                 </TouchableOpacity>
                                 <Text
@@ -1809,6 +1809,7 @@ export default function SurveyPage_Main({ navigation, route }: any) {
                                 alignItems: "center",
                                 justifyContent: "center",
                                 borderRadius: 10,
+                                marginBottom: 20,
                             },
                             { backgroundColor: "#BABABA" },
                             isAddSurveyView &&

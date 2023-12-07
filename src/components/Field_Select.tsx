@@ -42,8 +42,8 @@ export default function Field_Select(props: Props) {
         Animated.timing(clickAni, {
             toValue: isClick
                 ? list.length < 3
-                    ? list.length * 40 + 20
-                    : 120 + 20
+                    ? list.length * 40 + 40
+                    : 120 + 40
                 : 0,
             duration: 150,
             easing: Easing.bezier(0.4, 0, 0.2, 1),
@@ -115,12 +115,14 @@ export default function Field_Select(props: Props) {
                 {isClick && (
                     <ScrollView
                         style={{
-                            marginTop: 10,
                             width: "100%",
                             height: 140,
                             borderWidth: 1,
                             borderRadius: 10,
+                            marginTop: 20,
                             marginBottom: 20,
+                            backgroundColor: "#FDF2E8",
+                            borderColor: "#F3E2D3",
                         }}
                     >
                         {list.map((select) => {

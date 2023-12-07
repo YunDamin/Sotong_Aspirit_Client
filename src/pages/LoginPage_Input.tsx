@@ -367,7 +367,6 @@ export default function LoginPage_Input({ navigation, route }: any) {
                     style={{
                         width: "100%",
                         alignItems: "center",
-                        marginTop: 20,
                     }}
                 >
                     <TouchableOpacity
@@ -396,6 +395,7 @@ export default function LoginPage_Input({ navigation, route }: any) {
                                 alignItems: "center",
                                 justifyContent: "center",
                                 borderRadius: 10,
+                                marginBottom: 20,
                             },
                             { opacity: 0.4 },
                             email != "" &&

@@ -24,7 +24,7 @@ export default function LoginPage_Thanks({ navigation }: any) {
                 <CustomNavigator_Top
                     title="가입완료"
                     goBack={() => {
-                        navigation.navigate("Main");
+                        navigation.replace("Main");
                     }}
                 />
             </SafeAreaView>
@@ -81,7 +81,7 @@ export default function LoginPage_Thanks({ navigation }: any) {
                 >
                     <TouchableOpacity
                         onPress={() => {
-                            navigation.navigate("Main");
+                            navigation.replace("Main");
                         }}
                         style={[
                             {
@@ -91,6 +91,7 @@ export default function LoginPage_Thanks({ navigation }: any) {
                                 alignItems: "center",
                                 justifyContent: "center",
                                 borderRadius: 10,
+                                marginBottom: 20,
                             },
                             { opacity: 0.4 },
                             { opacity: 1 },

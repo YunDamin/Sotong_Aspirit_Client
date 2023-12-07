@@ -95,7 +95,7 @@ export default function MainPage_Note({ navigation }: any) {
     const handleScroll = (event: any) => {
         const scrollY = event.nativeEvent.contentOffset.y;
         Animated.timing(topPosition.current, {
-            toValue: scrollY > 50 ? 50 : 150,
+            toValue: scrollY > 50 ? 70 : 170,
             duration: 50,
             useNativeDriver: false,
         }).start();
@@ -128,7 +128,9 @@ export default function MainPage_Note({ navigation }: any) {
 
             if (loginState.is_login && !loginState.survey) {
                 console.log("Go to SurveyPage_Main");
-                navigation.navigate("SurveyPage_Main");
+                navigation.navigate("SurveyPage_Main", {
+                    edit: false,
+                });
             }
 
             axios.get(API_KEY + "/notes/").then((res) => {

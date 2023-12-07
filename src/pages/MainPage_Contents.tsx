@@ -82,7 +82,9 @@ export default function MainPage_Contents({ navigation }: any) {
 
             if (loginState.is_login && !loginState.survey) {
                 console.log("Go to SurveyPage_Main");
-                navigation.navigate("SurveyPage_Main");
+                navigation.navigate("SurveyPage_Main", {
+                    edit: false,
+                });
             }
 
             axios.get(API_KEY + "/contents?type=news").then((res) => {
@@ -136,7 +138,7 @@ export default function MainPage_Contents({ navigation }: any) {
     const handleScroll = (event: any) => {
         const scrollY = event.nativeEvent.contentOffset.y;
         Animated.timing(topPosition.current, {
-            toValue: scrollY > 50 ? 50 : 150,
+            toValue: scrollY > 50 ? 70 : 170,
             duration: 50,
             useNativeDriver: false,
         }).start();
@@ -360,6 +362,7 @@ export default function MainPage_Contents({ navigation }: any) {
                                                 tabIndex === 0
                                                     ? "#D6690F"
                                                     : "#888888",
+                                            opacity: tabIndex === 0 ? 1 : 0.5,
                                         }}
                                     />
                                 </TouchableOpacity>
@@ -394,6 +397,7 @@ export default function MainPage_Contents({ navigation }: any) {
                                                 tabIndex === 1
                                                     ? "#D6690F"
                                                     : "#888888",
+                                            opacity: tabIndex === 1 ? 1 : 0.5,
                                         }}
                                     />
                                 </TouchableOpacity>
@@ -428,6 +432,7 @@ export default function MainPage_Contents({ navigation }: any) {
                                                 tabIndex === 2
                                                     ? "#D6690F"
                                                     : "#888888",
+                                            opacity: tabIndex === 2 ? 1 : 0.5,
                                         }}
                                     />
                                 </TouchableOpacity>
@@ -462,6 +467,7 @@ export default function MainPage_Contents({ navigation }: any) {
                                                 tabIndex === 3
                                                     ? "#D6690F"
                                                     : "#888888",
+                                            opacity: tabIndex === 3 ? 1 : 0.5,
                                         }}
                                     />
                                 </TouchableOpacity>
@@ -499,67 +505,81 @@ export default function MainPage_Contents({ navigation }: any) {
                                 </View>
                             </View>
                             {tabIndex === 0 &&
-                                contentsNews.map((content, index) => {
-                                    return (
-                                        <Card_News_Whisky_Big
-                                            key={index}
-                                            content={content}
-                                            onPress={() => {
-                                                navigation.navigate(
-                                                    "SubPage_Content",
-                                                    { content: content }
-                                                );
-                                            }}
-                                        />
-                                    );
-                                })}
+                                contentsNews
+                                    .slice()
+                                    .reverse()
+                                    .map((content, index) => {
+                                        return (
+                                            <Card_News_Whisky_Big
+                                                key={index}
+                                                content={content}
+                                                onPress={() => {
+                                                    navigation.navigate(
+                                                        "SubPage_Content",
+                                                        { content: content }
+                                                    );
+                                                }}
+                                            />
+                                        );
+                                    })}
                             {tabIndex === 1 &&
-                                contentsGuide.map((content, index) => {
-                                    return (
-                                        <Card_News_Whisky_Big
-                                            key={index}
-                                            content={content}
-                                            onPress={() => {
-                                                navigation.navigate(
-                                                    "SubPage_Content",
-                                                    { content: content }
-                                                );
-                                            }}
-                                        />
-                                    );
-                                })}
+                                contentsGuide
+                                    .slice()
+                                    .reverse()
+                                    .map((content, index) => {
+                                        return (
+                                            <Card_News_Whisky_Big
+                                                key={index}
+                                                content={content}
+                                                onPress={() => {
+                                                    navigation.navigate(
+                                                        "SubPage_Content",
+                                                        { content: content }
+                                                    );
+                                                }}
+                                            />
+                                        );
+                                    })}
                             {tabIndex === 2 &&
-                                contentsArticle.map((content, index) => {
-                                    return (
-                                        <Card_News_Whisky_Big
-                                            key={index}
-                                            content={content}
-                                            onPress={() => {
-                                                navigation.navigate(
-                                                    "SubPage_Content",
-                                                    { content: content }
-                                                );
-                                            }}
-                                        />
-                                    );
-                                })}
+                                contentsArticle
+                                    .slice()
+                                    .reverse()
+                                    .map((content, index) => {
+                                        return (
+                                            <Card_News_Whisky_Big
+                                                key={index}
+                                                content={content}
+                                                onPress={() => {
+                                                    navigation.navigate(
+                                                        "SubPage_Content",
+                                                        { content: content }
+                                                    );
+                                                }}
+                                            />
+                                        );
+                                    })}
                             {tabIndex === 3 &&
-                                contentsNotice.map((content, index) => {
-                                    return (
-                                        <Card_News_Whisky_Big
-                                            key={index}
-                                            content={content}
-                                            onPress={() => {
-                                                navigation.navigate(
-                                                    "SubPage_Content",
-                                                    { content: content }
-                                                );
-                                            }}
-                                        />
-                                    );
-                                })}
+                                contentsNotice
+                                    .slice()
+                                    .reverse()
+                                    .map((content, index) => {
+                                        return (
+                                            <Card_News_Whisky_Big
+                                                key={index}
+                                                content={content}
+                                                onPress={() => {
+                                                    navigation.navigate(
+                                                        "SubPage_Content",
+                                                        { content: content }
+                                                    );
+                                                }}
+                                            />
+                                        );
+                                    })}
                             <View style={{ height: 40 }} />
                             {/* 여분 */}
+                            <View style={{ height: 60 }} />
+                            <View style={{ height: 60 }} />
                             <View style={{ height: 60 }} />
                         </ScrollView>
                     </Animated.View>

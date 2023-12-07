@@ -132,6 +132,7 @@ export default function LoginPage_Permission({ navigation }: any) {
                             다음
                         </Text>
                     </TouchableOpacity>
+                    <View style={{ marginBottom: 20 }} />
                 </View>
             </SafeAreaView>
         </>

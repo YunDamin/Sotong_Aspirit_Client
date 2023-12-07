@@ -56,7 +56,7 @@ export default function LoginPage_Checking({ navigation, route }: any) {
                             }}
                         >
                             <Icon_Heart_Svg />
-                            <View style={{ marginTop: 10 }} />
+                            <View style={{ marginTop: 2 }} />
                             <Text
                                 style={{
                                     fontFamily: "Spoqa Han Sans Neo",
@@ -64,11 +64,22 @@ export default function LoginPage_Checking({ navigation, route }: any) {
                                     fontSize: 14,
                                     color: "#3D1909",
                                     textAlign: "center",
+                                    marginBottom: 6,
                                 }}
                             >
-                                {
-                                    "위스키 팔레트 서비스를 이용하기 위해서\n본인인증이 필요합니다."
-                                }
+                                위스키 팔레트 서비스를 이용하기 위해서
+                            </Text>
+                            <Text
+                                style={{
+                                    fontFamily: "Spoqa Han Sans Neo",
+                                    fontWeight: "400",
+                                    fontSize: 14,
+                                    color: "#3D1909",
+                                    textAlign: "center",
+                                    marginBottom: 6,
+                                }}
+                            >
+                                본인인증이 필요합니다.
                             </Text>
                         </View>
                         <Login_Check_Svg />
@@ -85,6 +96,7 @@ export default function LoginPage_Checking({ navigation, route }: any) {
                                 alignItems: "center",
                                 justifyContent: "center",
                                 borderRadius: 10,
+                                marginBottom: 20,
                             },
                         ]}
                     >

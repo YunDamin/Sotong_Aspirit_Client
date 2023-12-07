@@ -444,7 +444,9 @@ export default function SubPage_TastingNoteWriting({ navigation }: any) {
                                                     color: "#000000",
                                                 }}
                                             >
-                                                취소
+                                                {tabIndex === 0
+                                                    ? "취소"
+                                                    : "뒤로"}
                                             </Text>
                                         </TouchableOpacity>
                                         <Text
@@ -2009,9 +2011,18 @@ export default function SubPage_TastingNoteWriting({ navigation }: any) {
                                         })}
                                 </View>
                                 <View style={{ marginTop: 40 }} />
+                                <View style={{ marginTop: 20 }} />
+                                <View style={{ marginTop: 20 }} />
+                                <View style={{ marginTop: 20 }} />
                             </View>
                         </ScrollView>
-                        <View style={{ width: "100%", alignItems: "center" }}>
+                        <View
+                            style={{
+                                width: "100%",
+                                alignItems: "center",
+                                marginBottom: 20,
+                            }}
+                        >
                             <TouchableOpacity
                                 disabled={
                                     !(
@@ -2102,33 +2113,47 @@ export default function SubPage_TastingNoteWriting({ navigation }: any) {
                                             justifyContent: "center",
                                         }}
                                     >
-                                        <Text
-                                            style={{
-                                                fontFamily:
-                                                    "Spoqa Han Sans Neo",
-                                                fontWeight: "700",
-                                                fontSize: 12,
-                                                textAlign: "center",
-                                                color: "#000000",
-                                            }}
-                                        >
+                                        <View>
                                             <Text
                                                 style={{
-                                                    color: "#D6690F",
+                                                    fontFamily:
+                                                        "Spoqa Han Sans Neo",
+                                                    fontWeight: "700",
+                                                    fontSize: 12,
+                                                    textAlign: "center",
+                                                    color: "#000000",
+                                                    marginBottom: 3,
                                                 }}
                                             >
-                                                {get_whisky_name()}
+                                                <Text
+                                                    style={{
+                                                        color: "#D6690F",
+                                                    }}
+                                                >
+                                                    {get_whisky_name()}
+                                                </Text>
+                                                <Text>{"의"}</Text>
                                             </Text>
-                                            <Text>{"의\n"}</Text>
                                             <Text
                                                 style={{
-                                                    color: "#D6690F",
+                                                    fontFamily:
+                                                        "Spoqa Han Sans Neo",
+                                                    fontWeight: "700",
+                                                    fontSize: 12,
+                                                    textAlign: "center",
+                                                    color: "#000000",
                                                 }}
                                             >
-                                                노즈(향)
+                                                <Text
+                                                    style={{
+                                                        color: "#D6690F",
+                                                    }}
+                                                >
+                                                    노즈(향)
+                                                </Text>
+                                                <Text>을 평가해주세요.</Text>
                                             </Text>
-                                            <Text>을 평가해주세요.</Text>
-                                        </Text>
+                                        </View>
                                     </View>
                                     <View
                                         style={{
@@ -2179,33 +2204,47 @@ export default function SubPage_TastingNoteWriting({ navigation }: any) {
                                             justifyContent: "center",
                                         }}
                                     >
-                                        <Text
-                                            style={{
-                                                fontFamily:
-                                                    "Spoqa Han Sans Neo",
-                                                fontWeight: "700",
-                                                fontSize: 12,
-                                                textAlign: "center",
-                                                color: "#000000",
-                                            }}
-                                        >
+                                        <View>
                                             <Text
                                                 style={{
-                                                    color: "#D6690F",
+                                                    fontFamily:
+                                                        "Spoqa Han Sans Neo",
+                                                    fontWeight: "700",
+                                                    fontSize: 12,
+                                                    textAlign: "center",
+                                                    color: "#000000",
+                                                    marginBottom: 3,
                                                 }}
                                             >
-                                                {get_whisky_name()}
+                                                <Text
+                                                    style={{
+                                                        color: "#D6690F",
+                                                    }}
+                                                >
+                                                    {get_whisky_name()}
+                                                </Text>
+                                                <Text>{"의"}</Text>
                                             </Text>
-                                            <Text>{"의\n"}</Text>
                                             <Text
                                                 style={{
-                                                    color: "#D6690F",
+                                                    fontFamily:
+                                                        "Spoqa Han Sans Neo",
+                                                    fontWeight: "700",
+                                                    fontSize: 12,
+                                                    textAlign: "center",
+                                                    color: "#000000",
                                                 }}
                                             >
-                                                팔레트(중간맛)
+                                                <Text
+                                                    style={{
+                                                        color: "#D6690F",
+                                                    }}
+                                                >
+                                                    팔레트(중간맛)
+                                                </Text>
+                                                <Text>을 평가해주세요.</Text>
                                             </Text>
-                                            <Text>을 평가해주세요.</Text>
-                                        </Text>
+                                        </View>
                                     </View>
                                     <View
                                         style={{
@@ -2256,33 +2295,47 @@ export default function SubPage_TastingNoteWriting({ navigation }: any) {
                                             justifyContent: "center",
                                         }}
                                     >
-                                        <Text
-                                            style={{
-                                                fontFamily:
-                                                    "Spoqa Han Sans Neo",
-                                                fontWeight: "700",
-                                                fontSize: 12,
-                                                textAlign: "center",
-                                                color: "#000000",
-                                            }}
-                                        >
+                                        <View>
                                             <Text
                                                 style={{
-                                                    color: "#D6690F",
+                                                    fontFamily:
+                                                        "Spoqa Han Sans Neo",
+                                                    fontWeight: "700",
+                                                    fontSize: 12,
+                                                    textAlign: "center",
+                                                    color: "#000000",
+                                                    marginBottom: 3,
                                                 }}
                                             >
-                                                {get_whisky_name()}
+                                                <Text
+                                                    style={{
+                                                        color: "#D6690F",
+                                                    }}
+                                                >
+                                                    {get_whisky_name()}
+                                                </Text>
+                                                <Text>{"의"}</Text>
                                             </Text>
-                                            <Text>{"의\n"}</Text>
                                             <Text
                                                 style={{
-                                                    color: "#D6690F",
+                                                    fontFamily:
+                                                        "Spoqa Han Sans Neo",
+                                                    fontWeight: "700",
+                                                    fontSize: 12,
+                                                    textAlign: "center",
+                                                    color: "#000000",
                                                 }}
                                             >
-                                                피니시(끝맛)
+                                                <Text
+                                                    style={{
+                                                        color: "#D6690F",
+                                                    }}
+                                                >
+                                                    피니시(끝맛)
+                                                </Text>
+                                                <Text>을 평가해주세요.</Text>
                                             </Text>
-                                            <Text>을 평가해주세요.</Text>
-                                        </Text>
+                                        </View>
                                     </View>
                                     <View
                                         style={{
@@ -2343,26 +2396,41 @@ export default function SubPage_TastingNoteWriting({ navigation }: any) {
                                     >
                                         <Star_Rating />
                                     </View>
-                                    <Text
-                                        style={{
-                                            fontFamily: "Spoqa Han Sans Neo",
-                                            fontWeight: "700",
-                                            fontSize: 18,
-                                            textAlign: "center",
-                                            color: "#000000",
-                                            marginBottom: 15,
-                                        }}
-                                    >
+                                    <View>
                                         <Text
                                             style={{
-                                                color: "#D6690F",
+                                                fontFamily:
+                                                    "Spoqa Han Sans Neo",
+                                                fontWeight: "700",
+                                                fontSize: 18,
+                                                textAlign: "center",
+                                                color: "#000000",
+                                                marginBottom: 10,
                                             }}
                                         >
-                                            {get_whisky_name()}
+                                            <Text
+                                                style={{
+                                                    color: "#D6690F",
+                                                }}
+                                            >
+                                                {get_whisky_name()}
+                                            </Text>
+                                            <Text>{"의"}</Text>
                                         </Text>
-                                        <Text>{"의\n"}</Text>
-                                        <Text>총점을 입력해주세요.</Text>
-                                    </Text>
+                                        <Text
+                                            style={{
+                                                fontFamily:
+                                                    "Spoqa Han Sans Neo",
+                                                fontWeight: "700",
+                                                fontSize: 18,
+                                                textAlign: "center",
+                                                color: "#000000",
+                                                marginBottom: 15,
+                                            }}
+                                        >
+                                            <Text>총점을 입력해주세요.</Text>
+                                        </Text>
+                                    </View>
                                     <StarRating
                                         maxStars={5}
                                         rating={allRate}
@@ -2391,7 +2459,13 @@ export default function SubPage_TastingNoteWriting({ navigation }: any) {
                                 </View>
                             </View>
                         </ScrollView>
-                        <View style={{ width: "100%", alignItems: "center" }}>
+                        <View
+                            style={{
+                                width: "100%",
+                                alignItems: "center",
+                                marginBottom: 20,
+                            }}
+                        >
                             <TouchableOpacity
                                 disabled={
                                     !(

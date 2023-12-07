@@ -28,12 +28,19 @@ import { useRecoilState } from "recoil";
 import { login_data, login_state } from "../atoms/login_state";
 import { user, user_state } from "../atoms/get_user";
 
-export default function SubPage_Profile({ navigation }: any) {
+export default function SubPage_Profile({ navigation, route }: any) {
     const [userState, setUserState] = useRecoilState<user>(user_state);
+    const [user, setUser] = React.useState<any>(null);
+    const user_id = route.params.user_id;
 
     useFocusEffect(
         React.useCallback(() => {
             console.log("SubPage_Profile Focus");
+            axios
+                .get(API_KEY + "/users/user/" + user_id + "/summary")
+                .then((res) => {
+                    setUser(res.data);
+                });
             return () => {};
         }, [])
     );
@@ -75,9 +82,9 @@ export default function SubPage_Profile({ navigation }: any) {
                                 marginBottom: 15,
                             }}
                         >
-                            {userState.img_urls.length > 0 ? (
+                            {(user?.img_urls?.length ?? 0) > 0 ? (
                                 <Image
-                                    source={{ uri: userState.img_urls[0] }}
+                                    source={{ uri: user?.img_urls[0] }}
                                     width={85}
                                     height={85}
                                     style={{
@@ -97,7 +104,7 @@ export default function SubPage_Profile({ navigation }: any) {
                                     color: "#000000",
                                 }}
                             >
-                                {userState.user_nick_name}
+                                {user?.user_nick_name ?? ""}
                             </Text>
                             <Text
                                 style={{
@@ -108,7 +115,7 @@ export default function SubPage_Profile({ navigation }: any) {
                                     marginTop: 5,
                                 }}
                             >
-                                {userState.user_email}
+                                {user?.user_email ?? ""}
                             </Text>
                         </View>
                     </View>
@@ -147,7 +154,9 @@ export default function SubPage_Profile({ navigation }: any) {
                                 {"작성노트\t\t "}
                             </Text>
                             <Text>
-                                {userState.user_notes.length.toLocaleString()}
+                                {(
+                                    user?.user_notes?.length ?? 0
+                                ).toLocaleString()}
                             </Text>
                         </Text>
                         <View
@@ -175,7 +184,8 @@ export default function SubPage_Profile({ navigation }: any) {
                             >
                                 {"평균평점\t\t "}
                             </Text>
-                            <Text>{userState.user_av.toFixed(1)}</Text>
+
+                            <Text>{(user?.user_av ?? 0).toFixed(1)}</Text>
                         </Text>
                     </View>
                 </View>
