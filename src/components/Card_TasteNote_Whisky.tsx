@@ -12,6 +12,7 @@ import {
 } from "react-native";
 
 import Icon_Star from "../public/icons/icons/icon_star.svg";
+import Profile_Svg from "../public/icons/photo/little_profile.svg";
 import SSSS from "../public/icons/btn/ssss.svg";
 
 import StarRating, { StarRatingDisplay } from "react-native-star-rating-widget";
@@ -615,7 +616,20 @@ export default function Card_TasteNote_Whisky(props: Props) {
                             borderRadius: 100,
                             backgroundColor: "white",
                         }}
-                    ></View>
+                    >
+                        {user?.img_urls?.length > 0 ? (
+                            <Image
+                                source={{ uri: user?.img_urls?.img_urls[0] }}
+                                width={36}
+                                height={36}
+                                style={{
+                                    borderRadius: 100,
+                                }}
+                            />
+                        ) : (
+                            <Profile_Svg />
+                        )}
+                    </View>
                     <View
                         style={{
                             height: 40,

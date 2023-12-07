@@ -9,18 +9,40 @@ import {
     ScrollView,
     TouchableOpacity,
     StatusBar,
+    Image,
 } from "react-native";
 
 import Btn_OnOff_Arrow_Right from "../public/icons/btn/btn_onoff_right_arrow.svg";
+import Profile_Svg from "../public/icons/photo/profile.svg";
 
 // Navigator
 import CustomNavigator_Top from "../navigators/CustomNavigator_Top";
 
 import { useRecoilState } from "recoil";
+import { login_data, login_state } from "../atoms/login_state";
 import { user, user_state } from "../atoms/get_user";
 
+import { removeData } from "../utils/AsyncStorage";
+
 export default function SubPage_MyPage({ navigation }: any) {
+    const [loginState, setLoginState] = useRecoilState<login_data>(login_state);
     const [userState, setUserState] = useRecoilState<user>(user_state);
+
+    const logout = () => {
+        setLoginState({
+            is_login: false,
+            login_type: "",
+            user_id: "",
+            accessToken: "",
+            refreshToken: "",
+            survey: false,
+        });
+        removeData("user_id");
+        removeData("login_type");
+        removeData("accessToken");
+        removeData("refreshToken");
+        navigation.replace("Main");
+    };
 
     return (
         <>
@@ -44,7 +66,20 @@ export default function SubPage_MyPage({ navigation }: any) {
                             marginTop: 25,
                             marginBottom: 15,
                         }}
-                    ></View>
+                    >
+                        {userState.img_urls.length > 0 ? (
+                            <Image
+                                source={{ uri: userState.img_urls[0] }}
+                                width={85}
+                                height={85}
+                                style={{
+                                    borderRadius: 100,
+                                }}
+                            />
+                        ) : (
+                            <Profile_Svg />
+                        )}
+                    </View>
                     <Text
                         style={{
                             fontFamily: "Spoqa Han Sans Neo",
@@ -112,6 +147,9 @@ export default function SubPage_MyPage({ navigation }: any) {
                                 내 정보
                             </Text>
                             <TouchableOpacity
+                                onPress={() => {
+                                    navigation.navigate("SubPage_EditMe");
+                                }}
                                 style={{
                                     flexDirection: "row",
                                     width: "100%",
@@ -145,6 +183,11 @@ export default function SubPage_MyPage({ navigation }: any) {
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity
+                                onPress={() => {
+                                    navigation.navigate("SurveyPage_Main", {
+                                        edit: true,
+                                    });
+                                }}
                                 style={{
                                     flexDirection: "row",
                                     width: "100%",
@@ -265,6 +308,9 @@ export default function SubPage_MyPage({ navigation }: any) {
                                 고객센터
                             </Text>
                             <TouchableOpacity
+                                onPress={() => {
+                                    navigation.navigate("SubPage_FAQ");
+                                }}
                                 style={{
                                     flexDirection: "row",
                                     width: "100%",
@@ -362,6 +408,34 @@ export default function SubPage_MyPage({ navigation }: any) {
                                 >
                                     <Btn_OnOff_Arrow_Right />
                                 </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    logout();
+                                }}
+                                style={{
+                                    flexDirection: "row",
+                                    width: "100%",
+                                    height: 40,
+                                    alignItems: "center",
+                                    justifyContent: "flex-start",
+                                    marginLeft: 20,
+                                    marginBottom: 5,
+                                    marginTop: 15,
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        fontFamily: "Spoqa Han Sans Neo",
+                                        fontWeight: "400",
+                                        fontSize: 14,
+                                        color: "#5B5B5B",
+                                        textAlign: "left",
+                                        textDecorationLine: "underline",
+                                    }}
+                                >
+                                    로그아웃
+                                </Text>
                             </TouchableOpacity>
                         </ScrollView>
                     </View>

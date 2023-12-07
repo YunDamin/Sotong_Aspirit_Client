@@ -28,6 +28,7 @@ type PetkyCheckySelectFieldProps = {
     list: PetSelectType[];
     value: number;
     setValue: React.Dispatch<React.SetStateAction<number>>;
+    isDisabled?: boolean;
 };
 
 type Props = PetkyCheckySelectFieldProps;
@@ -57,6 +58,7 @@ export default function Field_Select(props: Props) {
             }}
         >
             <TouchableOpacity
+                disabled={props.isDisabled}
                 onPress={() => {
                     setIsClick((prevClickState) => !prevClickState);
                 }}
@@ -68,9 +70,27 @@ export default function Field_Select(props: Props) {
                         borderColor: "#000000",
                         borderRadius: 10,
                     },
+                    props.isDisabled && {
+                        borderColor: "#E5E5E5",
+                    },
                     styles.selectedBtn,
                 ]}
             >
+                {props.isDisabled && (
+                    <View
+                        style={[
+                            {
+                                width: 320,
+                                height: 55,
+                                borderWidth: 0,
+                                position: "absolute",
+                                borderRadius: 10,
+                                backgroundColor: "#000000",
+                                opacity: 0.08,
+                            },
+                        ]}
+                    />
+                )}
                 <Text style={styles.selectedValueTxt}>
                     {list.filter((list) => list.id === value)[0].name}
                 </Text>

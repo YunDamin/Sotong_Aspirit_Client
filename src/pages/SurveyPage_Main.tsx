@@ -75,6 +75,44 @@ import { login_data, login_state } from "../atoms/login_state";
 export default function SurveyPage_Main({ navigation, route }: any) {
     const [loginState, setLoginState] = useRecoilState<login_data>(login_state);
 
+    const edit = route.params.edit ?? false;
+
+    const edit_step = () => {
+        console.log("Edit Step");
+        axios
+            .patch(
+                API_KEY + "/users/survey/" + loginState.user_id,
+                {
+                    survey: {
+                        liked_smell: likedSmell.map(
+                            (data) => data.third.COM_CD
+                        ),
+                        liked_taste: likedTaste.map(
+                            (data) => data.third.COM_CD
+                        ),
+                        hated_smell: hatedSmell.map(
+                            (data) => data.third.COM_CD
+                        ),
+                        hated_taste: hatedTaste.map(
+                            (data) => data.third.COM_CD
+                        ),
+                    },
+                    add_survey: {},
+                },
+                {
+                    headers: {
+                        authorization: loginState.accessToken,
+                    },
+                }
+            )
+            .then((res) => {
+                if (res.data.ok) {
+                    console.log("Success Survey");
+                    navigation.goBack();
+                }
+            });
+    };
+
     const next_step = () => {
         console.log("Survey Step");
         axios
@@ -198,6 +236,152 @@ export default function SurveyPage_Main({ navigation, route }: any) {
             return () => {};
         }, [])
     );
+
+    React.useEffect(() => {
+        if (tasteData.length == 0) return;
+        axios
+            .get(API_KEY + "/users/survey/" + loginState.user_id, {
+                headers: {
+                    authorization: loginState.accessToken,
+                },
+            })
+            .then((res) => {
+                if (res.data.ok) {
+                    if (res.data.survey.liked_smell.length != 0) {
+                        setLikedSmell(
+                            res.data.survey.liked_smell.map((data: any) => {
+                                for (let first of tasteData) {
+                                    for (let second of first.seconds) {
+                                        for (let third of second.thirds) {
+                                            if (third.COM_CD == data) {
+                                                return {
+                                                    first: first.first,
+                                                    second: second.second,
+                                                    third: third,
+                                                };
+                                            }
+                                        }
+                                    }
+                                }
+                                return {
+                                    first: {
+                                        COM_CD: "",
+                                        KOR_CD_NM: "",
+                                    },
+                                    second: {
+                                        COM_CD: "",
+                                        KOR_CD_NM: "",
+                                    },
+                                    third: {
+                                        COM_CD: "",
+                                        KOR_CD_NM: "",
+                                    },
+                                };
+                            })
+                        );
+                    }
+                    if (res.data.survey.liked_taste.length != 0) {
+                        setLikedTaste(
+                            res.data.survey.liked_taste.map((data: any) => {
+                                for (let first of tasteData) {
+                                    for (let second of first.seconds) {
+                                        for (let third of second.thirds) {
+                                            if (third.COM_CD == data) {
+                                                return {
+                                                    first: first.first,
+                                                    second: second.second,
+                                                    third: third,
+                                                };
+                                            }
+                                        }
+                                    }
+                                }
+                                return {
+                                    first: {
+                                        COM_CD: "",
+                                        KOR_CD_NM: "",
+                                    },
+                                    second: {
+                                        COM_CD: "",
+                                        KOR_CD_NM: "",
+                                    },
+                                    third: {
+                                        COM_CD: "",
+                                        KOR_CD_NM: "",
+                                    },
+                                };
+                            })
+                        );
+                    }
+                    if (res.data.survey.hated_smell.length != 0) {
+                        setHatedSmell(
+                            res.data.survey.hated_smell.map((data: any) => {
+                                for (let first of tasteData) {
+                                    for (let second of first.seconds) {
+                                        for (let third of second.thirds) {
+                                            if (third.COM_CD == data) {
+                                                return {
+                                                    first: first.first,
+                                                    second: second.second,
+                                                    third: third,
+                                                };
+                                            }
+                                        }
+                                    }
+                                }
+                                return {
+                                    first: {
+                                        COM_CD: "",
+                                        KOR_CD_NM: "",
+                                    },
+                                    second: {
+                                        COM_CD: "",
+                                        KOR_CD_NM: "",
+                                    },
+                                    third: {
+                                        COM_CD: "",
+                                        KOR_CD_NM: "",
+                                    },
+                                };
+                            })
+                        );
+                    }
+                    if (res.data.survey.hated_taste.length != 0) {
+                        setHatedTaste(
+                            res.data.survey.hated_taste.map((data: any) => {
+                                for (let first of tasteData) {
+                                    for (let second of first.seconds) {
+                                        for (let third of second.thirds) {
+                                            if (third.COM_CD == data) {
+                                                return {
+                                                    first: first.first,
+                                                    second: second.second,
+                                                    third: third,
+                                                };
+                                            }
+                                        }
+                                    }
+                                }
+                                return {
+                                    first: {
+                                        COM_CD: "",
+                                        KOR_CD_NM: "",
+                                    },
+                                    second: {
+                                        COM_CD: "",
+                                        KOR_CD_NM: "",
+                                    },
+                                    third: {
+                                        COM_CD: "",
+                                        KOR_CD_NM: "",
+                                    },
+                                };
+                            })
+                        );
+                    }
+                }
+            });
+    }, [tasteData]);
 
     return (
         <>
@@ -1538,6 +1722,7 @@ export default function SurveyPage_Main({ navigation, route }: any) {
                                         </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity
+                                        disabled={edit}
                                         onPress={() => {
                                             toggleAddSurveyView();
                                         }}
@@ -1600,7 +1785,11 @@ export default function SurveyPage_Main({ navigation, route }: any) {
                             if (isAddSurveyView) {
                                 toggleAddSurveyView();
                             } else {
-                                next_step();
+                                if (edit) {
+                                    edit_step();
+                                } else {
+                                    next_step();
+                                }
                             }
                         }}
                         disabled={
@@ -1645,7 +1834,7 @@ export default function SurveyPage_Main({ navigation, route }: any) {
                                 textAlign: "center",
                             }}
                         >
-                            완료
+                            {edit ? "수정 완료" : "완료"}
                         </Text>
                     </TouchableOpacity>
                 </View>

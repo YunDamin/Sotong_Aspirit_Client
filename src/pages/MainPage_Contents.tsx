@@ -98,6 +98,33 @@ export default function MainPage_Contents({ navigation }: any) {
                 setContentsNotice(res.data);
             });
 
+            if (loginState.is_login) {
+                axios
+                    .get(
+                        API_KEY +
+                            "/users/user/" +
+                            loginState.user_id +
+                            "/summary",
+                        {
+                            headers: {
+                                authorization: loginState.accessToken,
+                            },
+                        }
+                    )
+                    .then((res) => {
+                        setUserState({
+                            user_name: res.data.user_name,
+                            user_birth: res.data.user_birth,
+                            user_sex: res.data.user_sex,
+                            user_email: res.data.user_email,
+                            user_nick_name: res.data.user_nick_name,
+                            user_notes: res.data.user_notes,
+                            user_av: res.data.user_av,
+                            img_urls: res.data.img_urls,
+                        });
+                    });
+            }
+
             return () => {};
         }, [])
     );
