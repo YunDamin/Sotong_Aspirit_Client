@@ -120,7 +120,6 @@ export default function MainPage_Home({ navigation }: any) {
                         }
                     )
                     .then((res) => {
-                        console.log(res.data);
                         setUserState({
                             user_name: res.data.user_name,
                             user_birth: res.data.user_birth,

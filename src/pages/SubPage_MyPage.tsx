@@ -221,6 +221,9 @@ export default function SubPage_MyPage({ navigation }: any) {
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity
+                                onPress={() => {
+                                    navigation.navigate("SubPage_Profile");
+                                }}
                                 style={{
                                     flexDirection: "row",
                                     width: "100%",

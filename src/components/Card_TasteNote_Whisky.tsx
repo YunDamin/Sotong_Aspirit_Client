@@ -617,9 +617,9 @@ export default function Card_TasteNote_Whisky(props: Props) {
                             backgroundColor: "white",
                         }}
                     >
-                        {user?.img_urls?.length > 0 ? (
+                        {(user?.img_urls?.length ?? 0) > 0 ? (
                             <Image
-                                source={{ uri: user?.img_urls?.img_urls[0] }}
+                                source={{ uri: user?.img_urls[0] }}
                                 width={36}
                                 height={36}
                                 style={{

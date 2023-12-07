@@ -9,11 +9,19 @@ interface Props {
     title: string;
     goBack: () => void;
     whatBtn?: string;
+    background?: boolean;
 }
 
 export default function CustomNavigator_Top(props: Props) {
     return (
-        <View style={styles.container}>
+        <View
+            style={[
+                styles.container,
+                props.background && {
+                    backgroundColor: "#FCECDE",
+                },
+            ]}
+        >
             <TouchableOpacity onPress={props.goBack} style={styles.backBtn}>
                 <Back_Btn_Svg />
             </TouchableOpacity>

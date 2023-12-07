@@ -20,6 +20,7 @@ import SurveyPage_Main from "../pages/SurveyPage_Main";
 
 // ? My
 import SubPage_EditMe from "../pages/SubPage_EditMe";
+import SubPage_Profile from "../pages/SubPage_Profile";
 
 // ?
 import SubPage_FAQ from "../pages/SubPage_FAQ";
@@ -92,6 +93,11 @@ export default function Navigator_Home() {
             <Stack.Screen
                 name="SubPage_FAQ"
                 component={SubPage_FAQ}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="SubPage_Profile"
+                component={SubPage_Profile}
                 options={{ headerShown: false }}
             />
         </Stack.Navigator>

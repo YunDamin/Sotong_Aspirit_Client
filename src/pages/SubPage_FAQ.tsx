@@ -21,7 +21,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 import { API_KEY } from "@env";
 
-export default function SubPage_Alert({ navigation }: any) {
+export default function SubPage_FAQ({ navigation }: any) {
     const [faq, setFaq] = React.useState<any[]>([]);
 
     useFocusEffect(
