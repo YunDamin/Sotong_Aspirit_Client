@@ -17,6 +17,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import Btn_OnOff_Arrow_Right from "../public/icons/btn/btn_onoff_right_arrow.svg";
 
 import StarRating, { StarRatingDisplay } from "react-native-star-rating-widget";
+import Swiper from "react-native-web-swiper";
 
 // Navigator
 import CustomNavigator_Top from "../navigators/CustomNavigator_Top";
@@ -134,11 +135,37 @@ export default function SubPage_Whisky({ navigation, route }: any) {
                                 }}
                             >
                                 {(data?.img_urls?.length ?? 0) > 0 && (
-                                    <Image
-                                        source={{ uri: data.img_urls[0] }}
-                                        height={440}
-                                        style={{ resizeMode: "cover" }}
-                                    />
+                                    <Swiper
+                                        loop={true}
+                                        timeout={3}
+                                        controlsEnabled={true}
+                                        containerStyle={{
+                                            width: "100%",
+                                            height: 440,
+                                        }}
+                                        controlsProps={{
+                                            prevPos: false,
+                                            nextPos: false,
+                                            dotActiveStyle: {
+                                                backgroundColor: "#D6690F",
+                                            },
+                                        }}
+                                    >
+                                        {data.img_urls.map(
+                                            (item: any, index: number) => {
+                                                return (
+                                                    <Image
+                                                        key={index}
+                                                        source={{ uri: item }}
+                                                        height={440}
+                                                        style={{
+                                                            resizeMode: "cover",
+                                                        }}
+                                                    />
+                                                );
+                                            }
+                                        )}
+                                    </Swiper>
                                 )}
                             </View>
                             <Text

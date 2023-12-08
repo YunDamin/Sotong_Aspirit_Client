@@ -239,6 +239,7 @@ export default function SurveyPage_Main({ navigation, route }: any) {
 
     React.useEffect(() => {
         if (tasteData.length == 0) return;
+        if (!edit) return;
         axios
             .get(API_KEY + "/users/survey/" + loginState.user_id, {
                 headers: {

@@ -22,13 +22,18 @@ import axios from "axios";
 import { API_KEY } from "@env";
 
 export default function SubPage_FAQ({ navigation }: any) {
+    const [categories, setCategories] = React.useState<string[]>([]);
     const [faq, setFaq] = React.useState<any[]>([]);
+
+    const [category, setCategory] = React.useState<string>("");
 
     useFocusEffect(
         React.useCallback(() => {
             console.log("SubPage_FAQ Focus");
             axios.get(API_KEY + "/contents/faq/").then((res) => {
-                setFaq(res.data);
+                console.log(res.data);
+                setCategories(res.data?.categories ?? []);
+                setFaq(res.data?.faqs ?? []);
             });
             return () => {};
         }, [])
@@ -45,6 +50,97 @@ export default function SubPage_FAQ({ navigation }: any) {
                         navigation.goBack();
                     }}
                 />
+
+                <View
+                    style={{
+                        marginTop: 10,
+                        width: "100%",
+                        height: 30,
+                        display: "flex",
+                        flexDirection: "row",
+                    }}
+                >
+                    <TouchableOpacity
+                        style={{
+                            flex: 1,
+                            justifyContent: "center",
+                        }}
+                        onPress={() => {
+                            setCategory("");
+                        }}
+                    >
+                        <Text
+                            style={{
+                                fontFamily: "Spoqa Han Sans Neo",
+                                fontWeight: "700",
+                                fontSize: 14,
+                                color:
+                                    category.trim() == ""
+                                        ? "#D6690F"
+                                        : "#888888",
+                                textAlign: "center",
+                            }}
+                        >
+                            {"전체"}
+                        </Text>
+                        <View
+                            style={{
+                                marginTop: 10,
+                                height: category.trim() == "" ? 3 : 1,
+                                backgroundColor:
+                                    category.trim() == ""
+                                        ? "#D6690F"
+                                        : "#888888",
+                                opacity: category.trim() == "" ? 1 : 0.5,
+                            }}
+                        />
+                    </TouchableOpacity>
+                    {categories.map((item, index) => {
+                        return (
+                            <TouchableOpacity
+                                style={{
+                                    flex: 1,
+                                    justifyContent: "center",
+                                }}
+                                onPress={() => {
+                                    setCategory(item.trim());
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        fontFamily: "Spoqa Han Sans Neo",
+                                        fontWeight: "700",
+                                        fontSize: 14,
+                                        color:
+                                            category.trim() == item.trim()
+                                                ? "#D6690F"
+                                                : "#888888",
+                                        textAlign: "center",
+                                    }}
+                                >
+                                    {item.trim()}
+                                </Text>
+                                <View
+                                    style={{
+                                        marginTop: 10,
+                                        height:
+                                            category.trim() == item.trim()
+                                                ? 3
+                                                : 1,
+                                        backgroundColor:
+                                            category.trim() == item.trim()
+                                                ? "#D6690F"
+                                                : "#888888",
+                                        opacity:
+                                            category.trim() == item.trim()
+                                                ? 1
+                                                : 0.5,
+                                    }}
+                                />
+                            </TouchableOpacity>
+                        );
+                    })}
+                </View>
                 <View style={styles.page}>
                     <ScrollView
                         style={{
@@ -60,15 +156,22 @@ export default function SubPage_FAQ({ navigation }: any) {
                                 alignItems: "center",
                             }}
                         >
-                            {faq.map((item, index) => {
-                                return (
-                                    <Card_FAQ
-                                        key={index}
-                                        title={item.title}
-                                        des={item.content}
-                                    />
-                                );
-                            })}
+                            {faq
+                                .filter((faq) => {
+                                    return (
+                                        faq.caregory.trim() ==
+                                            category.trim() || category == ""
+                                    );
+                                })
+                                .map((item, index) => {
+                                    return (
+                                        <Card_FAQ
+                                            key={index}
+                                            title={item.title}
+                                            des={item.content}
+                                        />
+                                    );
+                                })}
                         </View>
                     </ScrollView>
                 </View>

@@ -133,7 +133,7 @@ export default function MainPage_Contents({ navigation }: any) {
 
     const [tabIndex, setTabIndex] = React.useState<number>(0);
 
-    const topPosition = React.useRef(new Animated.Value(150));
+    const topPosition = React.useRef(new Animated.Value(170));
 
     const handleScroll = (event: any) => {
         const scrollY = event.nativeEvent.contentOffset.y;

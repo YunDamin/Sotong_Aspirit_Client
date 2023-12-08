@@ -57,6 +57,7 @@ export default function Card_News_Whisky(props: Props) {
             </View>
             <Text
                 style={{
+                    width: 240,
                     fontFamily: "Spoqa Han Sans Neo",
                     fontWeight: "700",
                     fontSize: 14,

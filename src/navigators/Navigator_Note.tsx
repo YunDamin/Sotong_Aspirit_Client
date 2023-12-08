@@ -15,6 +15,12 @@ import SubPage_Whisky from "../pages/SubPage_Whisky";
 // ? Survey
 import SurveyPage_Main from "../pages/SurveyPage_Main";
 
+// ? My
+import SubPage_EditMe from "../pages/SubPage_EditMe";
+import SubPage_Profile from "../pages/SubPage_Profile";
+import SubPage_Settings from "../pages/SubPage_Settings";
+import SubPage_FAQ from "../pages/SubPage_FAQ";
+
 // * SubNavigator
 import SubNavigator_Login from "./SubNavigator_Login";
 
@@ -66,6 +72,26 @@ export default function Navigator_Note() {
             <Stack.Screen
                 name="SurveyPage_Main"
                 component={SurveyPage_Main}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="SubPage_EditMe"
+                component={SubPage_EditMe}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="SubPage_FAQ"
+                component={SubPage_FAQ}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="SubPage_Profile"
+                component={SubPage_Profile}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="SubPage_Settings"
+                component={SubPage_Settings}
                 options={{ headerShown: false }}
             />
         </Stack.Navigator>

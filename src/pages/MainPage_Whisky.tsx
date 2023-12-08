@@ -74,7 +74,7 @@ export default function MainPage_Whisky({ navigation }: any) {
 
     const [tabIndex, setTabIndex] = React.useState<number>(0);
 
-    const topPosition = React.useRef(new Animated.Value(150));
+    const topPosition = React.useRef(new Animated.Value(170));
 
     const [viewWhiskyData, setViewWhiskyData] = React.useState<whisky[]>([]);
     const [view, setView] = React.useState(0);

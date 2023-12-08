@@ -72,7 +72,7 @@ export default function MainPage_Note({ navigation }: any) {
 
     const [tabIndex, setTabIndex] = React.useState<number>(0);
 
-    const topPosition = React.useRef(new Animated.Value(150));
+    const topPosition = React.useRef(new Animated.Value(170));
 
     const [loading, setLoading] = React.useState(false);
     const loadMoreData = () => {

@@ -139,7 +139,7 @@ export default function MainPage_Home({ navigation }: any) {
         }, [])
     );
 
-    const topPosition = React.useRef(new Animated.Value(150)).current;
+    const topPosition = React.useRef(new Animated.Value(170)).current;
 
     const handleScroll = (event: any) => {
         const scrollY = event.nativeEvent.contentOffset.y;
