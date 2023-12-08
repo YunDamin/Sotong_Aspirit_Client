@@ -27,6 +27,7 @@ interface Props {
     title: string;
     des: string;
     rates: Rate[];
+    isSmall?: boolean;
 }
 
 function getTopRates(rates: Rate[]): Rate[] {
@@ -262,61 +263,63 @@ export default function Card_Graph(props: Props) {
                 </View>
             </Modal>
             <View style={{ width: 320, alignItems: "center" }}>
-                <View
-                    style={{
-                        width: 320,
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                    }}
-                >
-                    <Text>
-                        <Text
-                            style={{
-                                fontFamily: "Spoqa Han Sans Neo",
-                                fontWeight: "700",
-                                fontSize: 14,
-                                color: "#000000",
-                            }}
-                        >
-                            {props.title}
-                        </Text>
-                        <Text
-                            style={{
-                                fontFamily: "Spoqa Han Sans Neo",
-                                fontWeight: "400",
-                                fontSize: 12,
-                                color: "#888888",
-                            }}
-                        >
-                            {" " + props.des}
-                        </Text>
-                    </Text>
-                    <TouchableOpacity
-                        onPress={() => {
-                            toggleFilterModal();
-                        }}
+                {props.isSmall ? null : (
+                    <View
                         style={{
-                            width: 50,
-                            height: 20,
-                            borderWidth: 1,
-                            borderColor: "#888888",
-                            borderRadius: 50,
-                            alignItems: "center",
-                            justifyContent: "center",
+                            width: 320,
+                            flexDirection: "row",
+                            justifyContent: "space-between",
                         }}
                     >
-                        <Text
+                        <Text>
+                            <Text
+                                style={{
+                                    fontFamily: "Spoqa Han Sans Neo",
+                                    fontWeight: "700",
+                                    fontSize: 14,
+                                    color: "#000000",
+                                }}
+                            >
+                                {props.title}
+                            </Text>
+                            <Text
+                                style={{
+                                    fontFamily: "Spoqa Han Sans Neo",
+                                    fontWeight: "400",
+                                    fontSize: 12,
+                                    color: "#888888",
+                                }}
+                            >
+                                {" " + props.des}
+                            </Text>
+                        </Text>
+                        <TouchableOpacity
+                            onPress={() => {
+                                toggleFilterModal();
+                            }}
                             style={{
-                                fontFamily: "Spoqa Han Sans Neo",
-                                fontWeight: "500",
-                                fontSize: 12,
-                                color: "#000000",
+                                width: 50,
+                                height: 20,
+                                borderWidth: 1,
+                                borderColor: "#888888",
+                                borderRadius: 50,
+                                alignItems: "center",
+                                justifyContent: "center",
                             }}
                         >
-                            상세
-                        </Text>
-                    </TouchableOpacity>
-                </View>
+                            <Text
+                                style={{
+                                    fontFamily: "Spoqa Han Sans Neo",
+                                    fontWeight: "500",
+                                    fontSize: 12,
+                                    color: "#000000",
+                                }}
+                            >
+                                상세
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                )}
                 <View
                     style={{
                         width: 300,
@@ -329,8 +332,8 @@ export default function Card_Graph(props: Props) {
                     {props.rates.length < 3 ? (
                         <PieChart
                             style={{
-                                width: 280,
-                                height: 280,
+                                width: props.isSmall ? 240 : 280,
+                                height: props.isSmall ? 240 : 280,
                                 marginBottom: 20,
                             }}
                             data={{
@@ -354,8 +357,8 @@ export default function Card_Graph(props: Props) {
                     ) : (
                         <RadarChart
                             style={{
-                                width: 300,
-                                height: 300,
+                                width: props.isSmall ? 260 : 300,
+                                height: props.isSmall ? 260 : 300,
                             }}
                             data={{
                                 dataSets: dataSets,

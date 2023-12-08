@@ -20,6 +20,8 @@ import StarRating, { StarRatingDisplay } from "react-native-star-rating-widget";
 interface Props {
     whisky_id?: string;
     onPress: () => void;
+    onPressDetail: () => void;
+    onPressUser: () => void;
     tasting_id: string;
     user_id: string;
 }
@@ -590,7 +592,34 @@ export default function Card_TasteNote_Whisky(props: Props) {
                 })}
             </View>
             <View style={{ marginTop: 20 }} />
-            <View
+            <TouchableOpacity
+                onPress={() => {
+                    props.onPressDetail();
+                }}
+                style={{
+                    width: 290,
+                    height: 30,
+                    borderRadius: 10,
+                    backgroundColor: "#EDEDED",
+                    alignItems: "center",
+                    justifyContent: "center",
+                }}
+            >
+                <Text
+                    style={{
+                        fontFamily: "Spoqa Han Sans Neo",
+                        fontWeight: "500",
+                        color: "#000000",
+                    }}
+                >
+                    상세보기
+                </Text>
+            </TouchableOpacity>
+            <View style={{ marginTop: 20 }} />
+            <TouchableOpacity
+                onPress={() => {
+                    props.onPressUser();
+                }}
                 style={{
                     width: 290,
                     paddingLeft: 15,
@@ -674,7 +703,7 @@ export default function Card_TasteNote_Whisky(props: Props) {
                 >
                     {note?.review ?? ""}
                 </Text>
-            </View>
+            </TouchableOpacity>
         </View>
     );
 }

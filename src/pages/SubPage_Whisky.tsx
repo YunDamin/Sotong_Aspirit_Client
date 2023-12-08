@@ -49,6 +49,7 @@ export default function SubPage_Whisky({ navigation, route }: any) {
 
     useFocusEffect(
         React.useCallback(() => {
+            console.log("SubPage_Whisky Focus");
             axios.get(API_KEY + "/whiskys/whisky/" + whisky_id).then((res) => {
                 setData(res.data?.data);
             });
@@ -1051,6 +1052,22 @@ export default function SubPage_Whisky({ navigation, route }: any) {
                                         key={index}
                                         tasting_id={data.tasting_id}
                                         user_id={data.user_id}
+                                        onPressDetail={() => {
+                                            navigation.navigate(
+                                                "SubPage_TastingNote_Single",
+                                                {
+                                                    user_id: data.user_id,
+                                                    whisky_id: whisky_id,
+                                                    tasting_id: data.tasting_id,
+                                                }
+                                            );
+                                        }}
+                                        onPressUser={() => {
+                                            navigation.navigate(
+                                                "SubPage_Profile",
+                                                { user_id: data.user_id }
+                                            );
+                                        }}
                                         onPress={() => {}}
                                     />
                                 );

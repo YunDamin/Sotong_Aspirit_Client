@@ -4,12 +4,15 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Back_Btn_Svg from "../public/icons/btn/btn_back.svg";
 
 import Btn_Share_Svg from "../public/icons/btn/btn_share.svg";
+import Btn_Modify_Svg from "../public/icons/btn/btn_modify.svg";
 
 interface Props {
     title: string;
     goBack: () => void;
     whatBtn?: string;
     background?: boolean;
+    onShare?: () => void;
+    onModify?: () => void;
 }
 
 export default function CustomNavigator_Top(props: Props) {
@@ -31,7 +34,9 @@ export default function CustomNavigator_Top(props: Props) {
                     props.whatBtn === "share"
                         ? () => {}
                         : props.whatBtn === "modify"
-                        ? () => {}
+                        ? () => {
+                              props.onModify && props.onModify();
+                          }
                         : props.whatBtn === "skip"
                         ? () => {}
                         : () => {}
@@ -41,7 +46,7 @@ export default function CustomNavigator_Top(props: Props) {
                 {props.whatBtn === "share" ? (
                     <Btn_Share_Svg />
                 ) : props.whatBtn === "modify" ? (
-                    <></>
+                    <Btn_Modify_Svg />
                 ) : props.whatBtn === "skip" ? (
                     <></>
                 ) : (

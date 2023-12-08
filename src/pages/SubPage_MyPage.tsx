@@ -259,6 +259,11 @@ export default function SubPage_MyPage({ navigation }: any) {
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity
+                                onPress={() => {
+                                    navigation.navigate("SubPage_TastingNote", {
+                                        user_id: loginState.user_id,
+                                    });
+                                }}
                                 style={{
                                     flexDirection: "row",
                                     width: "100%",

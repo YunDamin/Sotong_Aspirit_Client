@@ -98,6 +98,7 @@ export default function SubPage_FAQ({ navigation }: any) {
                     {categories.map((item, index) => {
                         return (
                             <TouchableOpacity
+                                key={index}
                                 style={{
                                     flex: 1,
                                     justifyContent: "center",

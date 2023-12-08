@@ -773,6 +773,32 @@ export default function MainPage_Note({ navigation }: any) {
                                                         }
                                                     );
                                                 }}
+                                                onPressDetail={() => {
+                                                    navigation.navigate(
+                                                        "SubPage_TastingNote_Single",
+                                                        {
+                                                            user_id:
+                                                                note?.user_id ??
+                                                                "",
+                                                            whisky_id:
+                                                                note?.whisky_id ??
+                                                                "",
+                                                            tasting_id:
+                                                                note?.tasting_id ??
+                                                                "",
+                                                        }
+                                                    );
+                                                }}
+                                                onPressUser={() => {
+                                                    navigation.navigate(
+                                                        "SubPage_Profile",
+                                                        {
+                                                            user_id:
+                                                                note?.user_id ??
+                                                                "",
+                                                        }
+                                                    );
+                                                }}
                                             />
                                         );
                                     }

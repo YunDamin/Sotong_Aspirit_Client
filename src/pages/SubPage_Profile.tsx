@@ -14,6 +14,8 @@ import {
 
 import Profile_Svg from "../public/icons/photo/profile.svg";
 
+import { RadarChart, PieChart } from "react-native-charts-wrapper";
+
 import Swiper from "react-native-web-swiper";
 
 // Navigator
@@ -209,7 +211,6 @@ export default function SubPage_Profile({ navigation, route }: any) {
                             >
                                 {"평균평점\t\t "}
                             </Text>
-
                             <Text>{(user?.user_av ?? 0).toFixed(1)}</Text>
                         </Text>
                     </View>
@@ -244,11 +245,21 @@ export default function SubPage_Profile({ navigation, route }: any) {
                                         fontWeight: "400",
                                     }}
                                 >
-                                    {" "}
-                                    위스키 취향 분석
+                                    {" 위스키 취향 분석"}
                                 </Text>
                             </Text>
-                            <TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    navigation.navigate(
+                                        "SubPage_Profile_Whisky",
+                                        {
+                                            smells: transformArray(smells),
+                                            tastes: transformArray(tastes),
+                                            finishs: transformArray(finishs),
+                                        }
+                                    );
+                                }}
+                            >
                                 <Text
                                     style={[
                                         styles.m_text,
@@ -262,43 +273,119 @@ export default function SubPage_Profile({ navigation, route }: any) {
                                 </Text>
                             </TouchableOpacity>
                         </View>
-                        <Swiper
-                            loop={true}
-                            timeout={3}
-                            controlsEnabled={true}
-                            containerStyle={{
-                                width: 300,
-                                height: 240,
-                            }}
-                            controlsProps={{
-                                prevPos: false,
-                                nextPos: false,
-                                dotActiveStyle: {
-                                    backgroundColor: "#D6690F",
-                                },
-                            }}
-                        >
-                            {[
-                                <>
-                                    <Text>ssss</Text>
-                                    <Card_Graph
-                                        title="노즈"
-                                        des="(향)"
-                                        rates={transformArray(smells ?? [])}
-                                    />
-                                </>,
-                                <Card_Graph
-                                    title="팔레트"
-                                    des="(중간맛)"
-                                    rates={transformArray(smells ?? [])}
-                                />,
-                                <Card_Graph
-                                    title="피니시"
-                                    des="(끝맛)"
-                                    rates={transformArray(smells ?? [])}
-                                />,
-                            ]}
-                        </Swiper>
+                        {smells.length > 0 &&
+                            tastes.length > 0 &&
+                            finishs.length > 0 && (
+                                <Swiper
+                                    loop={true}
+                                    timeout={3}
+                                    controlsEnabled={true}
+                                    containerStyle={{
+                                        width: 320,
+                                        height: 240,
+                                    }}
+                                    controlsProps={{
+                                        prevPos: false,
+                                        nextPos: false,
+                                        dotActiveStyle: {
+                                            backgroundColor: "#D6690F",
+                                        },
+                                    }}
+                                >
+                                    {[
+                                        <View key={0}>
+                                            <View
+                                                style={{
+                                                    width: 320,
+                                                    height: 30,
+                                                    borderRadius: 20,
+                                                    backgroundColor: "#F7F7F7",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                }}
+                                            >
+                                                <Text
+                                                    style={{
+                                                        fontFamily:
+                                                            "Spoqa Han Sans Neo",
+                                                        fontWeight: "700",
+                                                        fontSize: 12,
+                                                        color: "#000000",
+                                                    }}
+                                                >
+                                                    선호하는 노즈 TOP5
+                                                </Text>
+                                            </View>
+                                            <Card_Graph
+                                                title="노즈"
+                                                des="(향)"
+                                                rates={transformArray(smells)}
+                                                isSmall={true}
+                                            />
+                                        </View>,
+                                        <View key={1}>
+                                            <View
+                                                style={{
+                                                    width: 320,
+                                                    height: 30,
+                                                    borderRadius: 20,
+                                                    backgroundColor: "#F7F7F7",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                }}
+                                            >
+                                                <Text
+                                                    style={{
+                                                        fontFamily:
+                                                            "Spoqa Han Sans Neo",
+                                                        fontWeight: "700",
+                                                        fontSize: 12,
+                                                        color: "#000000",
+                                                    }}
+                                                >
+                                                    선호하는 팔레트 TOP5
+                                                </Text>
+                                            </View>
+                                            <Card_Graph
+                                                title="팔레트"
+                                                des="(중간맛)"
+                                                rates={transformArray(tastes)}
+                                                isSmall={true}
+                                            />
+                                        </View>,
+                                        <View key={2}>
+                                            <View
+                                                style={{
+                                                    width: 320,
+                                                    height: 30,
+                                                    borderRadius: 20,
+                                                    backgroundColor: "#F7F7F7",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                }}
+                                            >
+                                                <Text
+                                                    style={{
+                                                        fontFamily:
+                                                            "Spoqa Han Sans Neo",
+                                                        fontWeight: "700",
+                                                        fontSize: 12,
+                                                        color: "#000000",
+                                                    }}
+                                                >
+                                                    선호하는 피니시 TOP5
+                                                </Text>
+                                            </View>
+                                            <Card_Graph
+                                                title="피니시"
+                                                des="(끝맛)"
+                                                rates={transformArray(finishs)}
+                                                isSmall={true}
+                                            />
+                                        </View>,
+                                    ]}
+                                </Swiper>
+                            )}
                         <View
                             style={{
                                 width: "100%",
@@ -329,13 +416,30 @@ export default function SubPage_Profile({ navigation, route }: any) {
                             </Text>
                         </View>
                         {(notes?.length ?? 0) > 0 &&
-                            notes.map((note) => {
+                            notes.map((note, index) => {
                                 return (
                                     <Card_TasteNote_Whisky
+                                        key={index}
                                         onPress={() => {
                                             navigation.navigate(
                                                 "SubPage_Whisky",
                                                 { whisky_id: note.whisky }
+                                            );
+                                        }}
+                                        onPressDetail={() => {
+                                            navigation.navigate(
+                                                "SubPage_TastingNote_Single",
+                                                {
+                                                    user_id: user_id,
+                                                    whisky_id: note.whisky,
+                                                    tasting_id: note.note,
+                                                }
+                                            );
+                                        }}
+                                        onPressUser={() => {
+                                            navigation.navigate(
+                                                "SubPage_Profile",
+                                                { user_id: user_id }
                                             );
                                         }}
                                         whisky_id={note.whisky}
