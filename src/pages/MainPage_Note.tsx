@@ -687,7 +687,7 @@ export default function MainPage_Note({ navigation }: any) {
                                 <View
                                     style={{
                                         marginTop: 10,
-                                        width: "100%",
+                                        width: 320,
                                         height: 30,
                                         display: "flex",
                                         flexDirection: "row",

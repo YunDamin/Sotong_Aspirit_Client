@@ -6,17 +6,11 @@ import MainPage_Whisky from "../pages/MainPage_Whisky";
 
 // * Sub
 import SubPage_Whisky from "../pages/SubPage_Whisky";
-
-// * All
 import SubPage_Alert from "../pages/SubPage_Alert";
 import SubPage_MyPage from "../pages/SubPage_MyPage";
-// ? Tasting Note
 import SubPage_TastingNoteWriting from "../pages/SubPage_TastingNoteWriting";
-
-// ? Survey
+import SubPage_Content from "../pages/SubPage_Content";
 import SurveyPage_Main from "../pages/SurveyPage_Main";
-
-// ? My
 import SubPage_EditMe from "../pages/SubPage_EditMe";
 import SubPage_Profile from "../pages/SubPage_Profile";
 import SubPage_Profile_Whisky from "../pages/SubPage_Profile_Whisky";
@@ -64,6 +58,13 @@ export default function Navigator_Whisky() {
             <Stack.Screen
                 name="SubPage_TastingNoteWriting"
                 component={SubPage_TastingNoteWriting}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name="SubPage_Content"
+                component={SubPage_Content}
                 options={{
                     headerShown: false,
                 }}

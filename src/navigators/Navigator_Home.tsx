@@ -6,19 +6,11 @@ import MainPage_Home from "../pages/MainPage_Home";
 
 // * Sub
 import SubPage_Whisky from "../pages/SubPage_Whisky";
-
-// * All
 import SubPage_Alert from "../pages/SubPage_Alert";
 import SubPage_MyPage from "../pages/SubPage_MyPage";
-// ? Tasting Note
 import SubPage_TastingNoteWriting from "../pages/SubPage_TastingNoteWriting";
-// ? Content
 import SubPage_Content from "../pages/SubPage_Content";
-
-// ? Survey
 import SurveyPage_Main from "../pages/SurveyPage_Main";
-
-// ? My
 import SubPage_EditMe from "../pages/SubPage_EditMe";
 import SubPage_Profile from "../pages/SubPage_Profile";
 import SubPage_Profile_Whisky from "../pages/SubPage_Profile_Whisky";

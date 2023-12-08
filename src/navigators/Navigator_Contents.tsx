@@ -3,18 +3,13 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import MainPage_Contents from "../pages/MainPage_Contents";
 
-// * All
+// * Sub
+import SubPage_Whisky from "../pages/SubPage_Whisky";
 import SubPage_Alert from "../pages/SubPage_Alert";
 import SubPage_MyPage from "../pages/SubPage_MyPage";
-// ? Tasting Note
 import SubPage_TastingNoteWriting from "../pages/SubPage_TastingNoteWriting";
-// ? Content
 import SubPage_Content from "../pages/SubPage_Content";
-
-// ? Survey
 import SurveyPage_Main from "../pages/SurveyPage_Main";
-
-// ? My
 import SubPage_EditMe from "../pages/SubPage_EditMe";
 import SubPage_Profile from "../pages/SubPage_Profile";
 import SubPage_Profile_Whisky from "../pages/SubPage_Profile_Whisky";
@@ -34,6 +29,13 @@ export default function Navigator_Contents() {
             <Stack.Screen
                 name="MainPage_Contents"
                 component={MainPage_Contents}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name="SubPage_Whisky"
+                component={SubPage_Whisky}
                 options={{
                     headerShown: false,
                 }}

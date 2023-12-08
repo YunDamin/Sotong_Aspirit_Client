@@ -44,96 +44,100 @@ export default function LoginPage_Permission({ navigation }: any) {
                 />
             </SafeAreaView>
             <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-                <View
-                    style={{
-                        width: "100%",
-                        height: "100%",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                    }}
-                >
-                    <View style={styles.allSelectBtn}>
+                <ScrollView style={{ width: "100%", flex: 1 }}>
+                    <View
+                        style={{
+                            width: "100%",
+                            height: "100%",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                        }}
+                    >
+                        <View style={styles.allSelectBtn}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setCheckeds((prevCheckeds) => {
+                                        if (prevCheckeds[3])
+                                            return [false, false, false, false];
+                                        else return [true, true, true, true];
+                                    });
+                                }}
+                                style={{ flexDirection: "row" }}
+                            >
+                                <View style={{ width: 25, height: 25 }}>
+                                    {checkeds[3] ? (
+                                        <On_Checkbox />
+                                    ) : (
+                                        <Off_Checkbox />
+                                    )}
+                                </View>
+                                <Text
+                                    style={{
+                                        fontFamily: "SpoqaHanSansNeo-Bold",
+                                        fontSize: 16,
+                                        marginLeft: 10,
+                                        color: "#000000",
+                                    }}
+                                >
+                                    전체 동의
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                        <ScrollView
+                            showsVerticalScrollIndicator={false}
+                            style={styles.dropDownBtnView}
+                        >
+                            {[0, 1, 2].map((index) => {
+                                return (
+                                    <Card_Dropdown
+                                        key={index}
+                                        acceptData={
+                                            AcceptData.accept_list[index]
+                                        }
+                                        index={index}
+                                        checkeds={checkeds}
+                                        setCheckeds={setCheckeds}
+                                    />
+                                );
+                            })}
+
+                            <View style={{ marginBottom: 20 }} />
+                        </ScrollView>
                         <TouchableOpacity
                             onPress={() => {
-                                setCheckeds((prevCheckeds) => {
-                                    if (prevCheckeds[3])
-                                        return [false, false, false, false];
-                                    else return [true, true, true, true];
+                                navigation.navigate("LoginPage_Checking", {
+                                    check: checkeds[2],
                                 });
                             }}
-                            style={{ flexDirection: "row" }}
+                            disabled={!(checkeds[0] && checkeds[1])}
+                            style={[
+                                {
+                                    width: 320,
+                                    height: 55,
+                                    backgroundColor: "#974B1A",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    borderRadius: 10,
+                                },
+                                { opacity: 0.4 },
+                                checkeds[0] && checkeds[1] && { opacity: 1 },
+                            ]}
                         >
-                            <View style={{ width: 25, height: 25 }}>
-                                {checkeds[3] ? (
-                                    <On_Checkbox />
-                                ) : (
-                                    <Off_Checkbox />
-                                )}
-                            </View>
                             <Text
                                 style={{
-                                    fontFamily: "SpoqaHanSansNeo-Bold",
-                                    fontSize: 16,
-                                    marginLeft: 10,
-                                    color: "#000000",
+                                    fontFamily: "Spoqa Han Sans Neo",
+                                    fontWeight: "500",
+                                    fontSize: 18,
+                                    color: "#FFFFFF",
+                                    textAlign: "center",
                                 }}
                             >
-                                전체 동의
+                                다음
                             </Text>
                         </TouchableOpacity>
+                        <View style={{ marginVertical: 20 }} />
                     </View>
-                    <ScrollView
-                        showsVerticalScrollIndicator={false}
-                        style={styles.dropDownBtnView}
-                    >
-                        {[0, 1, 2].map((index) => {
-                            return (
-                                <Card_Dropdown
-                                    key={index}
-                                    acceptData={AcceptData.accept_list[index]}
-                                    index={index}
-                                    checkeds={checkeds}
-                                    setCheckeds={setCheckeds}
-                                />
-                            );
-                        })}
-
-                        <View style={{ marginBottom: 20 }} />
-                    </ScrollView>
-                    <TouchableOpacity
-                        onPress={() => {
-                            navigation.navigate("LoginPage_Checking", {
-                                check: checkeds[2],
-                            });
-                        }}
-                        disabled={!(checkeds[0] && checkeds[1])}
-                        style={[
-                            {
-                                width: 320,
-                                height: 55,
-                                backgroundColor: "#974B1A",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                borderRadius: 10,
-                            },
-                            { opacity: 0.4 },
-                            checkeds[0] && checkeds[1] && { opacity: 1 },
-                        ]}
-                    >
-                        <Text
-                            style={{
-                                fontFamily: "Spoqa Han Sans Neo",
-                                fontWeight: "500",
-                                fontSize: 18,
-                                color: "#FFFFFF",
-                                textAlign: "center",
-                            }}
-                        >
-                            다음
-                        </Text>
-                    </TouchableOpacity>
-                    <View style={{ marginBottom: 20 }} />
-                </View>
+                </ScrollView>
             </SafeAreaView>
         </>
     );

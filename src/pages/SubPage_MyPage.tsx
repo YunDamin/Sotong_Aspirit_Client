@@ -125,334 +125,347 @@ export default function SubPage_MyPage({ navigation }: any) {
                             위스키 프로필
                         </Text>
                     </TouchableOpacity>
+                </View>
+                <ScrollView
+                    style={{
+                        width: "100%",
+                        backgroundColor: "white",
+                        borderTopLeftRadius: 20,
+                        borderTopRightRadius: 20,
+                        paddingTop: 20,
+                        overflow: "hidden",
+                    }}
+                >
                     <View style={styles.under_page}>
-                        <ScrollView
+                        <Text
+                            style={{
+                                fontFamily: "Spoqa Han Sans Neo",
+                                fontWeight: "400",
+                                fontSize: 12,
+                                color: "#888888",
+                                textAlign: "left",
+                                marginLeft: 20,
+                                marginBottom: 5,
+                            }}
+                        >
+                            내 정보
+                        </Text>
+                        <TouchableOpacity
+                            onPress={() => {
+                                navigation.navigate("SubPage_EditMe");
+                            }}
+                            style={{
+                                flexDirection: "row",
+                                width: "100%",
+                                height: 40,
+                                alignItems: "center",
+                                justifyContent: "flex-start",
+                                marginLeft: 20,
+                                marginBottom: 5,
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontFamily: "Spoqa Han Sans Neo",
+                                    fontWeight: "500",
+                                    fontSize: 14,
+                                    color: "#000000",
+                                    textAlign: "left",
+                                }}
+                            >
+                                내 정보 수정
+                            </Text>
+                            <View
+                                style={{
+                                    width: 40,
+                                    height: 40,
+                                    position: "absolute",
+                                    right: 40,
+                                }}
+                            >
+                                <Btn_OnOff_Arrow_Right />
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => {
+                                navigation.navigate("SurveyPage_Main", {
+                                    edit: true,
+                                });
+                            }}
+                            style={{
+                                flexDirection: "row",
+                                width: "100%",
+                                height: 40,
+                                alignItems: "center",
+                                justifyContent: "flex-start",
+                                marginLeft: 20,
+                                marginBottom: 5,
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontFamily: "Spoqa Han Sans Neo",
+                                    fontWeight: "500",
+                                    fontSize: 14,
+                                    color: "#000000",
+                                    textAlign: "left",
+                                }}
+                            >
+                                위스키 취향 수정
+                            </Text>
+                            <View
+                                style={{
+                                    width: 40,
+                                    height: 40,
+                                    position: "absolute",
+                                    right: 40,
+                                }}
+                            >
+                                <Btn_OnOff_Arrow_Right />
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => {
+                                navigation.navigate("SubPage_Profile", {
+                                    user_id: loginState.user_id,
+                                });
+                            }}
+                            style={{
+                                flexDirection: "row",
+                                width: "100%",
+                                height: 40,
+                                alignItems: "center",
+                                justifyContent: "flex-start",
+                                marginLeft: 20,
+                                marginBottom: 5,
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontFamily: "Spoqa Han Sans Neo",
+                                    fontWeight: "500",
+                                    fontSize: 14,
+                                    color: "#000000",
+                                    textAlign: "left",
+                                }}
+                            >
+                                위스키 프로필
+                            </Text>
+                            <View
+                                style={{
+                                    width: 40,
+                                    height: 40,
+                                    position: "absolute",
+                                    right: 40,
+                                }}
+                            >
+                                <Btn_OnOff_Arrow_Right />
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => {
+                                navigation.navigate("SubPage_TastingNote", {
+                                    user_id: loginState.user_id,
+                                });
+                            }}
+                            style={{
+                                flexDirection: "row",
+                                width: "100%",
+                                height: 40,
+                                alignItems: "center",
+                                justifyContent: "flex-start",
+                                marginLeft: 20,
+                                marginBottom: 5,
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontFamily: "Spoqa Han Sans Neo",
+                                    fontWeight: "500",
+                                    fontSize: 14,
+                                    color: "#000000",
+                                    textAlign: "left",
+                                }}
+                            >
+                                테이스팅 노트 관리
+                            </Text>
+                            <View
+                                style={{
+                                    width: 40,
+                                    height: 40,
+                                    position: "absolute",
+                                    right: 40,
+                                }}
+                            >
+                                <Btn_OnOff_Arrow_Right />
+                            </View>
+                        </TouchableOpacity>
+                        <View
                             style={{
                                 width: "100%",
-                                marginTop: 25,
+                                height: 4,
+                                backgroundColor: "#F7F7F7",
+                                marginBottom: 15,
                             }}
-                            scrollEventThrottle={16}
+                        />
+                        <Text
+                            style={{
+                                fontFamily: "Spoqa Han Sans Neo",
+                                fontWeight: "400",
+                                fontSize: 12,
+                                color: "#888888",
+                                textAlign: "left",
+                                marginLeft: 20,
+                                marginBottom: 5,
+                            }}
+                        >
+                            고객센터
+                        </Text>
+                        <TouchableOpacity
+                            onPress={() => {
+                                navigation.navigate("SubPage_FAQ");
+                            }}
+                            style={{
+                                flexDirection: "row",
+                                width: "100%",
+                                height: 40,
+                                alignItems: "center",
+                                justifyContent: "flex-start",
+                                marginLeft: 20,
+                                marginBottom: 5,
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontFamily: "Spoqa Han Sans Neo",
+                                    fontWeight: "500",
+                                    fontSize: 14,
+                                    color: "#000000",
+                                    textAlign: "left",
+                                }}
+                            >
+                                FAQ
+                            </Text>
+                            <View
+                                style={{
+                                    width: 40,
+                                    height: 40,
+                                    position: "absolute",
+                                    right: 40,
+                                }}
+                            >
+                                <Btn_OnOff_Arrow_Right />
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => {
+                                navigation.navigate("SubPage_Settings");
+                            }}
+                            style={{
+                                flexDirection: "row",
+                                width: "100%",
+                                height: 40,
+                                alignItems: "center",
+                                justifyContent: "flex-start",
+                                marginLeft: 20,
+                                marginBottom: 5,
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontFamily: "Spoqa Han Sans Neo",
+                                    fontWeight: "500",
+                                    fontSize: 14,
+                                    color: "#000000",
+                                    textAlign: "left",
+                                }}
+                            >
+                                앱 설정
+                            </Text>
+                            <View
+                                style={{
+                                    width: 40,
+                                    height: 40,
+                                    position: "absolute",
+                                    right: 40,
+                                }}
+                            >
+                                <Btn_OnOff_Arrow_Right />
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{
+                                flexDirection: "row",
+                                width: "100%",
+                                height: 40,
+                                alignItems: "center",
+                                justifyContent: "flex-start",
+                                marginLeft: 20,
+                                marginBottom: 5,
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontFamily: "Spoqa Han Sans Neo",
+                                    fontWeight: "500",
+                                    fontSize: 14,
+                                    color: "#000000",
+                                    textAlign: "left",
+                                }}
+                            >
+                                의견 보내기
+                            </Text>
+                            <View
+                                style={{
+                                    width: 40,
+                                    height: 40,
+                                    position: "absolute",
+                                    right: 40,
+                                }}
+                            >
+                                <Btn_OnOff_Arrow_Right />
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => {
+                                logout();
+                            }}
+                            style={{
+                                flexDirection: "row",
+                                width: "100%",
+                                height: 40,
+                                alignItems: "center",
+                                justifyContent: "flex-start",
+                                marginLeft: 20,
+                                marginBottom: 5,
+                                marginTop: 15,
+                            }}
                         >
                             <Text
                                 style={{
                                     fontFamily: "Spoqa Han Sans Neo",
                                     fontWeight: "400",
-                                    fontSize: 12,
-                                    color: "#888888",
+                                    fontSize: 14,
+                                    color: "#5B5B5B",
                                     textAlign: "left",
-                                    marginLeft: 20,
-                                    marginBottom: 5,
+                                    textDecorationLine: "underline",
                                 }}
                             >
-                                내 정보
+                                로그아웃
                             </Text>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    navigation.navigate("SubPage_EditMe");
-                                }}
-                                style={{
-                                    flexDirection: "row",
-                                    width: "100%",
-                                    height: 40,
-                                    alignItems: "center",
-                                    justifyContent: "flex-start",
-                                    marginLeft: 20,
-                                    marginBottom: 5,
-                                }}
-                            >
-                                <Text
-                                    style={{
-                                        fontFamily: "Spoqa Han Sans Neo",
-                                        fontWeight: "500",
-                                        fontSize: 14,
-                                        color: "#000000",
-                                        textAlign: "left",
-                                    }}
-                                >
-                                    내 정보 수정
-                                </Text>
-                                <View
-                                    style={{
-                                        width: 40,
-                                        height: 40,
-                                        position: "absolute",
-                                        right: 40,
-                                    }}
-                                >
-                                    <Btn_OnOff_Arrow_Right />
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    navigation.navigate("SurveyPage_Main", {
-                                        edit: true,
-                                    });
-                                }}
-                                style={{
-                                    flexDirection: "row",
-                                    width: "100%",
-                                    height: 40,
-                                    alignItems: "center",
-                                    justifyContent: "flex-start",
-                                    marginLeft: 20,
-                                    marginBottom: 5,
-                                }}
-                            >
-                                <Text
-                                    style={{
-                                        fontFamily: "Spoqa Han Sans Neo",
-                                        fontWeight: "500",
-                                        fontSize: 14,
-                                        color: "#000000",
-                                        textAlign: "left",
-                                    }}
-                                >
-                                    위스키 취향 수정
-                                </Text>
-                                <View
-                                    style={{
-                                        width: 40,
-                                        height: 40,
-                                        position: "absolute",
-                                        right: 40,
-                                    }}
-                                >
-                                    <Btn_OnOff_Arrow_Right />
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    navigation.navigate("SubPage_Profile", {
-                                        user_id: loginState.user_id,
-                                    });
-                                }}
-                                style={{
-                                    flexDirection: "row",
-                                    width: "100%",
-                                    height: 40,
-                                    alignItems: "center",
-                                    justifyContent: "flex-start",
-                                    marginLeft: 20,
-                                    marginBottom: 5,
-                                }}
-                            >
-                                <Text
-                                    style={{
-                                        fontFamily: "Spoqa Han Sans Neo",
-                                        fontWeight: "500",
-                                        fontSize: 14,
-                                        color: "#000000",
-                                        textAlign: "left",
-                                    }}
-                                >
-                                    위스키 프로필
-                                </Text>
-                                <View
-                                    style={{
-                                        width: 40,
-                                        height: 40,
-                                        position: "absolute",
-                                        right: 40,
-                                    }}
-                                >
-                                    <Btn_OnOff_Arrow_Right />
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    navigation.navigate("SubPage_TastingNote", {
-                                        user_id: loginState.user_id,
-                                    });
-                                }}
-                                style={{
-                                    flexDirection: "row",
-                                    width: "100%",
-                                    height: 40,
-                                    alignItems: "center",
-                                    justifyContent: "flex-start",
-                                    marginLeft: 20,
-                                    marginBottom: 5,
-                                }}
-                            >
-                                <Text
-                                    style={{
-                                        fontFamily: "Spoqa Han Sans Neo",
-                                        fontWeight: "500",
-                                        fontSize: 14,
-                                        color: "#000000",
-                                        textAlign: "left",
-                                    }}
-                                >
-                                    테이스팅 노트 관리
-                                </Text>
-                                <View
-                                    style={{
-                                        width: 40,
-                                        height: 40,
-                                        position: "absolute",
-                                        right: 40,
-                                    }}
-                                >
-                                    <Btn_OnOff_Arrow_Right />
-                                </View>
-                            </TouchableOpacity>
-                            <View
-                                style={{
-                                    width: "100%",
-                                    height: 4,
-                                    backgroundColor: "#F7F7F7",
-                                    marginBottom: 15,
-                                }}
-                            />
-                            <Text
-                                style={{
-                                    fontFamily: "Spoqa Han Sans Neo",
-                                    fontWeight: "400",
-                                    fontSize: 12,
-                                    color: "#888888",
-                                    textAlign: "left",
-                                    marginLeft: 20,
-                                    marginBottom: 5,
-                                }}
-                            >
-                                고객센터
-                            </Text>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    navigation.navigate("SubPage_FAQ");
-                                }}
-                                style={{
-                                    flexDirection: "row",
-                                    width: "100%",
-                                    height: 40,
-                                    alignItems: "center",
-                                    justifyContent: "flex-start",
-                                    marginLeft: 20,
-                                    marginBottom: 5,
-                                }}
-                            >
-                                <Text
-                                    style={{
-                                        fontFamily: "Spoqa Han Sans Neo",
-                                        fontWeight: "500",
-                                        fontSize: 14,
-                                        color: "#000000",
-                                        textAlign: "left",
-                                    }}
-                                >
-                                    FAQ
-                                </Text>
-                                <View
-                                    style={{
-                                        width: 40,
-                                        height: 40,
-                                        position: "absolute",
-                                        right: 40,
-                                    }}
-                                >
-                                    <Btn_OnOff_Arrow_Right />
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    navigation.navigate("SubPage_Settings");
-                                }}
-                                style={{
-                                    flexDirection: "row",
-                                    width: "100%",
-                                    height: 40,
-                                    alignItems: "center",
-                                    justifyContent: "flex-start",
-                                    marginLeft: 20,
-                                    marginBottom: 5,
-                                }}
-                            >
-                                <Text
-                                    style={{
-                                        fontFamily: "Spoqa Han Sans Neo",
-                                        fontWeight: "500",
-                                        fontSize: 14,
-                                        color: "#000000",
-                                        textAlign: "left",
-                                    }}
-                                >
-                                    앱 설정
-                                </Text>
-                                <View
-                                    style={{
-                                        width: 40,
-                                        height: 40,
-                                        position: "absolute",
-                                        right: 40,
-                                    }}
-                                >
-                                    <Btn_OnOff_Arrow_Right />
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={{
-                                    flexDirection: "row",
-                                    width: "100%",
-                                    height: 40,
-                                    alignItems: "center",
-                                    justifyContent: "flex-start",
-                                    marginLeft: 20,
-                                    marginBottom: 5,
-                                }}
-                            >
-                                <Text
-                                    style={{
-                                        fontFamily: "Spoqa Han Sans Neo",
-                                        fontWeight: "500",
-                                        fontSize: 14,
-                                        color: "#000000",
-                                        textAlign: "left",
-                                    }}
-                                >
-                                    의견 보내기
-                                </Text>
-                                <View
-                                    style={{
-                                        width: 40,
-                                        height: 40,
-                                        position: "absolute",
-                                        right: 40,
-                                    }}
-                                >
-                                    <Btn_OnOff_Arrow_Right />
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    logout();
-                                }}
-                                style={{
-                                    flexDirection: "row",
-                                    width: "100%",
-                                    height: 40,
-                                    alignItems: "center",
-                                    justifyContent: "flex-start",
-                                    marginLeft: 20,
-                                    marginBottom: 5,
-                                    marginTop: 15,
-                                }}
-                            >
-                                <Text
-                                    style={{
-                                        fontFamily: "Spoqa Han Sans Neo",
-                                        fontWeight: "400",
-                                        fontSize: 14,
-                                        color: "#5B5B5B",
-                                        textAlign: "left",
-                                        textDecorationLine: "underline",
-                                    }}
-                                >
-                                    로그아웃
-                                </Text>
-                            </TouchableOpacity>
-                        </ScrollView>
+                        </TouchableOpacity>
+                        <View style={{ marginVertical: 100 }} />
                     </View>
-                </View>
+                </ScrollView>
+                <View
+                    style={{
+                        width: "100%",
+                        height: 300,
+                        backgroundColor: "#FCECDE",
+                        position: "absolute",
+                        zIndex: -10,
+                    }}
+                />
             </SafeAreaView>
         </>
     );
@@ -466,9 +479,5 @@ const styles = StyleSheet.create({
     },
     under_page: {
         width: "100%",
-        backgroundColor: "white",
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        overflow: "hidden",
     },
 });

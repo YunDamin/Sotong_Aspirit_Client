@@ -105,131 +105,147 @@ export default function LoginPage_Main({ navigation }: any) {
                 />
             </SafeAreaView>
             <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-                <View
-                    style={{
-                        width: "100%",
-                        height: "100%",
-                        justifyContent: "space-between",
-                    }}
-                >
-                    <View style={{ width: "100%", alignItems: "center" }}>
-                        <View style={{ marginTop: 40 }} />
-                        <Logo_Login_Svg />
-                        <View style={{ marginTop: 40 }} />
-                        <Field_Text
-                            style={{
-                                width: 320,
-                                height: 55,
-                            }}
-                            placeholder="아이디(이메일) 입력"
-                            {...id_field_props}
-                        />
-                        <View style={{ marginTop: 10 }} />
-                        <Field_Text
-                            style={{
-                                width: 320,
-                                height: 55,
-                            }}
-                            {...password_field_props}
-                            placeholder="비밀번호 입력"
-                        />
-                        <View
-                            style={{
-                                width: 320,
-                                justifyContent: "flex-end",
-                                flexDirection: "row",
-                                marginTop: 10,
-                            }}
-                        >
-                            <View style={{ flexDirection: "row" }}>
-                                <TouchableOpacity>
-                                    <Text style={styles.text}>아이디 찾기</Text>
-                                </TouchableOpacity>
-                                <Text style={styles.text}>{"  |  "}</Text>
-                                <TouchableOpacity>
-                                    <Text style={styles.text}>
-                                        비밀번호 찾기
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={{ marginTop: 20 }} />
-                        <TouchableOpacity
-                            onPress={() => {
-                                login();
-                            }}
-                            style={{
-                                width: 320,
-                                height: 55,
-                                backgroundColor: "#974B1A",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                borderRadius: 10,
-                            }}
-                        >
-                            <Text
+                <ScrollView style={{ width: "100%", flex: 1 }}>
+                    <View
+                        style={{
+                            width: "100%",
+                            height: "100%",
+                            justifyContent: "space-between",
+                        }}
+                    >
+                        <View style={{ width: "100%", alignItems: "center" }}>
+                            <View style={{ marginTop: 40 }} />
+                            <Logo_Login_Svg />
+                            <View style={{ marginTop: 40 }} />
+                            <Field_Text
                                 style={{
-                                    fontFamily: "Spoqa Han Sans Neo",
-                                    fontWeight: "500",
-                                    fontSize: 18,
-                                    color: "#FFFFFF",
-                                    textAlign: "center",
+                                    width: 320,
+                                    height: 55,
+                                }}
+                                placeholder="아이디(이메일) 입력"
+                                {...id_field_props}
+                            />
+                            <View style={{ marginTop: 10 }} />
+                            <Field_Text
+                                style={{
+                                    width: 320,
+                                    height: 55,
+                                }}
+                                {...password_field_props}
+                                placeholder="비밀번호 입력"
+                            />
+                            <View
+                                style={{
+                                    width: 320,
+                                    justifyContent: "flex-end",
+                                    flexDirection: "row",
+                                    marginTop: 10,
                                 }}
                             >
-                                로그인
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ width: "100%", alignItems: "center" }}>
-                        <View style={{ marginBottom: 80 }}>
+                                <View style={{ flexDirection: "row" }}>
+                                    <TouchableOpacity>
+                                        <Text style={styles.text}>
+                                            아이디 찾기
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <Text style={styles.text}>{"  |  "}</Text>
+                                    <TouchableOpacity>
+                                        <Text style={styles.text}>
+                                            비밀번호 찾기
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                            <View style={{ marginTop: 20 }} />
                             <TouchableOpacity
-                                onPress={() =>
-                                    navigation.navigate("LoginPage_Permission")
-                                }
+                                onPress={() => {
+                                    login();
+                                }}
+                                style={{
+                                    width: 320,
+                                    height: 55,
+                                    backgroundColor: "#974B1A",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    borderRadius: 10,
+                                }}
                             >
-                                <Text style={styles.text}>
-                                    이메일로 시작하기
+                                <Text
+                                    style={{
+                                        fontFamily: "Spoqa Han Sans Neo",
+                                        fontWeight: "500",
+                                        fontSize: 18,
+                                        color: "#FFFFFF",
+                                        textAlign: "center",
+                                    }}
+                                >
+                                    로그인
                                 </Text>
                             </TouchableOpacity>
                         </View>
-                        <Text
-                            style={{
-                                fontFamily: "Spoqa Han Sans Neo",
-                                fontWeight: "400",
-                                fontSize: 12,
-                                color: "#888888",
-                                textAlign: "center",
-                            }}
-                        >
-                            SNS 시작하기
-                        </Text>
-                        <View style={{ marginTop: 20 }} />
-                        <View
-                            style={{
-                                width: 320,
-                                justifyContent: "space-between",
-                                flexDirection: "row",
-                            }}
-                        >
-                            <TouchableOpacity style={{ width: 54, height: 54 }}>
-                                <Sns_Apple_Svg />
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{ width: 54, height: 54 }}>
-                                <Sns_KakaoTalk_Svg />
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{ width: 54, height: 54 }}>
-                                <Sns_Naver_Svg />
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{ width: 54, height: 54 }}>
-                                <Sns_Google_Svg />
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{ width: 54, height: 54 }}>
-                                <Sns_Facebook_Svg />
-                            </TouchableOpacity>
+                        <View style={{ width: "100%", alignItems: "center" }}>
+                            <View style={{ marginBottom: 80 }}>
+                                <TouchableOpacity
+                                    onPress={() =>
+                                        navigation.navigate(
+                                            "LoginPage_Permission"
+                                        )
+                                    }
+                                >
+                                    <Text style={styles.text}>
+                                        이메일로 시작하기
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                            <Text
+                                style={{
+                                    fontFamily: "Spoqa Han Sans Neo",
+                                    fontWeight: "400",
+                                    fontSize: 12,
+                                    color: "#888888",
+                                    textAlign: "center",
+                                }}
+                            >
+                                SNS 시작하기
+                            </Text>
+                            <View style={{ marginTop: 20 }} />
+                            <View
+                                style={{
+                                    width: 320,
+                                    justifyContent: "space-between",
+                                    flexDirection: "row",
+                                }}
+                            >
+                                <TouchableOpacity
+                                    style={{ width: 54, height: 54 }}
+                                >
+                                    <Sns_Apple_Svg />
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={{ width: 54, height: 54 }}
+                                >
+                                    <Sns_KakaoTalk_Svg />
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={{ width: 54, height: 54 }}
+                                >
+                                    <Sns_Naver_Svg />
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={{ width: 54, height: 54 }}
+                                >
+                                    <Sns_Google_Svg />
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={{ width: 54, height: 54 }}
+                                >
+                                    <Sns_Facebook_Svg />
+                                </TouchableOpacity>
+                            </View>
                         </View>
+                        <View style={{ marginVertical: 20 }} />
                     </View>
-                    <View style={{ marginTop: 0 }} />
-                </View>
+                </ScrollView>
             </SafeAreaView>
         </>
     );

@@ -4,18 +4,12 @@ import { createStackNavigator } from "@react-navigation/stack";
 // * Main
 import MainPage_Note from "../pages/MainPage_Note";
 
-// * All
+import SubPage_Whisky from "../pages/SubPage_Whisky";
 import SubPage_Alert from "../pages/SubPage_Alert";
 import SubPage_MyPage from "../pages/SubPage_MyPage";
-// ? Tasting Note
 import SubPage_TastingNoteWriting from "../pages/SubPage_TastingNoteWriting";
-// ? Whisky
-import SubPage_Whisky from "../pages/SubPage_Whisky";
-
-// ? Survey
+import SubPage_Content from "../pages/SubPage_Content";
 import SurveyPage_Main from "../pages/SurveyPage_Main";
-
-// ? My
 import SubPage_EditMe from "../pages/SubPage_EditMe";
 import SubPage_Profile from "../pages/SubPage_Profile";
 import SubPage_Profile_Whisky from "../pages/SubPage_Profile_Whisky";
@@ -35,6 +29,13 @@ export default function Navigator_Note() {
             <Stack.Screen
                 name="MainPage_Note"
                 component={MainPage_Note}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name="SubPage_Whisky"
+                component={SubPage_Whisky}
                 options={{
                     headerShown: false,
                 }}
@@ -61,16 +62,16 @@ export default function Navigator_Note() {
                 }}
             />
             <Stack.Screen
-                name="SubNavigator_Login"
-                component={SubNavigator_Login}
-                options={{ headerShown: false }}
-            />
-            <Stack.Screen
-                name="SubPage_Whisky"
-                component={SubPage_Whisky}
+                name="SubPage_Content"
+                component={SubPage_Content}
                 options={{
                     headerShown: false,
                 }}
+            />
+            <Stack.Screen
+                name="SubNavigator_Login"
+                component={SubNavigator_Login}
+                options={{ headerShown: false }}
             />
             <Stack.Screen
                 name="SurveyPage_Main"
