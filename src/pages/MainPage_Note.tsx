@@ -134,7 +134,6 @@ export default function MainPage_Note({ navigation }: any) {
             }
 
             axios.get(API_KEY + "/notes/").then((res) => {
-                console.log(res.data?.data);
                 setNotes(res.data?.data);
                 setViewNoteData(res.data?.data.slice().reverse().slice(0, 4));
                 setView(4);

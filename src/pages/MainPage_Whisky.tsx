@@ -26,6 +26,8 @@ import Btn_Drop_Black from "../public/icons/btn/btn_drop_black.svg";
 import Btn_Search from "../public/icons/btn/btn_search.svg";
 import Btn_Check from "../public/icons/btn/btn_check.svg";
 import Btn_Filter from "../public/icons/btn/btn_filter.svg";
+import Btn_Next_Select from "../public/icons/btn/btn_next_select.svg";
+import Btn_Select from "../public/icons/btn/btn_select.svg";
 
 // Components
 import Card_Rc_Whisky_Long from "../components/Card_Rc_Whisky_Long";
@@ -64,6 +66,42 @@ import { API_KEY } from "@env";
 
 import { whisky, whisky_state } from "../atoms/get_whisky";
 
+type selectedData = {
+    first: {
+        COM_CD: string;
+        KOR_CD_NM: string;
+    };
+    second: {
+        COM_CD: string;
+        KOR_CD_NM: string;
+    };
+    third: {
+        COM_CD: string;
+        KOR_CD_NM: string;
+    };
+};
+
+type thirdData = {
+    COM_CD: string;
+    KOR_CD_NM: string;
+};
+
+type secondData = {
+    second: {
+        COM_CD: string;
+        KOR_CD_NM: string;
+    };
+    thirds: thirdData[];
+};
+
+type codeData = {
+    first: {
+        COM_CD: string;
+        KOR_CD_NM: string;
+    };
+    seconds: secondData[];
+};
+
 export default function MainPage_Whisky({ navigation }: any) {
     const [loginState, setLoginState] = useRecoilState<login_data>(login_state);
 
@@ -71,8 +109,6 @@ export default function MainPage_Whisky({ navigation }: any) {
     const [isFocused, setIsFocused] = React.useState<boolean>(false);
 
     const [sortCategory, setSortCategory] = React.useState<string>("rate");
-
-    const [tabIndex, setTabIndex] = React.useState<number>(0);
 
     const topPosition = React.useRef(new Animated.Value(170));
 
@@ -107,147 +143,49 @@ export default function MainPage_Whisky({ navigation }: any) {
         }
     };
 
+    // Filter
+    const [tabIndex, setTabIndex] = React.useState<number>(0);
+    const [filterCategory, setFilterCategory] = React.useState<number>(0);
+
+    // Select
+    const [filterOrigins, setFilterOrigins] = React.useState<string[]>([]);
+    const [filterColors, setFilterColors] = React.useState<string[]>([]);
+    const [filterNoses, setFilterNoses] = React.useState<string[]>([]);
+    const [filterPalates, setFilterPalates] = React.useState<string[]>([]);
+    const [filterFinishes, setFilterFinishes] = React.useState<string[]>([]);
+    const [filterBewerys, setFilterBewerys] = React.useState<string[]>([]);
+    const [filterPairings, setFilterPairings] = React.useState<string[]>([]);
+
+    // Data
+    type FilterData = {
+        code: string;
+        name: string;
+    };
+    const [filterOriginData, setFilterOriginData] = React.useState<
+        FilterData[]
+    >([]);
+    const [filterColorData, setFilterColorData] = React.useState<FilterData[]>(
+        []
+    );
+    const [filterBeweryData, setFilterBeweryData] = React.useState<
+        FilterData[]
+    >([]);
+    const [filterPairingData, setFilterPairingData] = React.useState<
+        FilterData[]
+    >([]);
+    //
+    const [filterTasteData, setFilterTasteData] = React.useState<codeData[]>(
+        []
+    );
+
     const [isFilterModalVisible, setFilterModaVisible] = React.useState(false);
     const toggleFilterModal = () => {
+        setTabIndex(0);
+        setFilterCategory(0);
         setFilterModaVisible(!isFilterModalVisible);
-        setFilterCategory("filter");
     };
 
-    /**
-     * 필터 모달 데이터
-     */
-    type FilterDictionary = {
-        country: string[];
-        kind: string[];
-        color: string[];
-        smell: string[];
-        taste: string[];
-        age: string[];
-        [key: string]: string[];
-    };
-    type FilterData = {
-        id: string;
-        value: string;
-    };
-    type FilterCategory =
-        | "filter"
-        | "country"
-        | "kind"
-        | "color"
-        | "smell"
-        | "taste"
-        | "age";
-    type Filter = {
-        country: FilterData[];
-        kind: FilterData[];
-        color: FilterData[];
-        smell: FilterData[];
-        taste: FilterData[];
-        age: FilterData[];
-    };
-    const [filterCategory, setFilterCategory] =
-        React.useState<FilterCategory>("filter");
-    const [filterDictionary, setFilterDictionary] =
-        React.useState<FilterDictionary>({
-            country: [],
-            kind: [],
-            color: [],
-            smell: [],
-            taste: [],
-            age: [],
-        });
-
-    const filter = React.useRef<Filter>({
-        country: [
-            { id: "1", value: "한국" },
-            { id: "2", value: "일본" },
-            { id: "3", value: "미국" },
-            { id: "4", value: "아일랜드" },
-            { id: "5", value: "스코틀랜드" },
-        ],
-        kind: [
-            { id: "1", value: "싱글몰트" },
-            { id: "2", value: "블렌디드" },
-            { id: "3", value: "그레인" },
-            { id: "4", value: "버번" },
-        ],
-        color: [
-            { id: "1", value: "연한골드" },
-            { id: "2", value: "연한호박" },
-            { id: "3", value: "연한갈색" },
-            { id: "4", value: "갈색" },
-            { id: "5", value: "진한갈색" },
-            { id: "6", value: "진한호박" },
-            { id: "7", value: "진한골드" },
-        ],
-        smell: [
-            { id: "1", value: "향긋한" },
-            { id: "2", value: "향기로운" },
-        ],
-        taste: [
-            { id: "1", value: "달콤한" },
-            { id: "2", value: "달달한" },
-        ],
-        age: [
-            { id: "1", value: "1년" },
-            { id: "2", value: "2년" },
-            { id: "3", value: "3년" },
-            { id: "4", value: "4년" },
-            { id: "5", value: "5년" },
-            { id: "6", value: "6년" },
-            { id: "7", value: "7년" },
-        ],
-    });
-
-    const isAbleReset = (category: string) => {
-        if (category === "filter") {
-            for (const key in filterDictionary) {
-                if (
-                    Array.isArray(filterDictionary[key]) &&
-                    filterDictionary[key].length > 0
-                )
-                    return true;
-            }
-        }
-        return (
-            Array.isArray(filterDictionary[category]) &&
-            filterDictionary[category].length > 0
-        );
-    };
-    const setFilter = (category: string, value: string) => {
-        if (
-            Array.isArray(filterDictionary[category]) &&
-            filterDictionary[category].includes(value)
-        ) {
-            setFilterDictionary({
-                ...filterDictionary,
-                [category]: filterDictionary[category].filter(
-                    (item) => item !== value
-                ),
-            });
-            return;
-        }
-        setFilterDictionary({
-            ...filterDictionary,
-            [category]: [...filterDictionary[category], value],
-        });
-    };
-    const filterReset = (category: string) => {
-        if (category === "filter")
-            setFilterDictionary({
-                country: [],
-                kind: [],
-                color: [],
-                smell: [],
-                taste: [],
-                age: [],
-            });
-        else
-            setFilterDictionary({
-                ...filterDictionary,
-                [category]: [],
-            });
-    };
+    // Sort
 
     const [isSortModalVisible, setSortModalVisible] = React.useState(false);
     const toggleSortModal = () => {
@@ -255,19 +193,75 @@ export default function MainPage_Whisky({ navigation }: any) {
     };
 
     const get_whisky = (): whisky[] => {
+        let filter_whisky = whiskyState
+            .slice()
+            .filter((whisky) => {
+                const text = searchText.trim().toLowerCase();
+
+                if (text.length == 0) return true;
+
+                if (whisky.name_kor.toLowerCase().includes(text)) {
+                    return true;
+                } else if (whisky.name_eng.toLowerCase().includes(text)) {
+                    return true;
+                }
+
+                return false;
+            })
+            .filter((whisky) => {
+                if (filterOrigins.length == 0) return true;
+
+                for (let origin of filterOrigins) {
+                    if (whisky.origins.includes(origin.trim())) {
+                        return true;
+                    }
+                }
+
+                return false;
+            })
+            .filter((whisky) => {
+                if (filterColors.length == 0) return true;
+
+                for (let color of filterColors) {
+                    if (whisky.color.includes(color.trim())) {
+                        return true;
+                    }
+                }
+
+                return false;
+            })
+            .filter((whisky) => {
+                if (filterBewerys.length == 0) return true;
+
+                for (let bewery of filterBewerys) {
+                    if (whisky.bewerys.includes(bewery.trim())) {
+                        return true;
+                    }
+                }
+            })
+            .filter((whisky) => {
+                if (filterPairings.length == 0) return true;
+
+                for (let pairing of filterPairings) {
+                    if (whisky.pairings.includes(pairing.trim())) {
+                        return true;
+                    }
+                }
+            });
+
         if (sortCategory === "rate") {
-            return whiskyState.slice().sort((a, b) => {
+            return filter_whisky.slice().sort((a, b) => {
                 return b.note_av - a.note_av;
             });
         } else if (sortCategory === "new") {
-            return whiskyState.slice().reverse();
+            return filter_whisky.slice().reverse();
         } else if (sortCategory === "review") {
-            return whiskyState.slice().sort((a, b) => {
+            return filter_whisky.slice().sort((a, b) => {
                 return b.note_num - a.note_num;
             });
         }
 
-        return whiskyState;
+        return filter_whisky;
     };
 
     const [whiskyState, setWhiskyState] =
@@ -287,6 +281,15 @@ export default function MainPage_Whisky({ navigation }: any) {
             axios.get(API_KEY + "/whiskys/").then((res) => {
                 setWhiskyState(res.data);
             });
+            axios.get(API_KEY + "/code/filter/whiskys").then((res) => {
+                setFilterOriginData(res.data.origins);
+                setFilterColorData(res.data.colors);
+                setFilterBeweryData(res.data.bewerys);
+                setFilterPairingData(res.data.pairings);
+            });
+            axios.get(API_KEY + "/code/list/").then((res) => {
+                setFilterTasteData(res.data.results);
+            });
 
             return () => {};
         }, [])
@@ -301,6 +304,20 @@ export default function MainPage_Whisky({ navigation }: any) {
         setViewWhiskyData(get_whisky().slice(0, 4));
         setView(4);
     }, [sortCategory]);
+
+    React.useEffect(() => {
+        setViewWhiskyData(get_whisky().slice(0, 4));
+        setView(4);
+    }, [
+        searchText,
+        filterOrigins,
+        filterColors,
+        filterNoses,
+        filterPalates,
+        filterFinishes,
+        filterBewerys,
+        filterPairings,
+    ]);
 
     return (
         <>
@@ -348,7 +365,7 @@ export default function MainPage_Whisky({ navigation }: any) {
                                     borderTopRightRadius: 20,
                                 }}
                             >
-                                {/* 필터 탭 */}
+                                {/* 향 탭 */}
                                 <View
                                     style={{
                                         width: "100%",
@@ -361,9 +378,14 @@ export default function MainPage_Whisky({ navigation }: any) {
                                 >
                                     <TouchableOpacity
                                         onPress={() => {
-                                            if (filterCategory === "filter")
+                                            if (tabIndex === 0) {
                                                 toggleFilterModal();
-                                            else setFilterCategory("filter");
+                                            } else {
+                                                if (tabIndex === 1) {
+                                                    setFilterCategory(0);
+                                                }
+                                                setTabIndex(tabIndex - 1);
+                                            }
                                         }}
                                     >
                                         <Text
@@ -375,7 +397,7 @@ export default function MainPage_Whisky({ navigation }: any) {
                                                 color: "#000000",
                                             }}
                                         >
-                                            취소
+                                            {tabIndex === 0 ? "취소" : "뒤로"}
                                         </Text>
                                     </TouchableOpacity>
                                     <Text
@@ -384,27 +406,43 @@ export default function MainPage_Whisky({ navigation }: any) {
                                             fontWeight: "700",
                                             fontSize: 16,
                                             color: "#000000",
+                                            textAlign: "center",
                                         }}
                                     >
-                                        {
-                                            {
-                                                filter: "필터",
-                                                country: "국가",
-                                                kind: "종류",
-                                                color: "색",
-                                                smell: "향",
-                                                taste: "맛",
-                                                age: "숙성",
-                                            }[filterCategory]
-                                        }
+                                        {filterCategory === 0 && "필터"}
                                     </Text>
                                     <TouchableOpacity
-                                        disabled={!isAbleReset(filterCategory)}
                                         onPress={() => {
-                                            filterReset(filterCategory);
-                                            if (filterCategory === "filter")
+                                            if (tabIndex === 0) {
+                                                setFilterOrigins([]);
+                                                setFilterColors([]);
+                                                setFilterNoses([]);
+                                                setFilterPalates([]);
+                                                setFilterFinishes([]);
+                                                setFilterBewerys([]);
+                                                setFilterPairings([]);
                                                 toggleFilterModal();
-                                            else setFilterCategory("filter");
+                                            } else if (
+                                                tabIndex === 1 &&
+                                                (filterCategory < 3 ||
+                                                    filterCategory > 5)
+                                            ) {
+                                                if (filterCategory == 1) {
+                                                    setFilterOrigins([]);
+                                                } else if (
+                                                    filterCategory == 2
+                                                ) {
+                                                    setFilterColors([]);
+                                                } else if (
+                                                    filterCategory == 6
+                                                ) {
+                                                    setFilterBewerys([]);
+                                                } else if (
+                                                    filterCategory == 7
+                                                ) {
+                                                    setFilterPairings([]);
+                                                }
+                                            }
                                         }}
                                     >
                                         <Text
@@ -413,505 +451,383 @@ export default function MainPage_Whisky({ navigation }: any) {
                                                     "Spoqa Han Sans Neo",
                                                 fontWeight: "400",
                                                 fontSize: 14,
-                                                color: isAbleReset(
-                                                    filterCategory
-                                                )
-                                                    ? "#000000"
-                                                    : "#BABABA",
+                                                color: "#000000",
                                             }}
                                         >
                                             초기화
                                         </Text>
                                     </TouchableOpacity>
                                 </View>
-                                <ScrollView
-                                    style={{
-                                        marginTop: 20,
-                                    }}
-                                >
-                                    {filterCategory === "filter" ? (
-                                        <View>
-                                            <Text
-                                                style={{
-                                                    fontFamily:
-                                                        "Spoqa Han Sans Neo",
-                                                    fontWeight: "400",
-                                                    fontSize: 12,
-                                                    color: "#000000",
-                                                }}
-                                            >
-                                                국가
-                                            </Text>
-                                            <TouchableOpacity
-                                                style={{
-                                                    marginTop: 10,
-                                                    marginBottom: 10,
-                                                    display: "flex",
-                                                    flexDirection: "row",
-                                                    alignItems: "center",
-                                                    justifyContent:
-                                                        "space-between",
-                                                }}
-                                                onPress={() => {
-                                                    setFilterCategory(
-                                                        "country"
-                                                    );
-                                                }}
-                                            >
-                                                <Text
-                                                    style={{
-                                                        fontFamily:
-                                                            "Spoqa Han Sans Neo",
-                                                        fontWeight: "500",
-                                                        fontSize: 14,
-                                                        color:
-                                                            filterDictionary
-                                                                .country
-                                                                .length > 0
-                                                                ? "#000000"
-                                                                : "#BABABA",
-                                                    }}
-                                                >
-                                                    {filterDictionary.country
-                                                        .length > 0
-                                                        ? filterDictionary.country.join(
-                                                              ", "
-                                                          ).length > 16
-                                                            ? filterDictionary.country
-                                                                  .join(", ")
-                                                                  .substring(
-                                                                      0,
-                                                                      16
-                                                                  ) + "..."
-                                                            : filterDictionary.country.join(
-                                                                  ", "
-                                                              )
-                                                        : "전체"}
-                                                </Text>
-                                                <Btn_OnOff_Right_Arrow />
-                                            </TouchableOpacity>
-                                            <View
-                                                style={{
-                                                    width: "100%",
-                                                    height: 1,
-                                                    backgroundColor: "#E4E4E4",
-                                                }}
-                                            />
-                                            <Text
-                                                style={{
-                                                    fontFamily:
-                                                        "Spoqa Han Sans Neo",
-                                                    fontWeight: "400",
-                                                    fontSize: 12,
-                                                    color: "#000000",
-                                                    marginTop: 20,
-                                                }}
-                                            >
-                                                종류
-                                            </Text>
-                                            <TouchableOpacity
-                                                style={{
-                                                    marginTop: 10,
-                                                    marginBottom: 10,
-                                                    display: "flex",
-                                                    flexDirection: "row",
-                                                    alignItems: "center",
-                                                    justifyContent:
-                                                        "space-between",
-                                                }}
-                                                onPress={() => {
-                                                    setFilterCategory("kind");
-                                                }}
-                                            >
-                                                <Text
-                                                    style={{
-                                                        fontFamily:
-                                                            "Spoqa Han Sans Neo",
-                                                        fontWeight: "500",
-                                                        fontSize: 14,
-                                                        color:
-                                                            filterDictionary
-                                                                .kind.length > 0
-                                                                ? "#000000"
-                                                                : "#BABABA",
-                                                    }}
-                                                >
-                                                    {filterDictionary.kind
-                                                        .length > 0
-                                                        ? filterDictionary.kind.join(
-                                                              ", "
-                                                          ).length > 16
-                                                            ? filterDictionary.kind
-                                                                  .join(", ")
-                                                                  .substring(
-                                                                      0,
-                                                                      16
-                                                                  ) + "..."
-                                                            : filterDictionary.kind.join(
-                                                                  ", "
-                                                              )
-                                                        : "전체"}
-                                                </Text>
-                                                <Btn_OnOff_Right_Arrow />
-                                            </TouchableOpacity>
-                                            <View
-                                                style={{
-                                                    width: "100%",
-                                                    height: 1,
-                                                    backgroundColor: "#E4E4E4",
-                                                }}
-                                            />
-                                            <Text
-                                                style={{
-                                                    fontFamily:
-                                                        "Spoqa Han Sans Neo",
-                                                    fontWeight: "400",
-                                                    fontSize: 12,
-                                                    color: "#000000",
-                                                    marginTop: 20,
-                                                }}
-                                            >
-                                                색
-                                            </Text>
-                                            <TouchableOpacity
-                                                style={{
-                                                    marginTop: 10,
-                                                    marginBottom: 10,
-                                                    display: "flex",
-                                                    flexDirection: "row",
-                                                    alignItems: "center",
-                                                    justifyContent:
-                                                        "space-between",
-                                                }}
-                                                onPress={() => {
-                                                    setFilterCategory("color");
-                                                }}
-                                            >
-                                                <Text
-                                                    style={{
-                                                        fontFamily:
-                                                            "Spoqa Han Sans Neo",
-                                                        fontWeight: "500",
-                                                        fontSize: 14,
-                                                        color:
-                                                            filterDictionary
-                                                                .color.length >
-                                                            0
-                                                                ? "#000000"
-                                                                : "#BABABA",
-                                                    }}
-                                                >
-                                                    {filterDictionary.color
-                                                        .length > 0
-                                                        ? filterDictionary.color.join(
-                                                              ", "
-                                                          ).length > 16
-                                                            ? filterDictionary.color
-                                                                  .join(", ")
-                                                                  .substring(
-                                                                      0,
-                                                                      16
-                                                                  ) + "..."
-                                                            : filterDictionary.color.join(
-                                                                  ", "
-                                                              )
-                                                        : "전체"}
-                                                </Text>
-                                                <Btn_OnOff_Right_Arrow />
-                                            </TouchableOpacity>
-                                            <View
-                                                style={{
-                                                    width: "100%",
-                                                    height: 1,
-                                                    backgroundColor: "#E4E4E4",
-                                                }}
-                                            />
-                                            <Text
-                                                style={{
-                                                    fontFamily:
-                                                        "Spoqa Han Sans Neo",
-                                                    fontWeight: "400",
-                                                    fontSize: 12,
-                                                    color: "#000000",
-                                                    marginTop: 20,
-                                                }}
-                                            >
-                                                향
-                                            </Text>
-                                            <TouchableOpacity
-                                                style={{
-                                                    marginTop: 10,
-                                                    marginBottom: 10,
-                                                    display: "flex",
-                                                    flexDirection: "row",
-                                                    alignItems: "center",
-                                                    justifyContent:
-                                                        "space-between",
-                                                }}
-                                                onPress={() => {
-                                                    setFilterCategory("smell");
-                                                }}
-                                            >
-                                                <Text
-                                                    style={{
-                                                        fontFamily:
-                                                            "Spoqa Han Sans Neo",
-                                                        fontWeight: "500",
-                                                        fontSize: 14,
-                                                        color:
-                                                            filterDictionary
-                                                                .smell.length >
-                                                            0
-                                                                ? "#000000"
-                                                                : "#BABABA",
-                                                    }}
-                                                >
-                                                    {filterDictionary.smell
-                                                        .length > 0
-                                                        ? filterDictionary.smell.join(
-                                                              ", "
-                                                          ).length > 16
-                                                            ? filterDictionary.smell
-                                                                  .join(", ")
-                                                                  .substring(
-                                                                      0,
-                                                                      16
-                                                                  ) + "..."
-                                                            : filterDictionary.smell.join(
-                                                                  ", "
-                                                              )
-                                                        : "전체"}
-                                                </Text>
-                                                <Btn_OnOff_Right_Arrow />
-                                            </TouchableOpacity>
-                                            <View
-                                                style={{
-                                                    width: "100%",
-                                                    height: 1,
-                                                    backgroundColor: "#E4E4E4",
-                                                }}
-                                            />
-                                            <Text
-                                                style={{
-                                                    fontFamily:
-                                                        "Spoqa Han Sans Neo",
-                                                    fontWeight: "400",
-                                                    fontSize: 12,
-                                                    color: "#000000",
-                                                    marginTop: 20,
-                                                }}
-                                            >
-                                                맛
-                                            </Text>
-                                            <TouchableOpacity
-                                                style={{
-                                                    marginTop: 10,
-                                                    marginBottom: 10,
-                                                    display: "flex",
-                                                    flexDirection: "row",
-                                                    alignItems: "center",
-                                                    justifyContent:
-                                                        "space-between",
-                                                }}
-                                                onPress={() => {
-                                                    setFilterCategory("taste");
-                                                }}
-                                            >
-                                                <Text
-                                                    style={{
-                                                        fontFamily:
-                                                            "Spoqa Han Sans Neo",
-                                                        fontWeight: "500",
-                                                        fontSize: 14,
-                                                        color:
-                                                            filterDictionary
-                                                                .taste.length >
-                                                            0
-                                                                ? "#000000"
-                                                                : "#BABABA",
-                                                    }}
-                                                >
-                                                    {filterDictionary.taste
-                                                        .length > 0
-                                                        ? filterDictionary.taste.join(
-                                                              ", "
-                                                          ).length > 16
-                                                            ? filterDictionary.taste
-                                                                  .join(", ")
-                                                                  .substring(
-                                                                      0,
-                                                                      16
-                                                                  ) + "..."
-                                                            : filterDictionary.taste.join(
-                                                                  ", "
-                                                              )
-                                                        : "전체"}
-                                                </Text>
-                                                <Btn_OnOff_Right_Arrow />
-                                            </TouchableOpacity>
-                                            <View
-                                                style={{
-                                                    width: "100%",
-                                                    height: 1,
-                                                    backgroundColor: "#E4E4E4",
-                                                }}
-                                            />
-                                            <Text
-                                                style={{
-                                                    fontFamily:
-                                                        "Spoqa Han Sans Neo",
-                                                    fontWeight: "400",
-                                                    fontSize: 12,
-                                                    color: "#000000",
-                                                    marginTop: 20,
-                                                }}
-                                            >
-                                                숙성
-                                            </Text>
-                                            <TouchableOpacity
-                                                style={{
-                                                    marginTop: 10,
-                                                    marginBottom: 10,
-                                                    display: "flex",
-                                                    flexDirection: "row",
-                                                    alignItems: "center",
-                                                    justifyContent:
-                                                        "space-between",
-                                                }}
-                                                onPress={() => {
-                                                    setFilterCategory("age");
-                                                }}
-                                            >
-                                                <Text
-                                                    style={{
-                                                        fontFamily:
-                                                            "Spoqa Han Sans Neo",
-                                                        fontWeight: "500",
-                                                        fontSize: 14,
-                                                        color:
-                                                            filterDictionary.age
-                                                                .length > 0
-                                                                ? "#000000"
-                                                                : "#BABABA",
-                                                    }}
-                                                >
-                                                    {filterDictionary.age
-                                                        .length > 0
-                                                        ? filterDictionary.age.join(
-                                                              ", "
-                                                          ).length > 16
-                                                            ? filterDictionary.age
-                                                                  .join(", ")
-                                                                  .substring(
-                                                                      0,
-                                                                      16
-                                                                  ) + "..."
-                                                            : filterDictionary.age.join(
-                                                                  ", "
-                                                              )
-                                                        : "전체"}
-                                                </Text>
-                                                <Btn_OnOff_Right_Arrow />
-                                            </TouchableOpacity>
-                                            <View
-                                                style={{
-                                                    width: "100%",
-                                                    height: 1,
-                                                    backgroundColor: "#E4E4E4",
-                                                }}
-                                            />
-                                        </View>
-                                    ) : (
-                                        <View>
-                                            {filter.current[filterCategory].map(
-                                                (item) => (
-                                                    <View key={item.id}>
-                                                        <TouchableOpacity
-                                                            style={{
-                                                                marginTop: 10,
-                                                                marginBottom: 10,
-                                                                display: "flex",
-                                                                flexDirection:
-                                                                    "row",
-                                                                alignItems:
-                                                                    "center",
-                                                                justifyContent:
-                                                                    "space-between",
-                                                                height: 40,
-                                                            }}
-                                                            onPress={() => {
-                                                                setFilter(
-                                                                    filterCategory,
-                                                                    item.value
-                                                                );
-                                                            }}
-                                                        >
-                                                            <Text
+                                {/* 선택 창 */}
+                                <ScrollView style={{ width: "100%" }}>
+                                    <View
+                                        style={{
+                                            width: "100%",
+                                            alignItems: "center",
+                                            paddingTop: 20,
+                                        }}
+                                    >
+                                        {tabIndex === 0 &&
+                                            [
+                                                {
+                                                    name: "국가",
+                                                    selected: filterOrigins,
+                                                },
+                                                {
+                                                    name: "색",
+                                                    selected: filterColors,
+                                                },
+                                                {
+                                                    name: "노즈 (향)",
+                                                    selected: filterNoses,
+                                                },
+                                                {
+                                                    name: "팔레트 (중간맛)",
+                                                    selected: filterPalates,
+                                                },
+                                                {
+                                                    name: "피니시 (끝맛)",
+                                                    selected: filterFinishes,
+                                                },
+                                                {
+                                                    name: "양조장",
+                                                    selected: filterBewerys,
+                                                },
+                                                {
+                                                    name: "페어링",
+                                                    selected: filterPairings,
+                                                },
+                                            ].map(
+                                                (data: any, index: number) => {
+                                                    return (
+                                                        <View key={index}>
+                                                            <View
                                                                 style={{
-                                                                    fontFamily:
-                                                                        "Spoqa Han Sans Neo",
-                                                                    fontWeight:
-                                                                        "500",
-                                                                    fontSize: 14,
-                                                                    color: filterDictionary[
-                                                                        filterCategory
-                                                                    ].includes(
-                                                                        item.value
-                                                                    )
-                                                                        ? "#000000"
-                                                                        : "#BABABA",
+                                                                    width: 320,
                                                                 }}
                                                             >
-                                                                {item.value}
-                                                            </Text>
-                                                            {filterDictionary[
-                                                                filterCategory
-                                                            ].includes(
-                                                                item.value
-                                                            ) && <Btn_Check />}
-                                                        </TouchableOpacity>
-                                                        <View
-                                                            style={{
-                                                                width: "100%",
-                                                                height: 1,
-                                                                backgroundColor:
-                                                                    "#E4E4E4",
-                                                            }}
-                                                        />
-                                                    </View>
-                                                )
+                                                                <Text
+                                                                    style={{
+                                                                        width: 320,
+                                                                        fontFamily:
+                                                                            "Spoqa Han Sans Neo",
+                                                                        fontWeight:
+                                                                            "400",
+                                                                        fontSize: 12,
+                                                                        color: "#000000",
+                                                                        textAlign:
+                                                                            "left",
+                                                                    }}
+                                                                >
+                                                                    {data.name}
+                                                                </Text>
+                                                            </View>
+                                                            <TouchableOpacity
+                                                                onPress={() => {
+                                                                    setTabIndex(
+                                                                        1
+                                                                    );
+                                                                    setFilterCategory(
+                                                                        index +
+                                                                            1
+                                                                    );
+                                                                }}
+                                                                style={{
+                                                                    width: 320,
+                                                                    height: 40,
+                                                                    marginBottom: 5,
+                                                                    flexDirection:
+                                                                        "row",
+                                                                    alignItems:
+                                                                        "center",
+                                                                    justifyContent:
+                                                                        "space-between",
+                                                                }}
+                                                            >
+                                                                <Text
+                                                                    style={[
+                                                                        {
+                                                                            fontFamily:
+                                                                                "Spoqa Han Sans Neo",
+                                                                            fontWeight:
+                                                                                "500",
+                                                                            fontSize: 14,
+                                                                            color: "#000000",
+                                                                        },
+                                                                        data
+                                                                            .selected
+                                                                            .length ===
+                                                                            0 && {
+                                                                            color: "#BABABA",
+                                                                        },
+                                                                    ]}
+                                                                >
+                                                                    {data
+                                                                        .selected
+                                                                        .length ===
+                                                                    0
+                                                                        ? "전체"
+                                                                        : data.selected.join(
+                                                                              ","
+                                                                          )}
+                                                                </Text>
+                                                                <Btn_Next_Select />
+                                                            </TouchableOpacity>
+                                                            <View
+                                                                style={{
+                                                                    width: 320,
+                                                                    height: 1,
+                                                                    backgroundColor:
+                                                                        "#E4E4E4",
+                                                                    marginBottom: 10,
+                                                                }}
+                                                            />
+                                                        </View>
+                                                    );
+                                                }
                                             )}
-                                        </View>
-                                    )}
+                                        {tabIndex == 1 &&
+                                            (filterCategory < 3 ||
+                                                filterCategory > 5) &&
+                                            [
+                                                filterOriginData,
+                                                filterColorData,
+                                                [],
+                                                [],
+                                                [],
+                                                filterBeweryData,
+                                                filterPairingData,
+                                            ][filterCategory - 1].map(
+                                                (data, index) => {
+                                                    return (
+                                                        <View key={index}>
+                                                            <TouchableOpacity
+                                                                onPress={() => {
+                                                                    if (
+                                                                        [
+                                                                            filterOrigins,
+                                                                            filterColors,
+                                                                            [],
+                                                                            [],
+                                                                            [],
+                                                                            filterBewerys,
+                                                                            filterPairings,
+                                                                        ][
+                                                                            filterCategory -
+                                                                                1
+                                                                        ].filter(
+                                                                            (
+                                                                                f_data
+                                                                            ) => {
+                                                                                return (
+                                                                                    f_data ==
+                                                                                    data.name
+                                                                                );
+                                                                            }
+                                                                        )
+                                                                            .length !=
+                                                                        0
+                                                                    ) {
+                                                                        if (
+                                                                            filterCategory ==
+                                                                            1
+                                                                        ) {
+                                                                            setFilterOrigins(
+                                                                                filterOrigins.filter(
+                                                                                    (
+                                                                                        f_data
+                                                                                    ) => {
+                                                                                        return (
+                                                                                            f_data !=
+                                                                                            data.name
+                                                                                        );
+                                                                                    }
+                                                                                )
+                                                                            );
+                                                                        } else if (
+                                                                            filterCategory ==
+                                                                            2
+                                                                        ) {
+                                                                            setFilterColors(
+                                                                                filterColors.filter(
+                                                                                    (
+                                                                                        f_data
+                                                                                    ) => {
+                                                                                        return (
+                                                                                            f_data !=
+                                                                                            data.name
+                                                                                        );
+                                                                                    }
+                                                                                )
+                                                                            );
+                                                                        } else if (
+                                                                            filterCategory ==
+                                                                            6
+                                                                        ) {
+                                                                            setFilterBewerys(
+                                                                                filterBewerys.filter(
+                                                                                    (
+                                                                                        f_data
+                                                                                    ) => {
+                                                                                        return (
+                                                                                            f_data !=
+                                                                                            data.name
+                                                                                        );
+                                                                                    }
+                                                                                )
+                                                                            );
+                                                                        } else if (
+                                                                            filterCategory ==
+                                                                            7
+                                                                        ) {
+                                                                            setFilterPairings(
+                                                                                filterPairings.filter(
+                                                                                    (
+                                                                                        f_data
+                                                                                    ) => {
+                                                                                        return (
+                                                                                            f_data !=
+                                                                                            data.name
+                                                                                        );
+                                                                                    }
+                                                                                )
+                                                                            );
+                                                                        }
+                                                                    } else {
+                                                                        if (
+                                                                            filterCategory ==
+                                                                            1
+                                                                        ) {
+                                                                            setFilterOrigins(
+                                                                                [
+                                                                                    ...filterOrigins,
+                                                                                    data.name,
+                                                                                ]
+                                                                            );
+                                                                        } else if (
+                                                                            filterCategory ==
+                                                                            2
+                                                                        ) {
+                                                                            setFilterColors(
+                                                                                [
+                                                                                    ...filterColors,
+                                                                                    data.name,
+                                                                                ]
+                                                                            );
+                                                                        } else if (
+                                                                            filterCategory ==
+                                                                            6
+                                                                        ) {
+                                                                            setFilterBewerys(
+                                                                                [
+                                                                                    ...filterBewerys,
+                                                                                    data.name,
+                                                                                ]
+                                                                            );
+                                                                        } else if (
+                                                                            filterCategory ==
+                                                                            7
+                                                                        ) {
+                                                                            setFilterPairings(
+                                                                                [
+                                                                                    ...filterPairings,
+                                                                                    data.name,
+                                                                                ]
+                                                                            );
+                                                                        }
+                                                                    }
+                                                                }}
+                                                                style={{
+                                                                    width: 320,
+                                                                    height: 40,
+                                                                    marginBottom: 5,
+                                                                    flexDirection:
+                                                                        "row",
+                                                                    alignItems:
+                                                                        "center",
+                                                                    justifyContent:
+                                                                        "space-between",
+                                                                }}
+                                                            >
+                                                                <Text
+                                                                    style={[
+                                                                        {
+                                                                            fontFamily:
+                                                                                "Spoqa Han Sans Neo",
+                                                                            fontWeight:
+                                                                                "500",
+                                                                            fontSize: 14,
+                                                                            color: "#000000",
+                                                                        },
+                                                                    ]}
+                                                                >
+                                                                    {data.name}
+                                                                </Text>
+                                                                {[
+                                                                    filterOrigins,
+                                                                    filterColors,
+                                                                    [],
+                                                                    [],
+                                                                    [],
+                                                                    filterBewerys,
+                                                                    filterPairings,
+                                                                ][
+                                                                    filterCategory -
+                                                                        1
+                                                                ].filter(
+                                                                    (
+                                                                        f_data
+                                                                    ) => {
+                                                                        return (
+                                                                            f_data ==
+                                                                            data.name
+                                                                        );
+                                                                    }
+                                                                ).length !=
+                                                                    0 && (
+                                                                    <Btn_Select />
+                                                                )}
+                                                            </TouchableOpacity>
+                                                            <View
+                                                                style={{
+                                                                    width: 320,
+                                                                    height: 1,
+                                                                    backgroundColor:
+                                                                        "#E4E4E4",
+                                                                    marginBottom: 10,
+                                                                }}
+                                                            />
+                                                        </View>
+                                                    );
+                                                }
+                                            )}
+                                    </View>
+                                    <View style={{ marginVertical: 40 }} />
                                 </ScrollView>
+                                {/* 선택 완료 버튼 */}
                                 <TouchableOpacity
-                                    style={{
-                                        width: "100%",
-                                        height: 55,
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                        borderRadius: 10,
-                                        marginBottom: 40,
-                                        backgroundColor: isAbleReset(
-                                            filterCategory
-                                        )
-                                            ? "#974B1A"
-                                            : "#BABABA",
-                                    }}
-                                    disabled={!isAbleReset(filterCategory)}
                                     onPress={() => {
-                                        if (filterCategory === "filter")
-                                            toggleFilterModal();
-                                        else setFilterCategory("filter");
+                                        toggleFilterModal();
                                     }}
+                                    style={[
+                                        {
+                                            width: 320,
+                                            height: 55,
+                                            backgroundColor: "#974B1A",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            borderRadius: 10,
+                                            alignSelf: "center",
+                                            marginBottom: 20,
+                                        },
+                                    ]}
                                 >
                                     <Text
                                         style={{
                                             fontFamily: "Spoqa Han Sans Neo",
                                             fontWeight: "500",
                                             fontSize: 18,
-                                            color: "#ffffff",
+                                            color: "#FFFFFF",
                                             textAlign: "center",
                                         }}
                                     >
@@ -1312,7 +1228,7 @@ export default function MainPage_Whisky({ navigation }: any) {
                                     <Text>전체 </Text>
                                     <Text
                                         style={{ color: "#D6690F" }}
-                                    >{`(${whiskyState.length.toLocaleString()})`}</Text>
+                                    >{`(${get_whisky().length.toLocaleString()})`}</Text>
                                 </Text>
                                 <TouchableOpacity
                                     style={{
