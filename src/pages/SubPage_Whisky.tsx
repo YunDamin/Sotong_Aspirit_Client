@@ -57,7 +57,7 @@ export default function SubPage_Whisky({ navigation, route }: any) {
             axios.get(API_KEY + "/notes/whisky/" + whisky_id).then((res) => {
                 setNoteData(res.data?.data);
                 setViewNoteData(res.data?.data.slice().reverse().slice(0, 4));
-                setView(view + 4);
+                setView(4);
             });
 
             return () => {};

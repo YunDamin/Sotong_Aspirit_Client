@@ -46,7 +46,11 @@ function transformArray(fruits: string[]) {
 export default function SubPage_Profile({ navigation, route }: any) {
     const [userState, setUserState] = useRecoilState<user>(user_state);
     const [user, setUser] = React.useState<any>(null);
+
     const [notes, setNotes] = React.useState<any[]>([]);
+    const [viewNoteData, setViewNoteData] = React.useState<any>([]);
+    const [view, setView] = React.useState(0);
+
     const [smells, setSmells] = React.useState<any[]>([]);
     const [tastes, setTastes] = React.useState<any[]>([]);
     const [finishs, setFinishs] = React.useState<any[]>([]);
@@ -64,6 +68,11 @@ export default function SubPage_Profile({ navigation, route }: any) {
                 .get(API_KEY + "/users/user/" + user_id + "/palate")
                 .then((res) => {
                     setNotes(res.data.notes);
+                    setViewNoteData(
+                        res.data?.notes.slice().reverse().slice(0, 4)
+                    );
+                    setView(4);
+
                     setSmells(res.data.smells);
                     setTastes(res.data.tastes);
                     setFinishs(res.data.finishs);
@@ -71,6 +80,24 @@ export default function SubPage_Profile({ navigation, route }: any) {
             return () => {};
         }, [])
     );
+
+    const [loading, setLoading] = React.useState(false);
+    const loadMoreData = () => {
+        if (!loading) {
+            setLoading(true);
+
+            setViewNoteData([
+                ...viewNoteData,
+                ...notes
+                    .slice()
+                    .reverse()
+                    .slice(view, view + 4),
+            ]);
+            setView(view + 4);
+
+            setLoading(false);
+        }
+    };
 
     return (
         <>
@@ -415,8 +442,8 @@ export default function SubPage_Profile({ navigation, route }: any) {
                                 </Text>
                             </Text>
                         </View>
-                        {(notes?.length ?? 0) > 0 &&
-                            notes.map((note, index) => {
+                        {(viewNoteData?.length ?? 0) > 0 &&
+                            viewNoteData.map((note: any, index: number) => {
                                 return (
                                     <Card_TasteNote_Whisky
                                         key={index}
@@ -448,6 +475,43 @@ export default function SubPage_Profile({ navigation, route }: any) {
                                     />
                                 );
                             })}
+                        <TouchableOpacity
+                            onPress={() => {
+                                if (notes?.length > view) {
+                                    setViewNoteData([
+                                        ...viewNoteData,
+                                        ...notes
+                                            .slice()
+                                            .reverse()
+                                            .slice(view, view + 4),
+                                    ]);
+                                    setView(view + 4);
+                                }
+                            }}
+                            style={[
+                                {
+                                    width: 320,
+                                    height: 35,
+                                    backgroundColor: "#974B1A",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    borderRadius: 15,
+                                    marginBottom: 20,
+                                },
+                            ]}
+                        >
+                            <Text
+                                style={{
+                                    fontFamily: "Spoqa Han Sans Neo",
+                                    fontWeight: "500",
+                                    fontSize: 18,
+                                    color: "#FFFFFF",
+                                    textAlign: "center",
+                                }}
+                            >
+                                + 더보기
+                            </Text>
+                        </TouchableOpacity>
                     </View>
                 </ScrollView>
             </SafeAreaView>

@@ -184,7 +184,7 @@ export default function LoginPage_Main({ navigation }: any) {
                             </TouchableOpacity>
                         </View>
                         <View style={{ width: "100%", alignItems: "center" }}>
-                            <View style={{ marginBottom: 80 }}>
+                            <View style={{ marginBottom: 60, marginTop: 20 }}>
                                 <TouchableOpacity
                                     onPress={() =>
                                         navigation.navigate(

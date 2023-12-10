@@ -40,6 +40,9 @@ import { login_data, login_state } from "../atoms/login_state";
 import { user, user_state } from "../atoms/get_user";
 
 export default function SubPage_TastingNote_Single({ navigation, route }: any) {
+    const [loginState, setLoginState] = useRecoilState<login_data>(login_state);
+    const [userState, setUserState] = useRecoilState<user>(user_state);
+
     const user_id = route.params.user_id;
     const whisky_id = route.params.whisky_id;
     const tasting_id = route.params.tasting_id;
@@ -89,6 +92,7 @@ export default function SubPage_TastingNote_Single({ navigation, route }: any) {
                         navigation.goBack();
                     }}
                     whatBtn="modify"
+                    onModify={() => {}}
                 />
             </SafeAreaView>
             <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>

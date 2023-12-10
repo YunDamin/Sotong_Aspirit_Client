@@ -65,8 +65,7 @@ export default function Card_TasteNote_Whisky(props: Props) {
     const [whisky, setWhisky] = React.useState<any>(null);
     const [note, setNote] = React.useState<any>(null);
     const [user, setUser] = React.useState<any>(null);
-
-    let date: Date = new Date();
+    const [date, setDate] = React.useState<Date>(new Date());
 
     React.useEffect(() => {
         if (props.whisky_id) {
@@ -78,7 +77,7 @@ export default function Card_TasteNote_Whisky(props: Props) {
         }
         axios.get(API_KEY + "/notes/note/" + props.tasting_id).then((res) => {
             setNote(res.data.data);
-            date = new Date(res.data.data.date);
+            setDate(new Date(res.data.data.date));
         });
         axios
             .get(API_KEY + "/users/user/" + props.user_id + "/summary")

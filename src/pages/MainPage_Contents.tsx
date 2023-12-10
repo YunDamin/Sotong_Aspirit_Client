@@ -307,7 +307,12 @@ export default function MainPage_Contents({ navigation }: any) {
                                     )}
                                 </Text>
                             </View>
-                            <TouchableOpacity style={{ width: 25, height: 25 }}>
+                            <TouchableOpacity
+                                onPress={() =>
+                                    navigation.navigate("SubPage_Settings")
+                                }
+                                style={{ width: 25, height: 25 }}
+                            >
                                 <Btn_Setting />
                             </TouchableOpacity>
                         </View>
