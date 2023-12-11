@@ -120,7 +120,7 @@ export default function SubPage_TastingNote_Single({ navigation, route }: any) {
                     goBack={() => {
                         navigation.goBack();
                     }}
-                    whatBtn="modify"
+                    whatBtn={itsMe ? "modify" : "new"}
                     onModify={() => {
                         toggleSettings();
                     }}

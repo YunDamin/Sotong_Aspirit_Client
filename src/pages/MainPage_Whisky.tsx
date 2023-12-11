@@ -146,13 +146,20 @@ export default function MainPage_Whisky({ navigation }: any) {
     // Filter
     const [tabIndex, setTabIndex] = React.useState<number>(0);
     const [filterCategory, setFilterCategory] = React.useState<number>(0);
+    const [whatIndex, setWhatIndex] = React.useState<number>(0);
 
     // Select
+    type SelectTaste = {
+        what: number;
+        name: string;
+    };
     const [filterOrigins, setFilterOrigins] = React.useState<string[]>([]);
     const [filterColors, setFilterColors] = React.useState<string[]>([]);
-    const [filterNoses, setFilterNoses] = React.useState<string[]>([]);
-    const [filterPalates, setFilterPalates] = React.useState<string[]>([]);
-    const [filterFinishes, setFilterFinishes] = React.useState<string[]>([]);
+    const [filterNoses, setFilterNoses] = React.useState<SelectTaste[]>([]);
+    const [filterPalates, setFilterPalates] = React.useState<SelectTaste[]>([]);
+    const [filterFinishes, setFilterFinishes] = React.useState<SelectTaste[]>(
+        []
+    );
     const [filterBewerys, setFilterBewerys] = React.useState<string[]>([]);
     const [filterPairings, setFilterPairings] = React.useState<string[]>([]);
 
@@ -224,6 +231,39 @@ export default function MainPage_Whisky({ navigation }: any) {
 
                 for (let color of filterColors) {
                     if (whisky.color.includes(color.trim())) {
+                        return true;
+                    }
+                }
+
+                return false;
+            })
+            .filter((whisky) => {
+                if (filterNoses.length == 0) return true;
+
+                for (let nose of filterNoses) {
+                    if (whisky.noses.includes(nose.name.trim())) {
+                        return true;
+                    }
+                }
+
+                return false;
+            })
+            .filter((whisky) => {
+                if (filterPalates.length == 0) return true;
+
+                for (let palate of filterPalates) {
+                    if (whisky.palates.includes(palate.name.trim())) {
+                        return true;
+                    }
+                }
+
+                return false;
+            })
+            .filter((whisky) => {
+                if (filterFinishes.length == 0) return true;
+
+                for (let finish of filterFinishes) {
+                    if (whisky.finishes.includes(finish.name.trim())) {
                         return true;
                     }
                 }
@@ -442,6 +482,61 @@ export default function MainPage_Whisky({ navigation }: any) {
                                                 ) {
                                                     setFilterPairings([]);
                                                 }
+                                            } else if (
+                                                tabIndex === 1 &&
+                                                filterCategory >= 3 &&
+                                                filterCategory <= 5
+                                            ) {
+                                                if (filterCategory == 3) {
+                                                    setFilterNoses([]);
+                                                } else if (
+                                                    filterCategory == 4
+                                                ) {
+                                                    setFilterPalates([]);
+                                                } else if (
+                                                    filterCategory == 5
+                                                ) {
+                                                    setFilterFinishes([]);
+                                                }
+                                            } else if (
+                                                tabIndex === 2 &&
+                                                filterCategory == 3
+                                            ) {
+                                                setFilterNoses(
+                                                    filterNoses.filter((d) => {
+                                                        return (
+                                                            d.what != whatIndex
+                                                        );
+                                                    })
+                                                );
+                                            } else if (
+                                                tabIndex === 2 &&
+                                                filterCategory == 4
+                                            ) {
+                                                setFilterPalates(
+                                                    filterPalates.filter(
+                                                        (d) => {
+                                                            return (
+                                                                d.what !=
+                                                                whatIndex
+                                                            );
+                                                        }
+                                                    )
+                                                );
+                                            } else if (
+                                                tabIndex === 2 &&
+                                                filterCategory == 5
+                                            ) {
+                                                setFilterFinishes(
+                                                    filterFinishes.filter(
+                                                        (d) => {
+                                                            return (
+                                                                d.what !=
+                                                                whatIndex
+                                                            );
+                                                        }
+                                                    )
+                                                );
                                             }
                                         }}
                                     >
@@ -562,14 +657,41 @@ export default function MainPage_Whisky({ navigation }: any) {
                                                                         },
                                                                     ]}
                                                                 >
-                                                                    {data
-                                                                        .selected
-                                                                        .length ===
-                                                                    0
-                                                                        ? "전체"
-                                                                        : data.selected.join(
-                                                                              ","
-                                                                          )}
+                                                                    {index + 1 <
+                                                                        3 ||
+                                                                    index + 1 >
+                                                                        5
+                                                                        ? data
+                                                                              .selected
+                                                                              .length ===
+                                                                          0
+                                                                            ? "전체"
+                                                                            : data.selected.join(
+                                                                                  ","
+                                                                              )
+                                                                        : ""}
+                                                                    {index +
+                                                                        1 >=
+                                                                        3 &&
+                                                                    index + 1 <=
+                                                                        5
+                                                                        ? data
+                                                                              .selected
+                                                                              .length ===
+                                                                          0
+                                                                            ? "전체"
+                                                                            : data.selected
+                                                                                  .map(
+                                                                                      (
+                                                                                          d: any
+                                                                                      ) => {
+                                                                                          return d.name;
+                                                                                      }
+                                                                                  )
+                                                                                  .join(
+                                                                                      ","
+                                                                                  )
+                                                                        : ""}
                                                                 </Text>
                                                                 <Btn_Next_Select />
                                                             </TouchableOpacity>
@@ -801,6 +923,502 @@ export default function MainPage_Whisky({ navigation }: any) {
                                                     );
                                                 }
                                             )}
+                                        {tabIndex == 1 &&
+                                            filterCategory >= 3 &&
+                                            filterCategory <= 5 &&
+                                            filterTasteData.map(
+                                                (first, index) => {
+                                                    return (
+                                                        <View key={index}>
+                                                            <View
+                                                                style={{
+                                                                    width: 320,
+                                                                }}
+                                                            >
+                                                                <Text
+                                                                    style={{
+                                                                        width: 320,
+                                                                        fontFamily:
+                                                                            "Spoqa Han Sans Neo",
+                                                                        fontWeight:
+                                                                            "400",
+                                                                        fontSize: 12,
+                                                                        color: "#000000",
+                                                                        textAlign:
+                                                                            "left",
+                                                                    }}
+                                                                >
+                                                                    {
+                                                                        first
+                                                                            .first
+                                                                            .KOR_CD_NM
+                                                                    }
+                                                                </Text>
+                                                            </View>
+                                                            <TouchableOpacity
+                                                                onPress={() => {
+                                                                    setTabIndex(
+                                                                        2
+                                                                    );
+                                                                    setWhatIndex(
+                                                                        index
+                                                                    );
+                                                                }}
+                                                                style={{
+                                                                    width: 320,
+                                                                    height: 40,
+                                                                    marginBottom: 5,
+                                                                    flexDirection:
+                                                                        "row",
+                                                                    alignItems:
+                                                                        "center",
+                                                                    justifyContent:
+                                                                        "space-between",
+                                                                }}
+                                                            >
+                                                                <Text
+                                                                    style={[
+                                                                        {
+                                                                            fontFamily:
+                                                                                "Spoqa Han Sans Neo",
+                                                                            fontWeight:
+                                                                                "500",
+                                                                            fontSize: 14,
+                                                                            color: "#000000",
+                                                                        },
+                                                                        filterCategory ==
+                                                                            3 &&
+                                                                            filterNoses.filter(
+                                                                                (
+                                                                                    d
+                                                                                ) => {
+                                                                                    return (
+                                                                                        d.what ==
+                                                                                        index
+                                                                                    );
+                                                                                }
+                                                                            )
+                                                                                .length ==
+                                                                                0 && {
+                                                                                color: "#BABABA",
+                                                                            },
+                                                                        filterCategory ==
+                                                                            4 &&
+                                                                            filterPalates.filter(
+                                                                                (
+                                                                                    d
+                                                                                ) => {
+                                                                                    return (
+                                                                                        d.what ==
+                                                                                        index
+                                                                                    );
+                                                                                }
+                                                                            )
+                                                                                .length ==
+                                                                                0 && {
+                                                                                color: "#BABABA",
+                                                                            },
+                                                                        filterCategory ==
+                                                                            5 &&
+                                                                            filterFinishes.filter(
+                                                                                (
+                                                                                    d
+                                                                                ) => {
+                                                                                    return (
+                                                                                        d.what ==
+                                                                                        index
+                                                                                    );
+                                                                                }
+                                                                            )
+                                                                                .length ==
+                                                                                0 && {
+                                                                                color: "#BABABA",
+                                                                            },
+                                                                    ]}
+                                                                >
+                                                                    {filterCategory ==
+                                                                        3 &&
+                                                                    filterNoses.filter(
+                                                                        (d) => {
+                                                                            return (
+                                                                                d.what ==
+                                                                                index
+                                                                            );
+                                                                        }
+                                                                    ).length ==
+                                                                        0
+                                                                        ? "전체"
+                                                                        : filterNoses
+                                                                              .filter(
+                                                                                  (
+                                                                                      d
+                                                                                  ) => {
+                                                                                      return (
+                                                                                          d.what ==
+                                                                                          index
+                                                                                      );
+                                                                                  }
+                                                                              )
+                                                                              .map(
+                                                                                  (
+                                                                                      d
+                                                                                  ) =>
+                                                                                      d.name
+                                                                              )
+                                                                              .join(
+                                                                                  ","
+                                                                              )}
+                                                                    {filterCategory ==
+                                                                        4 &&
+                                                                    filterPalates.filter(
+                                                                        (d) => {
+                                                                            return (
+                                                                                d.what ==
+                                                                                index
+                                                                            );
+                                                                        }
+                                                                    ).length ==
+                                                                        0
+                                                                        ? "전체"
+                                                                        : filterPalates
+                                                                              .filter(
+                                                                                  (
+                                                                                      d
+                                                                                  ) => {
+                                                                                      return (
+                                                                                          d.what ==
+                                                                                          index
+                                                                                      );
+                                                                                  }
+                                                                              )
+                                                                              .map(
+                                                                                  (
+                                                                                      d
+                                                                                  ) =>
+                                                                                      d.name
+                                                                              )
+                                                                              .join(
+                                                                                  ","
+                                                                              )}
+                                                                    {filterCategory ==
+                                                                        5 &&
+                                                                    filterFinishes.filter(
+                                                                        (d) => {
+                                                                            return (
+                                                                                d.what ==
+                                                                                index
+                                                                            );
+                                                                        }
+                                                                    ).length ==
+                                                                        0
+                                                                        ? "전체"
+                                                                        : filterFinishes
+                                                                              .filter(
+                                                                                  (
+                                                                                      d
+                                                                                  ) => {
+                                                                                      return (
+                                                                                          d.what ==
+                                                                                          index
+                                                                                      );
+                                                                                  }
+                                                                              )
+                                                                              .map(
+                                                                                  (
+                                                                                      d
+                                                                                  ) =>
+                                                                                      d.name
+                                                                              )
+                                                                              .join(
+                                                                                  ","
+                                                                              )}
+                                                                </Text>
+                                                                <Btn_Next_Select />
+                                                            </TouchableOpacity>
+                                                            <View
+                                                                style={{
+                                                                    width: 320,
+                                                                    height: 1,
+                                                                    backgroundColor:
+                                                                        "#E4E4E4",
+                                                                    marginBottom: 10,
+                                                                }}
+                                                            />
+                                                        </View>
+                                                    );
+                                                }
+                                            )}
+                                        {tabIndex == 2 &&
+                                            filterTasteData
+                                                .filter((first, index) => {
+                                                    return index == whatIndex;
+                                                })[0]
+                                                .seconds.map(
+                                                    (second, index) => {
+                                                        return (
+                                                            <View key={index}>
+                                                                <View
+                                                                    style={{
+                                                                        width: 320,
+                                                                    }}
+                                                                >
+                                                                    <Text
+                                                                        style={{
+                                                                            width: 320,
+                                                                            fontFamily:
+                                                                                "Spoqa Han Sans Neo",
+                                                                            fontWeight:
+                                                                                "400",
+                                                                            fontSize: 12,
+                                                                            color: "#D6690F",
+                                                                            textAlign:
+                                                                                "left",
+                                                                        }}
+                                                                    >
+                                                                        {
+                                                                            second
+                                                                                .second
+                                                                                .KOR_CD_NM
+                                                                        }
+                                                                    </Text>
+                                                                </View>
+                                                                {second.thirds.map(
+                                                                    (
+                                                                        third,
+                                                                        t_index
+                                                                    ) => {
+                                                                        return (
+                                                                            <View
+                                                                                key={
+                                                                                    t_index
+                                                                                }
+                                                                            >
+                                                                                <TouchableOpacity
+                                                                                    onPress={() => {
+                                                                                        if (
+                                                                                            filterCategory ==
+                                                                                            3
+                                                                                        ) {
+                                                                                            if (
+                                                                                                filterNoses.filter(
+                                                                                                    (
+                                                                                                        s
+                                                                                                    ) => {
+                                                                                                        return (
+                                                                                                            s.name ==
+                                                                                                            third.KOR_CD_NM
+                                                                                                        );
+                                                                                                    }
+                                                                                                )
+                                                                                                    .length !=
+                                                                                                0
+                                                                                            ) {
+                                                                                                setFilterNoses(
+                                                                                                    filterNoses.filter(
+                                                                                                        (
+                                                                                                            s
+                                                                                                        ) => {
+                                                                                                            return (
+                                                                                                                s.name !=
+                                                                                                                third.KOR_CD_NM
+                                                                                                            );
+                                                                                                        }
+                                                                                                    )
+                                                                                                );
+                                                                                            } else {
+                                                                                                setFilterNoses(
+                                                                                                    [
+                                                                                                        ...filterNoses,
+                                                                                                        {
+                                                                                                            what: whatIndex,
+                                                                                                            name: third.KOR_CD_NM,
+                                                                                                        },
+                                                                                                    ]
+                                                                                                );
+                                                                                            }
+                                                                                        } else if (
+                                                                                            filterCategory ==
+                                                                                            4
+                                                                                        ) {
+                                                                                            if (
+                                                                                                filterPalates.filter(
+                                                                                                    (
+                                                                                                        s
+                                                                                                    ) => {
+                                                                                                        return (
+                                                                                                            s.name ==
+                                                                                                            third.KOR_CD_NM
+                                                                                                        );
+                                                                                                    }
+                                                                                                )
+                                                                                                    .length !=
+                                                                                                0
+                                                                                            ) {
+                                                                                                setFilterPalates(
+                                                                                                    filterPalates.filter(
+                                                                                                        (
+                                                                                                            s
+                                                                                                        ) => {
+                                                                                                            return (
+                                                                                                                s.name !=
+                                                                                                                third.KOR_CD_NM
+                                                                                                            );
+                                                                                                        }
+                                                                                                    )
+                                                                                                );
+                                                                                            } else {
+                                                                                                setFilterPalates(
+                                                                                                    [
+                                                                                                        ...filterPalates,
+                                                                                                        {
+                                                                                                            what: whatIndex,
+                                                                                                            name: third.KOR_CD_NM,
+                                                                                                        },
+                                                                                                    ]
+                                                                                                );
+                                                                                            }
+                                                                                        } else if (
+                                                                                            filterCategory ==
+                                                                                            5
+                                                                                        ) {
+                                                                                            if (
+                                                                                                filterFinishes.filter(
+                                                                                                    (
+                                                                                                        s
+                                                                                                    ) => {
+                                                                                                        return (
+                                                                                                            s.name ==
+                                                                                                            third.KOR_CD_NM
+                                                                                                        );
+                                                                                                    }
+                                                                                                )
+                                                                                                    .length !=
+                                                                                                0
+                                                                                            ) {
+                                                                                                setFilterFinishes(
+                                                                                                    filterFinishes.filter(
+                                                                                                        (
+                                                                                                            s
+                                                                                                        ) => {
+                                                                                                            return (
+                                                                                                                s.name !=
+                                                                                                                third.KOR_CD_NM
+                                                                                                            );
+                                                                                                        }
+                                                                                                    )
+                                                                                                );
+                                                                                            } else {
+                                                                                                setFilterFinishes(
+                                                                                                    [
+                                                                                                        ...filterPalates,
+                                                                                                        {
+                                                                                                            what: whatIndex,
+                                                                                                            name: third.KOR_CD_NM,
+                                                                                                        },
+                                                                                                    ]
+                                                                                                );
+                                                                                            }
+                                                                                        }
+                                                                                    }}
+                                                                                    style={{
+                                                                                        width: 320,
+                                                                                        height: 40,
+                                                                                        marginBottom: 5,
+                                                                                        flexDirection:
+                                                                                            "row",
+                                                                                        alignItems:
+                                                                                            "center",
+                                                                                        justifyContent:
+                                                                                            "space-between",
+                                                                                    }}
+                                                                                >
+                                                                                    <Text
+                                                                                        style={[
+                                                                                            {
+                                                                                                fontFamily:
+                                                                                                    "Spoqa Han Sans Neo",
+                                                                                                fontWeight:
+                                                                                                    "500",
+                                                                                                fontSize: 14,
+                                                                                                color: "#000000",
+                                                                                            },
+                                                                                        ]}
+                                                                                    >
+                                                                                        {
+                                                                                            third.KOR_CD_NM
+                                                                                        }
+                                                                                    </Text>
+                                                                                    {filterCategory ==
+                                                                                        3 &&
+                                                                                        filterNoses.filter(
+                                                                                            (
+                                                                                                s
+                                                                                            ) => {
+                                                                                                return (
+                                                                                                    s.name ==
+                                                                                                    third.KOR_CD_NM
+                                                                                                );
+                                                                                            }
+                                                                                        )
+                                                                                            .length !=
+                                                                                            0 && (
+                                                                                            <Btn_Select />
+                                                                                        )}
+                                                                                    {filterCategory ==
+                                                                                        4 &&
+                                                                                        filterPalates.filter(
+                                                                                            (
+                                                                                                s
+                                                                                            ) => {
+                                                                                                return (
+                                                                                                    s.name ==
+                                                                                                    third.KOR_CD_NM
+                                                                                                );
+                                                                                            }
+                                                                                        )
+                                                                                            .length !=
+                                                                                            0 && (
+                                                                                            <Btn_Select />
+                                                                                        )}
+                                                                                    {filterCategory ==
+                                                                                        5 &&
+                                                                                        filterFinishes.filter(
+                                                                                            (
+                                                                                                s
+                                                                                            ) => {
+                                                                                                return (
+                                                                                                    s.name ==
+                                                                                                    third.KOR_CD_NM
+                                                                                                );
+                                                                                            }
+                                                                                        )
+                                                                                            .length !=
+                                                                                            0 && (
+                                                                                            <Btn_Select />
+                                                                                        )}
+                                                                                </TouchableOpacity>
+                                                                                <View
+                                                                                    style={{
+                                                                                        width: 320,
+                                                                                        height: 1,
+                                                                                        backgroundColor:
+                                                                                            "#E4E4E4",
+                                                                                        marginBottom: 10,
+                                                                                    }}
+                                                                                />
+                                                                            </View>
+                                                                        );
+                                                                    }
+                                                                )}
+                                                                <View
+                                                                    style={{
+                                                                        marginVertical: 10,
+                                                                    }}
+                                                                />
+                                                            </View>
+                                                        );
+                                                    }
+                                                )}
                                     </View>
                                     <View style={{ marginVertical: 40 }} />
                                 </ScrollView>

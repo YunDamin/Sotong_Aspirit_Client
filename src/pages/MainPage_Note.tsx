@@ -134,7 +134,7 @@ export default function MainPage_Note({ navigation }: any) {
             }
 
             axios.get(API_KEY + "/notes/").then((res) => {
-                setNotes(res.data?.data);
+                setNotes(res.data?.data.slice().reverse());
                 setViewNoteData(res.data?.data.slice().reverse().slice(0, 4));
                 setView(4);
             });
@@ -144,23 +144,28 @@ export default function MainPage_Note({ navigation }: any) {
     );
 
     React.useEffect(() => {
-        setViewNoteData(
-            notes
-                .slice()
-                .reverse()
-                .filter((note: any) => {
-                    const text = searchText.trim().toLowerCase();
+        const filter_notes = notes
+            .slice()
+            .reverse()
+            .filter((note: any) => {
+                const text = searchText.trim().toLowerCase();
 
-                    if (text.length == 0) return true;
+                if (text.length == 0) return true;
 
+                if (searchCategory === "content") {
                     if (note.cont.toLowerCase().includes(text)) {
                         return true;
                     }
+                } else if (searchCategory === "user") {
+                    if (note.user_nick_name.toLowerCase().includes(text)) {
+                        return true;
+                    }
+                }
 
-                    return false;
-                })
-                .slice(0, 4)
-        );
+                return false;
+            });
+        setViewNoteData(filter_notes.slice(0, 4));
+        setNotes(filter_notes);
         setView(4);
     }, [searchText]);
 
@@ -220,80 +225,6 @@ export default function MainPage_Note({ navigation }: any) {
                                         justifyContent: "space-between",
                                     }}
                                     onPress={() => {
-                                        setSearchCategory("all");
-                                        toggleCategoryModal();
-                                    }}
-                                >
-                                    <Text
-                                        style={{
-                                            fontFamily: "Spoqa Han Sans Neo",
-                                            fontWeight: "500",
-                                            fontSize: 14,
-                                            color: "#000000",
-                                        }}
-                                    >
-                                        제목+내용
-                                    </Text>
-                                    <View style={{ height: 40 }}>
-                                        {searchCategory === "all" && (
-                                            <Btn_Check />
-                                        )}
-                                    </View>
-                                </TouchableOpacity>
-                                <View
-                                    style={{
-                                        width: "100%",
-                                        height: 1,
-                                        backgroundColor: "#EAEAEA",
-                                    }}
-                                />
-                                <TouchableOpacity
-                                    style={{
-                                        marginTop: 10,
-                                        marginBottom: 10,
-                                        display: "flex",
-                                        flexDirection: "row",
-                                        alignItems: "center",
-                                        justifyContent: "space-between",
-                                    }}
-                                    onPress={() => {
-                                        setSearchCategory("title");
-                                        toggleCategoryModal();
-                                    }}
-                                >
-                                    <Text
-                                        style={{
-                                            fontFamily: "Spoqa Han Sans Neo",
-                                            fontWeight: "500",
-                                            fontSize: 14,
-                                            color: "#000000",
-                                        }}
-                                    >
-                                        제목
-                                    </Text>
-                                    <View style={{ height: 40 }}>
-                                        {searchCategory === "title" && (
-                                            <Btn_Check />
-                                        )}
-                                    </View>
-                                </TouchableOpacity>
-                                <View
-                                    style={{
-                                        width: "100%",
-                                        height: 1,
-                                        backgroundColor: "#EAEAEA",
-                                    }}
-                                />
-                                <TouchableOpacity
-                                    style={{
-                                        marginTop: 10,
-                                        marginBottom: 10,
-                                        display: "flex",
-                                        flexDirection: "row",
-                                        alignItems: "center",
-                                        justifyContent: "space-between",
-                                    }}
-                                    onPress={() => {
                                         setSearchCategory("content");
                                         toggleCategoryModal();
                                     }}
@@ -310,6 +241,43 @@ export default function MainPage_Note({ navigation }: any) {
                                     </Text>
                                     <View style={{ height: 40 }}>
                                         {searchCategory === "content" && (
+                                            <Btn_Check />
+                                        )}
+                                    </View>
+                                </TouchableOpacity>
+                                <View
+                                    style={{
+                                        width: "100%",
+                                        height: 1,
+                                        backgroundColor: "#EAEAEA",
+                                    }}
+                                />
+                                <TouchableOpacity
+                                    style={{
+                                        marginTop: 10,
+                                        marginBottom: 10,
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        justifyContent: "space-between",
+                                    }}
+                                    onPress={() => {
+                                        setSearchCategory("user");
+                                        toggleCategoryModal();
+                                    }}
+                                >
+                                    <Text
+                                        style={{
+                                            fontFamily: "Spoqa Han Sans Neo",
+                                            fontWeight: "500",
+                                            fontSize: 14,
+                                            color: "#000000",
+                                        }}
+                                    >
+                                        작성자
+                                    </Text>
+                                    <View style={{ height: 40 }}>
+                                        {searchCategory === "user" && (
                                             <Btn_Check />
                                         )}
                                     </View>

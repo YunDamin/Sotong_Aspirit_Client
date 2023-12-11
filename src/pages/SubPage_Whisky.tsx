@@ -50,6 +50,7 @@ export default function SubPage_Whisky({ navigation, route }: any) {
     useFocusEffect(
         React.useCallback(() => {
             console.log("SubPage_Whisky Focus");
+
             axios.get(API_KEY + "/whiskys/whisky/" + whisky_id).then((res) => {
                 setData(res.data?.data);
             });
