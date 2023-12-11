@@ -21,7 +21,7 @@ import Card_FAQ from "../components/Card_FAQ";
 import { useFocusEffect } from "@react-navigation/native";
 
 import axios from "axios";
-import { API_KEY } from "@env";
+import { REACT_APP_API_KEY } from "@env";
 
 export default function SubPage_Settings({ navigation }: any) {
     const [faq, setFaq] = React.useState<any[]>([]);

@@ -19,7 +19,7 @@ import Card_FAQ from "../components/Card_FAQ";
 import { useFocusEffect } from "@react-navigation/native";
 
 import axios from "axios";
-import { API_KEY } from "@env";
+import { REACT_APP_API_KEY } from "@env";
 
 export default function SubPage_FAQ({ navigation }: any) {
     const [categories, setCategories] = React.useState<string[]>([]);
@@ -30,7 +30,7 @@ export default function SubPage_FAQ({ navigation }: any) {
     useFocusEffect(
         React.useCallback(() => {
             console.log("SubPage_FAQ Focus");
-            axios.get(API_KEY + "/contents/faq/").then((res) => {
+            axios.get(REACT_APP_API_KEY + "/contents/faq/").then((res) => {
                 console.log(res.data);
                 setCategories(res.data?.categories ?? []);
                 setFaq(res.data?.faqs ?? []);

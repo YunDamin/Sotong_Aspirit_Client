@@ -33,7 +33,7 @@ import Card_Graph from "../components/Card_Graph";
 import { useFocusEffect } from "@react-navigation/native";
 
 import axios from "axios";
-import { API_KEY } from "@env";
+import { REACT_APP_API_KEY } from "@env";
 
 import { useRecoilState } from "recoil";
 import { login_data, login_state } from "../atoms/login_state";
@@ -57,7 +57,7 @@ export default function SubPage_TastingNote_Single({ navigation, route }: any) {
 
     const delete_note = () => {
         axios
-            .delete(API_KEY + "/notes/" + tasting_id, {
+            .delete(REACT_APP_API_KEY + "/notes/" + tasting_id, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     Accept: "application/json",
@@ -76,17 +76,19 @@ export default function SubPage_TastingNote_Single({ navigation, route }: any) {
             console.log("SubPage_TastingNote_Signle Focus");
             if (whisky_id) {
                 axios
-                    .get(API_KEY + "/whiskys/whisky/" + whisky_id)
+                    .get(REACT_APP_API_KEY + "/whiskys/whisky/" + whisky_id)
                     .then((res) => {
                         setWhisky(res.data.data);
                     });
             }
-            axios.get(API_KEY + "/notes/note/" + tasting_id).then((res) => {
-                setNote(res.data.data);
-                date = new Date(res.data.data.date);
-            });
             axios
-                .get(API_KEY + "/users/user/" + user_id + "/summary")
+                .get(REACT_APP_API_KEY + "/notes/note/" + tasting_id)
+                .then((res) => {
+                    setNote(res.data.data);
+                    date = new Date(res.data.data.date);
+                });
+            axios
+                .get(REACT_APP_API_KEY + "/users/user/" + user_id + "/summary")
                 .then((res) => {
                     setUser(res.data);
                 });

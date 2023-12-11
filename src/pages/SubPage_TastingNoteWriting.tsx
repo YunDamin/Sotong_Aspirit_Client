@@ -42,7 +42,7 @@ type photoType = {
 };
 
 import axios from "axios";
-import { API_KEY } from "@env";
+import { REACT_APP_API_KEY } from "@env";
 
 import { useRecoilState } from "recoil";
 
@@ -273,88 +273,99 @@ export default function SubPage_TastingNoteWriting({ navigation, route }: any) {
     useFocusEffect(
         React.useCallback(() => {
             console.log("SubPage_TastingNoteWriting Focus");
-            axios.get(API_KEY + "/whiskys/").then((res) => {
+            axios.get(REACT_APP_API_KEY + "/whiskys/").then((res) => {
                 setWhiskyData(
                     res.data.sort((a: any, b: any) =>
                         a.name_kor.localeCompare(b.name_kor, "ko")
                     )
                 );
             });
-            axios.get(API_KEY + "/code/list/").then((res) => {
+            axios.get(REACT_APP_API_KEY + "/code/list/").then((res) => {
                 setTasteData(res.data.results);
             });
 
             if (edit) {
-                axios.get(API_KEY + "/notes/note/" + edit_id).then((res) => {
-                    setSelectedWhisky(res.data.data.whisky_id);
+                axios
+                    .get(REACT_APP_API_KEY + "/notes/note/" + edit_id)
+                    .then((res) => {
+                        setSelectedWhisky(res.data.data.whisky_id);
 
-                    setColorIndex(
-                        change_color_to_index_from_kor(
-                            res.data.data.color_index
-                        )
-                    );
+                        setColorIndex(
+                            change_color_to_index_from_kor(
+                                res.data.data.color_index
+                            )
+                        );
 
-                    let nosedata: selectedData[] = [];
-                    for (let data of res.data.data.nose) {
-                        for (let f_dat of tasteData) {
-                            for (let s_dat of f_dat.seconds) {
-                                for (let t_dat of s_dat.thirds) {
-                                    if (t_dat.KOR_CD_NM.trim() == data.trim()) {
-                                        nosedata.push({
-                                            first: f_dat.first,
-                                            second: s_dat.second,
-                                            third: t_dat,
-                                        });
+                        let nosedata: selectedData[] = [];
+                        for (let data of res.data.data.nose) {
+                            for (let f_dat of tasteData) {
+                                for (let s_dat of f_dat.seconds) {
+                                    for (let t_dat of s_dat.thirds) {
+                                        if (
+                                            t_dat.KOR_CD_NM.trim() ==
+                                            data.trim()
+                                        ) {
+                                            nosedata.push({
+                                                first: f_dat.first,
+                                                second: s_dat.second,
+                                                third: t_dat,
+                                            });
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-                    setSelectedNoseData(nosedata);
+                        setSelectedNoseData(nosedata);
 
-                    let palatedata: selectedData[] = [];
-                    for (let data of res.data.data.palate) {
-                        for (let f_dat of tasteData) {
-                            for (let s_dat of f_dat.seconds) {
-                                for (let t_dat of s_dat.thirds) {
-                                    if (t_dat.KOR_CD_NM.trim() == data.trim()) {
-                                        palatedata.push({
-                                            first: f_dat.first,
-                                            second: s_dat.second,
-                                            third: t_dat,
-                                        });
+                        let palatedata: selectedData[] = [];
+                        for (let data of res.data.data.palate) {
+                            for (let f_dat of tasteData) {
+                                for (let s_dat of f_dat.seconds) {
+                                    for (let t_dat of s_dat.thirds) {
+                                        if (
+                                            t_dat.KOR_CD_NM.trim() ==
+                                            data.trim()
+                                        ) {
+                                            palatedata.push({
+                                                first: f_dat.first,
+                                                second: s_dat.second,
+                                                third: t_dat,
+                                            });
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-                    setSelectedPalateData(palatedata);
+                        setSelectedPalateData(palatedata);
 
-                    let finishdata: selectedData[] = [];
-                    for (let data of res.data.data.finish) {
-                        for (let f_dat of tasteData) {
-                            for (let s_dat of f_dat.seconds) {
-                                for (let t_dat of s_dat.thirds) {
-                                    if (t_dat.KOR_CD_NM.trim() == data.trim()) {
-                                        finishdata.push({
-                                            first: f_dat.first,
-                                            second: s_dat.second,
-                                            third: t_dat,
-                                        });
+                        let finishdata: selectedData[] = [];
+                        for (let data of res.data.data.finish) {
+                            for (let f_dat of tasteData) {
+                                for (let s_dat of f_dat.seconds) {
+                                    for (let t_dat of s_dat.thirds) {
+                                        if (
+                                            t_dat.KOR_CD_NM.trim() ==
+                                            data.trim()
+                                        ) {
+                                            finishdata.push({
+                                                first: f_dat.first,
+                                                second: s_dat.second,
+                                                third: t_dat,
+                                            });
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-                    setSelectedFinishData(finishdata);
+                        setSelectedFinishData(finishdata);
 
-                    setReview(res.data.data.review);
+                        setReview(res.data.data.review);
 
-                    setNoseRate(res.data.data.noseRate);
-                    setPalateRate(res.data.data.palateRate);
-                    setFinishRate(res.data.data.finishRate);
-                    setAllRate(res.data.data.allRate);
-                });
+                        setNoseRate(res.data.data.noseRate);
+                        setPalateRate(res.data.data.palateRate);
+                        setFinishRate(res.data.data.finishRate);
+                        setAllRate(res.data.data.allRate);
+                    });
             }
             return () => {};
         }, [])
@@ -432,7 +443,7 @@ export default function SubPage_TastingNoteWriting({ navigation, route }: any) {
             }
 
             axios
-                .patch(API_KEY + "/notes/" + edit_id, frm, {
+                .patch(REACT_APP_API_KEY + "/notes/" + edit_id, frm, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                         Accept: "application/json",
@@ -513,7 +524,7 @@ export default function SubPage_TastingNoteWriting({ navigation, route }: any) {
             }
 
             axios
-                .post(API_KEY + "/notes/", frm, {
+                .post(REACT_APP_API_KEY + "/notes/", frm, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                         Accept: "application/json",

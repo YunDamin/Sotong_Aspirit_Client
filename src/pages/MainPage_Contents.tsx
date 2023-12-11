@@ -59,7 +59,7 @@ import {
 } from "../atoms/get_contents";
 
 import axios from "axios";
-import { API_KEY } from "@env";
+import { REACT_APP_API_KEY } from "@env";
 
 import { user, user_state } from "../atoms/get_user";
 
@@ -87,23 +87,29 @@ export default function MainPage_Contents({ navigation }: any) {
                 });
             }
 
-            axios.get(API_KEY + "/contents?type=news").then((res) => {
+            axios.get(REACT_APP_API_KEY + "/contents?type=news").then((res) => {
                 setContentsNews(res.data);
             });
-            axios.get(API_KEY + "/contents?type=guide").then((res) => {
-                setContentsGuide(res.data);
-            });
-            axios.get(API_KEY + "/contents?type=article").then((res) => {
-                setContentsArticle(res.data);
-            });
-            axios.get(API_KEY + "/contents?type=notice").then((res) => {
-                setContentsNotice(res.data);
-            });
+            axios
+                .get(REACT_APP_API_KEY + "/contents?type=guide")
+                .then((res) => {
+                    setContentsGuide(res.data);
+                });
+            axios
+                .get(REACT_APP_API_KEY + "/contents?type=article")
+                .then((res) => {
+                    setContentsArticle(res.data);
+                });
+            axios
+                .get(REACT_APP_API_KEY + "/contents?type=notice")
+                .then((res) => {
+                    setContentsNotice(res.data);
+                });
 
             if (loginState.is_login) {
                 axios
                     .get(
-                        API_KEY +
+                        REACT_APP_API_KEY +
                             "/users/user/" +
                             loginState.user_id +
                             "/summary",

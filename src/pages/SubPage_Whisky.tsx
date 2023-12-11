@@ -28,7 +28,7 @@ import Card_Graph from "../components/Card_Graph";
 import Card_TasteNote_Whisky from "../components/Card_TasteNote_Whisky";
 
 import axios from "axios";
-import { API_KEY } from "@env";
+import { REACT_APP_API_KEY } from "@env";
 
 function transformArray(fruits: string[]) {
     const counts: any = {};
@@ -51,15 +51,21 @@ export default function SubPage_Whisky({ navigation, route }: any) {
         React.useCallback(() => {
             console.log("SubPage_Whisky Focus");
 
-            axios.get(API_KEY + "/whiskys/whisky/" + whisky_id).then((res) => {
-                setData(res.data?.data);
-            });
+            axios
+                .get(REACT_APP_API_KEY + "/whiskys/whisky/" + whisky_id)
+                .then((res) => {
+                    setData(res.data?.data);
+                });
 
-            axios.get(API_KEY + "/notes/whisky/" + whisky_id).then((res) => {
-                setNoteData(res.data?.data);
-                setViewNoteData(res.data?.data.slice().reverse().slice(0, 4));
-                setView(4);
-            });
+            axios
+                .get(REACT_APP_API_KEY + "/notes/whisky/" + whisky_id)
+                .then((res) => {
+                    setNoteData(res.data?.data);
+                    setViewNoteData(
+                        res.data?.data.slice().reverse().slice(0, 4)
+                    );
+                    setView(4);
+                });
 
             return () => {};
         }, [])

@@ -61,7 +61,7 @@ import {
 } from "../atoms/get_contents";
 
 import axios from "axios";
-import { API_KEY } from "@env";
+import { REACT_APP_API_KEY } from "@env";
 
 import { user, user_state } from "../atoms/get_user";
 import { whisky, whisky_state } from "../atoms/get_whisky";
@@ -94,24 +94,28 @@ export default function MainPage_Home({ navigation }: any) {
                 });
             }
 
-            axios.get(API_KEY + "/contents?type=news").then((res) => {
+            axios.get(REACT_APP_API_KEY + "/contents?type=news").then((res) => {
                 setContentsNews(res.data);
             });
-            axios.get(API_KEY + "/contents?type=guide").then((res) => {
-                setContentsGuide(res.data);
-            });
-            axios.get(API_KEY + "/contents?type=article").then((res) => {
-                setContentsArticle(res.data);
-            });
+            axios
+                .get(REACT_APP_API_KEY + "/contents?type=guide")
+                .then((res) => {
+                    setContentsGuide(res.data);
+                });
+            axios
+                .get(REACT_APP_API_KEY + "/contents?type=article")
+                .then((res) => {
+                    setContentsArticle(res.data);
+                });
 
-            axios.get(API_KEY + "/whiskys/").then((res) => {
+            axios.get(REACT_APP_API_KEY + "/whiskys/").then((res) => {
                 setWhiskyState(res.data);
             });
 
             if (loginState.is_login) {
                 axios
                     .get(
-                        API_KEY +
+                        REACT_APP_API_KEY +
                             "/users/user/" +
                             loginState.user_id +
                             "/summary",

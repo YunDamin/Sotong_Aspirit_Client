@@ -62,7 +62,7 @@ import { useRecoilState } from "recoil";
 import { login_data, login_state } from "../atoms/login_state";
 
 import axios from "axios";
-import { API_KEY } from "@env";
+import { REACT_APP_API_KEY } from "@env";
 
 import { whisky, whisky_state } from "../atoms/get_whisky";
 
@@ -318,16 +318,18 @@ export default function MainPage_Whisky({ navigation }: any) {
                 });
             }
 
-            axios.get(API_KEY + "/whiskys/").then((res) => {
+            axios.get(REACT_APP_API_KEY + "/whiskys/").then((res) => {
                 setWhiskyState(res.data);
             });
-            axios.get(API_KEY + "/code/filter/whiskys").then((res) => {
-                setFilterOriginData(res.data.origins);
-                setFilterColorData(res.data.colors);
-                setFilterBeweryData(res.data.bewerys);
-                setFilterPairingData(res.data.pairings);
-            });
-            axios.get(API_KEY + "/code/list/").then((res) => {
+            axios
+                .get(REACT_APP_API_KEY + "/code/filter/whiskys")
+                .then((res) => {
+                    setFilterOriginData(res.data.origins);
+                    setFilterColorData(res.data.colors);
+                    setFilterBeweryData(res.data.bewerys);
+                    setFilterPairingData(res.data.pairings);
+                });
+            axios.get(REACT_APP_API_KEY + "/code/list/").then((res) => {
                 setFilterTasteData(res.data.results);
             });
 

@@ -24,7 +24,7 @@ import CustomNavigator_Top from "../navigators/CustomNavigator_Top";
 import Field_Text from "../components/Field_Text";
 
 import axios from "axios";
-import { API_KEY } from "@env";
+import { REACT_APP_API_KEY } from "@env";
 
 import { useRecoilState } from "recoil";
 
@@ -66,7 +66,7 @@ export default function LoginPage_Main({ navigation }: any) {
     const login = () => {
         console.log("Try Login");
         axios
-            .post(API_KEY + "/users/login", {
+            .post(REACT_APP_API_KEY + "/users/login", {
                 email: loginData["id"],
                 password: loginData["password"],
                 sns_type: "email",

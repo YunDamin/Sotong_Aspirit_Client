@@ -23,7 +23,7 @@ import Field_Text from "../components/Field_Text";
 import Field_Select from "../components/Field_Select";
 
 import axios from "axios";
-import { API_KEY } from "@env";
+import { REACT_APP_API_KEY } from "@env";
 
 export default function LoginPage_Input({ navigation, route }: any) {
     const [email, setEmail] = React.useState("");
@@ -68,7 +68,7 @@ export default function LoginPage_Input({ navigation, route }: any) {
 
     const check_email = () => {
         axios
-            .post(API_KEY + "/users/check_email", {
+            .post(REACT_APP_API_KEY + "/users/check_email", {
                 email: email,
             })
             .then((res) => {
@@ -84,7 +84,7 @@ export default function LoginPage_Input({ navigation, route }: any) {
 
     const check_user_nick = () => {
         axios
-            .post(API_KEY + "/users/check_user_nick", {
+            .post(REACT_APP_API_KEY + "/users/check_user_nick", {
                 user_nick: nickname,
             })
             .then((res) => {
@@ -103,7 +103,7 @@ export default function LoginPage_Input({ navigation, route }: any) {
         let month_str = month < 10 ? "0" + month : month.toString();
 
         axios
-            .post(API_KEY + "/users/signup", {
+            .post(REACT_APP_API_KEY + "/users/signup", {
                 email: email,
                 password: password,
                 user_name: name,

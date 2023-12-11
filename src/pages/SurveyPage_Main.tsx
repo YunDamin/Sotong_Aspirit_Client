@@ -66,7 +66,7 @@ type codeData = {
 import { useFocusEffect } from "@react-navigation/native";
 
 import axios from "axios";
-import { API_KEY } from "@env";
+import { REACT_APP_API_KEY } from "@env";
 
 import { useRecoilState } from "recoil";
 
@@ -81,7 +81,7 @@ export default function SurveyPage_Main({ navigation, route }: any) {
         console.log("Edit Step");
         axios
             .patch(
-                API_KEY + "/users/survey/" + loginState.user_id,
+                REACT_APP_API_KEY + "/users/survey/" + loginState.user_id,
                 {
                     survey: {
                         liked_smell: likedSmell.map(
@@ -117,7 +117,7 @@ export default function SurveyPage_Main({ navigation, route }: any) {
         console.log("Survey Step");
         axios
             .post(
-                API_KEY + "/users/survey/" + loginState.user_id,
+                REACT_APP_API_KEY + "/users/survey/" + loginState.user_id,
                 {
                     survey: {
                         liked_smell: likedSmell.map(
@@ -230,7 +230,7 @@ export default function SurveyPage_Main({ navigation, route }: any) {
     useFocusEffect(
         React.useCallback(() => {
             console.log("SubPage_TastingNoteWriting Focus");
-            axios.get(API_KEY + "/code/list/").then((res) => {
+            axios.get(REACT_APP_API_KEY + "/code/list/").then((res) => {
                 setTasteData(res.data.results);
             });
             return () => {};
@@ -241,7 +241,7 @@ export default function SurveyPage_Main({ navigation, route }: any) {
         if (tasteData.length == 0) return;
         if (!edit) return;
         axios
-            .get(API_KEY + "/users/survey/" + loginState.user_id, {
+            .get(REACT_APP_API_KEY + "/users/survey/" + loginState.user_id, {
                 headers: {
                     authorization: loginState.accessToken,
                 },

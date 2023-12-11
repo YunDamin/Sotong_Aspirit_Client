@@ -28,7 +28,7 @@ import { getData } from "./src/utils/AsyncStorage";
 import { login_data, login_state } from "./src/atoms/login_state";
 
 import axios from "axios";
-import { API_KEY } from "@env";
+import { REACT_APP_API_KEY } from "@env";
 
 const MainScreen = ({ navigation }: any) => {
     const [loginState, setLoginState] = useRecoilState<login_data>(login_state);

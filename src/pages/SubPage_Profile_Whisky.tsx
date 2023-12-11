@@ -29,7 +29,7 @@ import Card_Graph from "../components/Card_Graph";
 import { useFocusEffect } from "@react-navigation/native";
 
 import axios from "axios";
-import { API_KEY } from "@env";
+import { REACT_APP_API_KEY } from "@env";
 
 import { useRecoilState } from "recoil";
 import { login_data, login_state } from "../atoms/login_state";

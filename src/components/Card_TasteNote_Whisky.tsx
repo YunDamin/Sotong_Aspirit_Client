@@ -27,7 +27,7 @@ interface Props {
 }
 
 import axios from "axios";
-import { API_KEY } from "@env";
+import { REACT_APP_API_KEY } from "@env";
 
 const get_color = (index: number): string => {
     if (index == 0) return "#FFFFFF";
@@ -70,17 +70,21 @@ export default function Card_TasteNote_Whisky(props: Props) {
     React.useEffect(() => {
         if (props.whisky_id) {
             axios
-                .get(API_KEY + "/whiskys/whisky/" + props.whisky_id)
+                .get(REACT_APP_API_KEY + "/whiskys/whisky/" + props.whisky_id)
                 .then((res) => {
                     setWhisky(res.data.data);
                 });
         }
-        axios.get(API_KEY + "/notes/note/" + props.tasting_id).then((res) => {
-            setNote(res.data.data);
-            setDate(new Date(res.data.data.date));
-        });
         axios
-            .get(API_KEY + "/users/user/" + props.user_id + "/summary")
+            .get(REACT_APP_API_KEY + "/notes/note/" + props.tasting_id)
+            .then((res) => {
+                setNote(res.data.data);
+                setDate(new Date(res.data.data.date));
+            });
+        axios
+            .get(
+                REACT_APP_API_KEY + "/users/user/" + props.user_id + "/summary"
+            )
             .then((res) => {
                 setUser(res.data);
             });

@@ -33,7 +33,7 @@ import Field_Text from "../components/Field_Text";
 import Field_Select from "../components/Field_Select";
 
 import axios from "axios";
-import { API_KEY } from "@env";
+import { REACT_APP_API_KEY } from "@env";
 
 import { useRecoilState } from "recoil";
 import { login_data, login_state } from "../atoms/login_state";
@@ -108,7 +108,7 @@ export default function SubPage_EditMe({ navigation, route }: any) {
 
     const check_user_nick = () => {
         axios
-            .post(API_KEY + "/users/check_user_nick", {
+            .post(REACT_APP_API_KEY + "/users/check_user_nick", {
                 user_nick: nickname,
             })
             .then((res) => {
@@ -153,13 +153,17 @@ export default function SubPage_EditMe({ navigation, route }: any) {
         }
 
         axios
-            .post(API_KEY + "/users/user/edit/" + loginState.user_id, frm, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    Accept: "application/json",
-                    authorization: loginState.accessToken,
-                },
-            })
+            .post(
+                REACT_APP_API_KEY + "/users/user/edit/" + loginState.user_id,
+                frm,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        Accept: "application/json",
+                        authorization: loginState.accessToken,
+                    },
+                }
+            )
             .then((res) => {
                 if (res.data.ok) {
                     navigation.replace("Main");
@@ -171,7 +175,12 @@ export default function SubPage_EditMe({ navigation, route }: any) {
         React.useCallback(() => {
             console.log("SubPage_EditMe Focus");
             axios
-                .get(API_KEY + "/users/user/" + loginState.user_id + "/detail")
+                .get(
+                    REACT_APP_API_KEY +
+                        "/users/user/" +
+                        loginState.user_id +
+                        "/detail"
+                )
                 .then((res) => {
                     if (res.data.ok) {
                         setName(res.data.name);

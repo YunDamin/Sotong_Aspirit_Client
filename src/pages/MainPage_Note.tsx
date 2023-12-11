@@ -58,13 +58,14 @@ import { useRecoilState } from "recoil";
 import { login_data, login_state } from "../atoms/login_state";
 
 import axios from "axios";
-import { API_KEY } from "@env";
+import { REACT_APP_API_KEY } from "@env";
 import Card_TasteNote_Whisky from "../components/Card_TasteNote_Whisky";
 
 export default function MainPage_Note({ navigation }: any) {
     const [loginState, setLoginState] = useRecoilState<login_data>(login_state);
 
-    const [searchCategory, setSearchCategory] = React.useState<string>("all");
+    const [searchCategory, setSearchCategory] =
+        React.useState<string>("content");
     const [searchText, setSearchText] = React.useState<string>("");
     const [isFocused, setIsFocused] = React.useState<boolean>(false);
 
@@ -133,7 +134,7 @@ export default function MainPage_Note({ navigation }: any) {
                 });
             }
 
-            axios.get(API_KEY + "/notes/").then((res) => {
+            axios.get(REACT_APP_API_KEY + "/notes/").then((res) => {
                 setNotes(res.data?.data.slice().reverse());
                 setViewNoteData(res.data?.data.slice().reverse().slice(0, 4));
                 setView(4);
@@ -152,11 +153,11 @@ export default function MainPage_Note({ navigation }: any) {
 
                 if (text.length == 0) return true;
 
-                if (searchCategory === "content") {
+                if (searchCategory == "content") {
                     if (note.cont.toLowerCase().includes(text)) {
                         return true;
                     }
-                } else if (searchCategory === "user") {
+                } else if (searchCategory == "user") {
                     if (note.user_nick_name.toLowerCase().includes(text)) {
                         return true;
                     }
@@ -578,9 +579,8 @@ export default function MainPage_Note({ navigation }: any) {
                                 >
                                     {
                                         {
-                                            all: "제목+내용",
-                                            title: "제목",
                                             content: "내용",
+                                            user: "작성자",
                                         }[searchCategory]
                                     }
                                 </Text>
@@ -698,26 +698,7 @@ export default function MainPage_Note({ navigation }: any) {
                                             notes
                                                 .slice()
                                                 .reverse()
-                                                .filter((note: any) => {
-                                                    const text = searchText
-                                                        .trim()
-                                                        .toLowerCase();
-
-                                                    if (text.length == 0)
-                                                        return true;
-
-                                                    if (
-                                                        note.cont
-                                                            .toLowerCase()
-                                                            .includes(text)
-                                                    ) {
-                                                        return true;
-                                                    }
-
-                                                    return false;
-                                                })
-                                                ?.length?.toLocaleString() ??
-                                            "0"
+                                                .length?.toLocaleString() ?? "0"
                                         })`}</Text>
                                     </Text>
                                     <TouchableOpacity
