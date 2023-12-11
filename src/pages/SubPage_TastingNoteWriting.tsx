@@ -84,7 +84,10 @@ type codeData = {
     seconds: secondData[];
 };
 
-export default function SubPage_TastingNoteWriting({ navigation }: any) {
+export default function SubPage_TastingNoteWriting({ navigation, route }: any) {
+    const edit = route.params?.edit ?? false;
+    const edit_id = route.params?.edit_id ?? "";
+
     const [loginState, setLoginState] = useRecoilState<login_data>(login_state);
 
     const [review, setReview] = React.useState("");
@@ -221,6 +224,26 @@ export default function SubPage_TastingNoteWriting({ navigation }: any) {
                 return "WHI001.00001";
         }
     };
+    const change_color_to_index_from_kor = (kor: string): number => {
+        switch (kor.trim()) {
+            case "투명":
+                return 0;
+            case "짚":
+                return 1;
+            case "꿀":
+                return 2;
+            case "금":
+                return 3;
+            case "호박":
+                return 4;
+            case "카라멜":
+                return 5;
+            case "마호가니":
+                return 6;
+            default:
+                return 0;
+        }
+    };
 
     const [isTasteModalVisible, setIsTasteModalVisible] = React.useState(false);
     const [tasteData, setTasteData] = React.useState<codeData[]>([]);
@@ -260,6 +283,79 @@ export default function SubPage_TastingNoteWriting({ navigation }: any) {
             axios.get(API_KEY + "/code/list/").then((res) => {
                 setTasteData(res.data.results);
             });
+
+            if (edit) {
+                axios.get(API_KEY + "/notes/note/" + edit_id).then((res) => {
+                    setSelectedWhisky(res.data.data.whisky_id);
+
+                    setColorIndex(
+                        change_color_to_index_from_kor(
+                            res.data.data.color_index
+                        )
+                    );
+
+                    let nosedata: selectedData[] = [];
+                    for (let data of res.data.data.nose) {
+                        for (let f_dat of tasteData) {
+                            for (let s_dat of f_dat.seconds) {
+                                for (let t_dat of s_dat.thirds) {
+                                    if (t_dat.KOR_CD_NM.trim() == data.trim()) {
+                                        nosedata.push({
+                                            first: f_dat.first,
+                                            second: s_dat.second,
+                                            third: t_dat,
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    setSelectedNoseData(nosedata);
+
+                    let palatedata: selectedData[] = [];
+                    for (let data of res.data.data.palate) {
+                        for (let f_dat of tasteData) {
+                            for (let s_dat of f_dat.seconds) {
+                                for (let t_dat of s_dat.thirds) {
+                                    if (t_dat.KOR_CD_NM.trim() == data.trim()) {
+                                        palatedata.push({
+                                            first: f_dat.first,
+                                            second: s_dat.second,
+                                            third: t_dat,
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    setSelectedPalateData(palatedata);
+
+                    let finishdata: selectedData[] = [];
+                    for (let data of res.data.data.finish) {
+                        for (let f_dat of tasteData) {
+                            for (let s_dat of f_dat.seconds) {
+                                for (let t_dat of s_dat.thirds) {
+                                    if (t_dat.KOR_CD_NM.trim() == data.trim()) {
+                                        finishdata.push({
+                                            first: f_dat.first,
+                                            second: s_dat.second,
+                                            third: t_dat,
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    setSelectedFinishData(finishdata);
+
+                    setReview(res.data.data.review);
+
+                    setNoseRate(res.data.data.noseRate);
+                    setPalateRate(res.data.data.palateRate);
+                    setFinishRate(res.data.data.finishRate);
+                    setAllRate(res.data.data.allRate);
+                });
+            }
             return () => {};
         }, [])
     );
@@ -267,86 +363,169 @@ export default function SubPage_TastingNoteWriting({ navigation }: any) {
     const [writing, setWriting] = React.useState(false);
 
     const next_step = () => {
-        console.log("Write Tasting Note");
-        setWriting(true);
+        if (edit) {
+            console.log("Edit Tasting Note");
+            setWriting(true);
 
-        let frm = new FormData();
+            let frm = new FormData();
 
-        frm.append("user_id", loginState.user_id);
-        frm.append("whisky_id", selectedWhisky);
-        frm.append("color_index", change_color_to_common_code(colorIndex));
-        frm.append(
-            "nose",
-            selectedNoseData.map((data) => data.third.COM_CD)
-        );
-        frm.append(
-            "palate",
-            selectedPalateData.map((data) => data.third.COM_CD)
-        );
-        frm.append(
-            "finish",
-            selectedFinishData.map((data) => data.third.COM_CD)
-        );
-        frm.append("review", review);
-        frm.append("noseRate", noseRate.toString());
-        frm.append("palateRate", palateRate.toString());
-        frm.append("finishRate", finishRate.toString());
-        frm.append("allRate", allRate.toString());
+            frm.append("user_id", loginState.user_id);
+            frm.append("whisky_id", selectedWhisky);
+            frm.append("color_index", change_color_to_common_code(colorIndex));
+            frm.append(
+                "nose",
+                selectedNoseData.map((data) => data.third.COM_CD)
+            );
+            frm.append(
+                "palate",
+                selectedPalateData.map((data) => data.third.COM_CD)
+            );
+            frm.append(
+                "finish",
+                selectedFinishData.map((data) => data.third.COM_CD)
+            );
+            frm.append("review", review);
+            frm.append("noseRate", noseRate.toString());
+            frm.append("palateRate", palateRate.toString());
+            frm.append("finishRate", finishRate.toString());
+            frm.append("allRate", allRate.toString());
 
-        if (photoWhisky.length != 0) {
-            photoWhisky.map((data) => {
-                let extension = data.name?.split(".").pop()?.toLowerCase();
+            if (photoWhisky.length != 0) {
+                photoWhisky.map((data) => {
+                    let extension = data.name?.split(".").pop()?.toLowerCase();
 
-                let mimeType;
-                if (extension == "jpg" || extension == "jpeg") {
-                    mimeType = "image/jpeg";
-                } else if (extension == "png") {
-                    mimeType = "image/png";
-                } else {
-                    mimeType = "application/octet-stream";
-                }
+                    let mimeType;
+                    if (extension == "jpg" || extension == "jpeg") {
+                        mimeType = "image/jpeg";
+                    } else if (extension == "png") {
+                        mimeType = "image/png";
+                    } else {
+                        mimeType = "application/octet-stream";
+                    }
 
-                frm.append("whisky_images", {
-                    uri: data.uri,
-                    name: data.name,
-                    type: mimeType,
+                    frm.append("whisky_images", {
+                        uri: data.uri,
+                        name: data.name,
+                        type: mimeType,
+                    });
                 });
-            });
-        }
-        if (photoBill.length != 0) {
-            photoBill.map((data) => {
-                let extension = data.name?.split(".").pop()?.toLowerCase();
+            }
+            if (photoBill.length != 0) {
+                photoBill.map((data) => {
+                    let extension = data.name?.split(".").pop()?.toLowerCase();
 
-                let mimeType;
-                if (extension == "jpg" || extension == "jpeg") {
-                    mimeType = "image/jpeg";
-                } else if (extension == "png") {
-                    mimeType = "image/png";
-                } else {
-                    mimeType = "application/octet-stream";
-                }
+                    let mimeType;
+                    if (extension == "jpg" || extension == "jpeg") {
+                        mimeType = "image/jpeg";
+                    } else if (extension == "png") {
+                        mimeType = "image/png";
+                    } else {
+                        mimeType = "application/octet-stream";
+                    }
 
-                frm.append("bill_images", {
-                    uri: data.uri,
-                    name: data.name,
-                    type: mimeType,
+                    frm.append("bill_images", {
+                        uri: data.uri,
+                        name: data.name,
+                        type: mimeType,
+                    });
                 });
-            });
-        }
+            }
 
-        axios
-            .post(API_KEY + "/notes/", frm, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    Accept: "application/json",
-                    authorization: loginState.accessToken,
-                },
-            })
-            .then((res) => {
-                if (res.data.ok) {
-                    navigation.goBack();
-                }
-            });
+            axios
+                .patch(API_KEY + "/notes/" + edit_id, frm, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        Accept: "application/json",
+                        authorization: loginState.accessToken,
+                    },
+                })
+                .then((res) => {
+                    if (res.data.ok) {
+                        navigation.goBack();
+                    }
+                });
+        } else {
+            console.log("Write Tasting Note");
+            setWriting(true);
+
+            let frm = new FormData();
+
+            frm.append("user_id", loginState.user_id);
+            frm.append("whisky_id", selectedWhisky);
+            frm.append("color_index", change_color_to_common_code(colorIndex));
+            frm.append(
+                "nose",
+                selectedNoseData.map((data) => data.third.COM_CD)
+            );
+            frm.append(
+                "palate",
+                selectedPalateData.map((data) => data.third.COM_CD)
+            );
+            frm.append(
+                "finish",
+                selectedFinishData.map((data) => data.third.COM_CD)
+            );
+            frm.append("review", review);
+            frm.append("noseRate", noseRate.toString());
+            frm.append("palateRate", palateRate.toString());
+            frm.append("finishRate", finishRate.toString());
+            frm.append("allRate", allRate.toString());
+
+            if (photoWhisky.length != 0) {
+                photoWhisky.map((data) => {
+                    let extension = data.name?.split(".").pop()?.toLowerCase();
+
+                    let mimeType;
+                    if (extension == "jpg" || extension == "jpeg") {
+                        mimeType = "image/jpeg";
+                    } else if (extension == "png") {
+                        mimeType = "image/png";
+                    } else {
+                        mimeType = "application/octet-stream";
+                    }
+
+                    frm.append("whisky_images", {
+                        uri: data.uri,
+                        name: data.name,
+                        type: mimeType,
+                    });
+                });
+            }
+            if (photoBill.length != 0) {
+                photoBill.map((data) => {
+                    let extension = data.name?.split(".").pop()?.toLowerCase();
+
+                    let mimeType;
+                    if (extension == "jpg" || extension == "jpeg") {
+                        mimeType = "image/jpeg";
+                    } else if (extension == "png") {
+                        mimeType = "image/png";
+                    } else {
+                        mimeType = "application/octet-stream";
+                    }
+
+                    frm.append("bill_images", {
+                        uri: data.uri,
+                        name: data.name,
+                        type: mimeType,
+                    });
+                });
+            }
+
+            axios
+                .post(API_KEY + "/notes/", frm, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        Accept: "application/json",
+                        authorization: loginState.accessToken,
+                    },
+                })
+                .then((res) => {
+                    if (res.data.ok) {
+                        navigation.goBack();
+                    }
+                });
+        }
     };
 
     const [pageIndex, setPageIndex] = React.useState(0);
@@ -1515,14 +1694,21 @@ export default function SubPage_TastingNoteWriting({ navigation }: any) {
                                                 overflow: "hidden",
                                             }}
                                         >
-                                            <Image
-                                                source={{
-                                                    uri: get_selected_whisky()
-                                                        .img_urls[0],
-                                                }}
-                                                height={80}
-                                                style={{ resizeMode: "cover" }}
-                                            />
+                                            {(get_selected_whisky()
+                                                ?.img_urls[0] ?? "") != "" && (
+                                                <Image
+                                                    source={{
+                                                        uri:
+                                                            get_selected_whisky()
+                                                                ?.img_urls[0] ??
+                                                            "",
+                                                    }}
+                                                    height={80}
+                                                    style={{
+                                                        resizeMode: "cover",
+                                                    }}
+                                                />
+                                            )}
                                         </View>
                                         <View style={{ marginLeft: 25 }}>
                                             <Text
@@ -1534,7 +1720,8 @@ export default function SubPage_TastingNoteWriting({ navigation }: any) {
                                                     color: "#000000",
                                                 }}
                                             >
-                                                {get_selected_whisky().name_kor}
+                                                {get_selected_whisky()
+                                                    ?.name_kor ?? ""}
                                             </Text>
                                             <Text
                                                 style={{
@@ -1545,7 +1732,8 @@ export default function SubPage_TastingNoteWriting({ navigation }: any) {
                                                     color: "#888888",
                                                 }}
                                             >
-                                                {get_selected_whisky().name_eng}
+                                                {get_selected_whisky()
+                                                    ?.name_eng ?? ""}
                                             </Text>
                                             <View
                                                 style={{
@@ -1566,25 +1754,32 @@ export default function SubPage_TastingNoteWriting({ navigation }: any) {
                                                         marginLeft: 5,
                                                         textAlign: "center",
                                                     }}
-                                                >{`${get_selected_whisky().note_av.toFixed(
-                                                    1
-                                                )} (${get_selected_whisky().note_num.toLocaleString()})`}</Text>
+                                                >{`${
+                                                    get_selected_whisky()?.note_av?.toFixed(
+                                                        1
+                                                    ) ?? 0
+                                                } (${
+                                                    get_selected_whisky()?.note_num?.toLocaleString() ??
+                                                    0
+                                                })`}</Text>
                                             </View>
                                         </View>
-                                        <TouchableOpacity
-                                            onPress={() => {
-                                                setSelectedWhisky("");
-                                            }}
-                                            style={{
-                                                width: 27,
-                                                height: 27,
-                                                position: "absolute",
-                                                top: -5,
-                                                right: -5,
-                                            }}
-                                        >
-                                            <Photo_Btn_OnOff_Svg />
-                                        </TouchableOpacity>
+                                        {!edit && (
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    setSelectedWhisky("");
+                                                }}
+                                                style={{
+                                                    width: 27,
+                                                    height: 27,
+                                                    position: "absolute",
+                                                    top: -5,
+                                                    right: -5,
+                                                }}
+                                            >
+                                                <Photo_Btn_OnOff_Svg />
+                                            </TouchableOpacity>
+                                        )}
                                     </View>
                                 ) : (
                                     <TouchableOpacity
@@ -2062,7 +2257,7 @@ export default function SubPage_TastingNoteWriting({ navigation }: any) {
                                         textAlign: "center",
                                     }}
                                 >
-                                    작성 완료
+                                    {edit ? "수정 완료" : "작성 완료"}
                                 </Text>
                             </TouchableOpacity>
                         </View>
@@ -2503,7 +2698,7 @@ export default function SubPage_TastingNoteWriting({ navigation }: any) {
                                         textAlign: "center",
                                     }}
                                 >
-                                    작성 완료
+                                    {edit ? "수정 완료" : "작성 완료"}
                                 </Text>
                             </TouchableOpacity>
                         </View>

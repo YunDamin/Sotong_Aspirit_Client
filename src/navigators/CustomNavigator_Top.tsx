@@ -12,7 +12,14 @@ interface Props {
     whatBtn?: string;
     background?: boolean;
     onShare?: () => void;
+    isMe?: boolean;
     onModify?: () => void;
+    onModifyBtn?: () => void;
+    onDeleteBtn?: () => void;
+    isBlock?: boolean;
+    onBlockBtn?: () => void;
+    isReport?: boolean;
+    onReportBtn?: () => void;
 }
 
 export default function CustomNavigator_Top(props: Props) {

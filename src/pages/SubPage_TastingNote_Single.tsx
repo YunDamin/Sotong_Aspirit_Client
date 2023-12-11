@@ -51,7 +51,25 @@ export default function SubPage_TastingNote_Single({ navigation, route }: any) {
     const [note, setNote] = React.useState<any>(null);
     const [user, setUser] = React.useState<any>(null);
 
+    const [itsMe, setItsMe] = React.useState<boolean>(false);
+
     let date: Date = new Date();
+
+    const delete_note = () => {
+        axios
+            .delete(API_KEY + "/notes/" + tasting_id, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Accept: "application/json",
+                    authorization: loginState.accessToken,
+                },
+            })
+            .then((res) => {
+                if (res.data.ok) {
+                    navigation.goBack();
+                }
+            });
+    };
 
     useFocusEffect(
         React.useCallback(() => {
@@ -76,10 +94,21 @@ export default function SubPage_TastingNote_Single({ navigation, route }: any) {
         }, [])
     );
 
+    React.useEffect(() => {
+        if (user_id == loginState.user_id) {
+            setItsMe(true);
+        }
+    }, [user]);
+
     const [modalImage, setModalImage] = React.useState<string>("");
     const [isModalVisible, setModaVisible] = React.useState(false);
     const toggleModal = () => {
         setModaVisible(!isModalVisible);
+    };
+
+    const [isSettingsVisible, setSettingsVisible] = React.useState(false);
+    const toggleSettings = () => {
+        setSettingsVisible(!isSettingsVisible);
     };
 
     return (
@@ -92,7 +121,9 @@ export default function SubPage_TastingNote_Single({ navigation, route }: any) {
                         navigation.goBack();
                     }}
                     whatBtn="modify"
-                    onModify={() => {}}
+                    onModify={() => {
+                        toggleSettings();
+                    }}
                 />
             </SafeAreaView>
             <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
@@ -162,6 +193,85 @@ export default function SubPage_TastingNote_Single({ navigation, route }: any) {
                         </View>
                     </View>
                 </Modal>
+                {isSettingsVisible && (
+                    <View
+                        style={{
+                            width: 70,
+                            height: 84,
+                            borderRadius: 10,
+                            borderColor: "#EDEDED",
+                            borderWidth: 1,
+                            position: "absolute",
+                            backgroundColor: "white",
+                            right: 20,
+                            top: -10,
+                            zIndex: 10,
+                            overflow: "hidden",
+                            alignItems: "center",
+                            justifyContent: "center",
+                        }}
+                    >
+                        <TouchableOpacity
+                            onPress={() => {
+                                if (itsMe) {
+                                    navigation.navigate(
+                                        "SubPage_TastingNoteWriting",
+                                        {
+                                            edit: true,
+                                            edit_id: tasting_id,
+                                        }
+                                    );
+                                }
+                            }}
+                            style={{
+                                flex: 1,
+                                alignItems: "center",
+                                justifyContent: "center",
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontFamily: "Spoqa Han Sans Neo",
+                                    fontWeight: "500",
+                                    fontSize: 14,
+                                    color: "#000000",
+                                }}
+                            >
+                                {itsMe ? "수정" : "신고"}
+                            </Text>
+                        </TouchableOpacity>
+                        <View
+                            style={{
+                                width: 50,
+                                height: 1,
+                                backgroundColor: "#F7F7F7",
+                            }}
+                        />
+                        <TouchableOpacity
+                            onPress={() => {
+                                if (itsMe) {
+                                    delete_note();
+                                }
+                            }}
+                            style={{
+                                flex: 1,
+                                alignItems: "center",
+                                justifyContent: "center",
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontFamily: "Spoqa Han Sans Neo",
+                                    fontWeight: "500",
+                                    fontSize: 14,
+                                    color: "#000000",
+                                }}
+                            >
+                                {itsMe ? "삭제" : "차단"}
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                )}
                 <ScrollView
                     style={{
                         flex: 1,

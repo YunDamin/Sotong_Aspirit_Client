@@ -143,6 +143,27 @@ export default function MainPage_Note({ navigation }: any) {
         }, [])
     );
 
+    React.useEffect(() => {
+        setViewNoteData(
+            notes
+                .slice()
+                .reverse()
+                .filter((note: any) => {
+                    const text = searchText.trim().toLowerCase();
+
+                    if (text.length == 0) return true;
+
+                    if (note.cont.toLowerCase().includes(text)) {
+                        return true;
+                    }
+
+                    return false;
+                })
+                .slice(0, 4)
+        );
+        setView(4);
+    }, [searchText]);
+
     return (
         <>
             <SafeAreaView style={{ flex: 0, backgroundColor: "#974B1A" }} />
@@ -706,7 +727,28 @@ export default function MainPage_Note({ navigation }: any) {
                                     >
                                         <Text>전체 </Text>
                                         <Text style={{ color: "#D6690F" }}>{`(${
-                                            notes?.length?.toLocaleString() ??
+                                            notes
+                                                .slice()
+                                                .reverse()
+                                                .filter((note: any) => {
+                                                    const text = searchText
+                                                        .trim()
+                                                        .toLowerCase();
+
+                                                    if (text.length == 0)
+                                                        return true;
+
+                                                    if (
+                                                        note.cont
+                                                            .toLowerCase()
+                                                            .includes(text)
+                                                    ) {
+                                                        return true;
+                                                    }
+
+                                                    return false;
+                                                })
+                                                ?.length?.toLocaleString() ??
                                             "0"
                                         })`}</Text>
                                     </Text>
