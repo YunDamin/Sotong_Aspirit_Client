@@ -56,6 +56,7 @@ const FloatingBtn = (props: Props) => {
 import { useRecoilState } from "recoil";
 
 import { login_data, login_state } from "../atoms/login_state";
+import { user, user_state } from "../atoms/get_user";
 
 import axios from "axios";
 import { REACT_APP_API_KEY } from "@env";
@@ -63,6 +64,7 @@ import Card_TasteNote_Whisky from "../components/Card_TasteNote_Whisky";
 
 export default function MainPage_Note({ navigation }: any) {
     const [loginState, setLoginState] = useRecoilState<login_data>(login_state);
+    const [userState, setUserState] = useRecoilState<user>(user_state);
 
     const [searchCategory, setSearchCategory] =
         React.useState<string>("content");
@@ -80,7 +82,10 @@ export default function MainPage_Note({ navigation }: any) {
         if (!loading) {
             setLoading(true);
 
-            setViewNoteData([...viewNoteData, ...notes.slice(view, view + 4)]);
+            setViewNoteData([
+                ...viewNoteData,
+                ...get_note().slice(view, view + 4),
+            ]);
             setView(view + 4);
 
             setLoading(false);
@@ -131,36 +136,49 @@ export default function MainPage_Note({ navigation }: any) {
 
             axios.get(REACT_APP_API_KEY + "/notes/").then((res) => {
                 setOriginalNotes(res.data?.data);
-                setViewNoteData(res.data?.data.slice(0, 4));
-                setView(4);
             });
 
             return () => {};
         }, [])
     );
 
+    const get_note = (): any[] => {
+        let filter_notes = originalNotes
+            .slice()
+            .reverse()
+            .filter((note: any) => {
+                if (
+                    userState.block_list.some((blocked) =>
+                        blocked.includes(note.user_id.trim())
+                    )
+                ) {
+                    return false;
+                }
+
+                const text = searchText.trim().toLowerCase();
+
+                if (text.length == 0) return true;
+
+                if (searchCategory == "content") {
+                    if (note.cont.toLowerCase().includes(text)) {
+                        return true;
+                    }
+                } else if (searchCategory == "user") {
+                    if (note.user_nick_name.toLowerCase().includes(text)) {
+                        return true;
+                    }
+                }
+
+                return false;
+            });
+
+        return filter_notes;
+    };
+
     React.useEffect(() => {
-        const filter_notes = originalNotes.filter((note: any) => {
-            const text = searchText.trim().toLowerCase();
-
-            if (text.length == 0) return true;
-
-            if (searchCategory == "content") {
-                if (note.cont.toLowerCase().includes(text)) {
-                    return true;
-                }
-            } else if (searchCategory == "user") {
-                if (note.user_nick_name.toLowerCase().includes(text)) {
-                    return true;
-                }
-            }
-
-            return false;
-        });
-        setViewNoteData(filter_notes.slice(0, 4));
-        setNotes(filter_notes);
+        setViewNoteData(get_note().slice(0, 4));
         setView(4);
-    }, [searchText, searchCategory]);
+    }, [searchCategory, searchText, originalNotes]);
 
     return (
         <>
@@ -686,10 +704,9 @@ export default function MainPage_Note({ navigation }: any) {
                                         }}
                                     >
                                         <Text>전체 </Text>
-                                        <Text style={{ color: "#D6690F" }}>{`(${
-                                            notes.length?.toLocaleString() ??
-                                            "0"
-                                        })`}</Text>
+                                        <Text style={{ color: "#D6690F" }}>
+                                            {`(${get_note().length.toLocaleString()})`}
+                                        </Text>
                                     </Text>
                                     <TouchableOpacity
                                         style={{
@@ -732,60 +749,63 @@ export default function MainPage_Note({ navigation }: any) {
                                     </TouchableOpacity>
                                 </View>
                                 <View style={{ height: 40 }} />
-                                {viewNoteData?.map(
-                                    (view_note: any, index: number) => {
-                                        return (
-                                            <Card_TasteNote_Whisky
-                                                key={index}
-                                                tasting_id={
-                                                    view_note?.tasting_id ?? ""
-                                                }
-                                                user_id={
-                                                    view_note?.user_id ?? ""
-                                                }
-                                                whisky_id={
-                                                    view_note?.whisky_id ?? ""
-                                                }
-                                                onPress={() => {
-                                                    navigation.navigate(
-                                                        "SubPage_Whisky",
-                                                        {
-                                                            whisky_id:
-                                                                view_note?.whisky_id ??
-                                                                "",
-                                                        }
-                                                    );
-                                                }}
-                                                onPressDetail={() => {
-                                                    navigation.navigate(
-                                                        "SubPage_TastingNote_Single",
-                                                        {
-                                                            user_id:
-                                                                view_note?.user_id ??
-                                                                "",
-                                                            whisky_id:
-                                                                view_note?.whisky_id ??
-                                                                "",
-                                                            tasting_id:
-                                                                view_note?.tasting_id ??
-                                                                "",
-                                                        }
-                                                    );
-                                                }}
-                                                onPressUser={() => {
-                                                    navigation.navigate(
-                                                        "SubPage_Profile",
-                                                        {
-                                                            user_id:
-                                                                view_note?.user_id ??
-                                                                "",
-                                                        }
-                                                    );
-                                                }}
-                                            />
-                                        );
-                                    }
-                                )}
+                                {viewNoteData &&
+                                    viewNoteData.map(
+                                        (view_note: any, index: number) => {
+                                            return (
+                                                <Card_TasteNote_Whisky
+                                                    key={index}
+                                                    tasting_id={
+                                                        view_note?.tasting_id ??
+                                                        ""
+                                                    }
+                                                    user_id={
+                                                        view_note?.user_id ?? ""
+                                                    }
+                                                    whisky_id={
+                                                        view_note?.whisky_id ??
+                                                        ""
+                                                    }
+                                                    onPress={() => {
+                                                        navigation.navigate(
+                                                            "SubPage_Whisky",
+                                                            {
+                                                                whisky_id:
+                                                                    view_note?.whisky_id ??
+                                                                    "",
+                                                            }
+                                                        );
+                                                    }}
+                                                    onPressDetail={() => {
+                                                        navigation.navigate(
+                                                            "SubPage_TastingNote_Single",
+                                                            {
+                                                                user_id:
+                                                                    view_note?.user_id ??
+                                                                    "",
+                                                                whisky_id:
+                                                                    view_note?.whisky_id ??
+                                                                    "",
+                                                                tasting_id:
+                                                                    view_note?.tasting_id ??
+                                                                    "",
+                                                            }
+                                                        );
+                                                    }}
+                                                    onPressUser={() => {
+                                                        navigation.navigate(
+                                                            "SubPage_Profile",
+                                                            {
+                                                                user_id:
+                                                                    view_note?.user_id ??
+                                                                    "",
+                                                            }
+                                                        );
+                                                    }}
+                                                />
+                                            );
+                                        }
+                                    )}
                                 <View style={{ marginTop: 250 }} />
                             </View>
                         </ScrollView>

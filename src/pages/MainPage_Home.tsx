@@ -135,6 +135,7 @@ export default function MainPage_Home({ navigation }: any) {
                             user_notes: res.data.user_notes,
                             user_av: res.data.user_av,
                             img_urls: res.data.img_urls,
+                            block_list: res.data.block_list,
                         });
                     });
             }

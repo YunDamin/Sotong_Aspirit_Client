@@ -10,9 +10,12 @@ import {
     TouchableOpacity,
     StatusBar,
     Image,
+    Modal,
 } from "react-native";
 
 import Profile_Svg from "../public/icons/photo/profile.svg";
+import Btn_Toggle_On from "../public/icons/btn/btn_toggle_on.svg";
+import Btn_Toggle_Off from "../public/icons/btn/btn_toggle_off.svg";
 
 import { RadarChart, PieChart } from "react-native-charts-wrapper";
 
@@ -24,6 +27,7 @@ import CustomNavigator_Top from "../navigators/CustomNavigator_Top";
 import Card_FAQ from "../components/Card_FAQ";
 import Card_TasteNote_Whisky from "../components/Card_TasteNote_Whisky";
 import Card_Graph from "../components/Card_Graph";
+import Field_Text from "../components/Field_Text";
 
 import { useFocusEffect } from "@react-navigation/native";
 
@@ -100,9 +104,80 @@ export default function SubPage_Profile({ navigation, route }: any) {
         }
     };
 
+    const [isModalVisible, setModaVisible] = React.useState(false);
+    const toggleModal = () => {
+        setModaVisible(!isModalVisible);
+        setReportType(0);
+        setReportText("");
+    };
+    const [modalType, setModalType] = React.useState<string>("");
+
     const [isSettingsVisible, setSettingsVisible] = React.useState(false);
     const toggleSettings = () => {
         setSettingsVisible(!isSettingsVisible);
+    };
+
+    const [reportType, setReportType] = React.useState<number>(0);
+    const [reportText, setReportText] = React.useState<string>("");
+
+    const report = () => {
+        let reason: string = "";
+
+        switch (reportType) {
+            case 0:
+                reason = "비매너";
+                break;
+            case 1:
+                reason = "욕설 및 비방";
+                break;
+            case 2:
+                reason = "성희롱";
+                break;
+            case 3:
+                reason = "프로필 이미지";
+                break;
+            case 4:
+                reason = reportText;
+                break;
+        }
+
+        axios
+            .post(
+                REACT_APP_API_KEY + "/users/report/",
+                {
+                    user_id: loginState.user_id,
+                    target_user_id: user_id,
+                    reason: reason,
+                },
+                {
+                    headers: {
+                        Authorization: loginState.accessToken,
+                    },
+                }
+            )
+            .then((res) => {
+                console.log(res.data);
+            });
+    };
+
+    const block = () => {
+        axios
+            .post(
+                REACT_APP_API_KEY + "/users/block/",
+                {
+                    user_id: loginState.user_id,
+                    target_user_id: user_id,
+                },
+                {
+                    headers: {
+                        Authorization: loginState.accessToken,
+                    },
+                }
+            )
+            .then((res) => {
+                console.log(res.data);
+                navigation.goBack();
+            });
     };
 
     return (
@@ -123,6 +198,512 @@ export default function SubPage_Profile({ navigation, route }: any) {
                     }
                     background={true}
                 />
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={isModalVisible}
+                    onRequestClose={() => {
+                        toggleModal();
+                    }}
+                >
+                    <View
+                        style={{
+                            width: "100%",
+                            height: "100%",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }}
+                    >
+                        <View
+                            style={{
+                                width: "100%",
+                                height: "100%",
+                                position: "absolute",
+                                top: 0,
+                                backgroundColor: "#000000",
+                                opacity: 0.7,
+                            }}
+                        />
+                        <View
+                            style={{
+                                width: 320,
+                                position: "absolute",
+                                alignItems: "flex-end",
+                                justifyContent: "center",
+                            }}
+                        >
+                            {modalType == "report" && (
+                                <View
+                                    style={{
+                                        width: 320,
+                                        backgroundColor: "#ffffff",
+                                        borderRadius: 10,
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    <TouchableOpacity
+                                        onPress={() => toggleModal()}
+                                        style={{
+                                            position: "absolute",
+                                            top: 20,
+                                            right: 20,
+                                        }}
+                                    >
+                                        <Text
+                                            style={{
+                                                fontFamily:
+                                                    "Spoqa Han Sans Neo",
+                                                fontWeight: "700",
+                                                fontSize: 18,
+                                                color: "#000000",
+                                            }}
+                                        >
+                                            X
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <Text
+                                        style={{
+                                            fontFamily: "Spoqa Han Sans Neo",
+                                            fontWeight: "700",
+                                            fontSize: 16,
+                                            marginTop: 20,
+                                            marginBottom: 20,
+                                            color: "#000000",
+                                        }}
+                                    >
+                                        신고하기
+                                    </Text>
+                                    <TouchableOpacity
+                                        onPress={() => setReportType(0)}
+                                        style={{
+                                            width: 320,
+                                            flexDirection: "row",
+                                            alignItems: "center",
+                                            paddingLeft: 20,
+                                            marginBottom: 10,
+                                        }}
+                                    >
+                                        {reportType == 0 ? (
+                                            <Btn_Toggle_On />
+                                        ) : (
+                                            <Btn_Toggle_Off />
+                                        )}
+                                        <Text
+                                            style={{
+                                                fontFamily:
+                                                    "Spoqa Han Sans Neo",
+                                                fontWeight: "500",
+                                                fontSize: 16,
+                                                color: "#000000",
+                                                marginLeft: 20,
+                                            }}
+                                        >
+                                            비매너
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() => setReportType(1)}
+                                        style={{
+                                            width: 320,
+                                            flexDirection: "row",
+                                            alignItems: "center",
+                                            paddingLeft: 20,
+                                            marginBottom: 10,
+                                        }}
+                                    >
+                                        {reportType == 1 ? (
+                                            <Btn_Toggle_On />
+                                        ) : (
+                                            <Btn_Toggle_Off />
+                                        )}
+                                        <Text
+                                            style={{
+                                                fontFamily:
+                                                    "Spoqa Han Sans Neo",
+                                                fontWeight: "500",
+                                                fontSize: 16,
+                                                color: "#000000",
+                                                marginLeft: 20,
+                                            }}
+                                        >
+                                            욕설 및 비방
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() => setReportType(2)}
+                                        style={{
+                                            width: 320,
+                                            flexDirection: "row",
+                                            alignItems: "center",
+                                            paddingLeft: 20,
+                                            marginBottom: 10,
+                                        }}
+                                    >
+                                        {reportType == 2 ? (
+                                            <Btn_Toggle_On />
+                                        ) : (
+                                            <Btn_Toggle_Off />
+                                        )}
+                                        <Text
+                                            style={{
+                                                fontFamily:
+                                                    "Spoqa Han Sans Neo",
+                                                fontWeight: "500",
+                                                fontSize: 16,
+                                                color: "#000000",
+                                                marginLeft: 20,
+                                            }}
+                                        >
+                                            성희롱
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() => setReportType(3)}
+                                        style={{
+                                            width: 320,
+                                            flexDirection: "row",
+                                            alignItems: "center",
+                                            paddingLeft: 20,
+                                            marginBottom: 10,
+                                        }}
+                                    >
+                                        {reportType == 3 ? (
+                                            <Btn_Toggle_On />
+                                        ) : (
+                                            <Btn_Toggle_Off />
+                                        )}
+                                        <Text
+                                            style={{
+                                                fontFamily:
+                                                    "Spoqa Han Sans Neo",
+                                                fontWeight: "500",
+                                                fontSize: 16,
+                                                color: "#000000",
+                                                marginLeft: 20,
+                                            }}
+                                        >
+                                            프로필 이미지
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() => setReportType(4)}
+                                        style={{
+                                            width: 320,
+                                            flexDirection: "row",
+                                            alignItems: "center",
+                                            paddingLeft: 20,
+                                            marginBottom: 10,
+                                        }}
+                                    >
+                                        {reportType == 4 ? (
+                                            <Btn_Toggle_On />
+                                        ) : (
+                                            <Btn_Toggle_Off />
+                                        )}
+                                        <Text
+                                            style={{
+                                                fontFamily:
+                                                    "Spoqa Han Sans Neo",
+                                                fontWeight: "500",
+                                                fontSize: 16,
+                                                color: "#000000",
+                                                marginLeft: 20,
+                                            }}
+                                        >
+                                            기타
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <Field_Text
+                                        placeholder="기타 사유 입력"
+                                        style={{ width: 280 }}
+                                        isDisabled={reportType != 4}
+                                        isNeccesary={false}
+                                        id={"text"}
+                                        value={reportText}
+                                        changeValue={(
+                                            name: string,
+                                            text: string
+                                        ) => {
+                                            setReportText(text);
+                                        }}
+                                    />
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            setModalType("report_confirm")
+                                        }
+                                        style={{
+                                            width: 280,
+                                            height: 55,
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            borderRadius: 10,
+                                            backgroundColor: "#974B1A",
+                                            marginVertical: 15,
+                                        }}
+                                    >
+                                        <Text
+                                            style={{
+                                                fontFamily:
+                                                    "Spoqa Han Sans Neo",
+                                                fontWeight: "500",
+                                                fontSize: 16,
+                                                color: "#ffffff",
+                                            }}
+                                        >
+                                            신고하기
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                            )}
+                            {modalType == "report_confirm" && (
+                                <View
+                                    style={{
+                                        width: 320,
+                                        backgroundColor: "#ffffff",
+                                        borderRadius: 10,
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    <TouchableOpacity
+                                        onPress={() => toggleModal()}
+                                        style={{
+                                            position: "absolute",
+                                            top: 20,
+                                            right: 20,
+                                        }}
+                                    >
+                                        <Text
+                                            style={{
+                                                fontFamily:
+                                                    "Spoqa Han Sans Neo",
+                                                fontWeight: "700",
+                                                fontSize: 18,
+                                                color: "#000000",
+                                            }}
+                                        >
+                                            X
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <Text
+                                        style={{
+                                            fontFamily: "Spoqa Han Sans Neo",
+                                            fontWeight: "700",
+                                            fontSize: 16,
+                                            marginTop: 20,
+                                            marginBottom: 20,
+                                            color: "#000000",
+                                        }}
+                                    >
+                                        신고하기
+                                    </Text>
+                                    <Text
+                                        style={{
+                                            fontFamily: "Spoqa Han Sans Neo",
+                                            fontWeight: "500",
+                                            fontSize: 14,
+                                            marginTop: 20,
+                                            marginBottom: 20,
+                                            color: "#000000",
+                                        }}
+                                    >
+                                        허위 신고의 경우, 이용의 제한될 수
+                                        있습니다.
+                                    </Text>
+                                    <View
+                                        style={{
+                                            width: 280,
+                                            flexDirection: "row",
+                                            justifyContent: "space-between",
+                                        }}
+                                    >
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                toggleModal();
+                                            }}
+                                            style={{
+                                                width: 133,
+                                                height: 53,
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                borderWidth: 1,
+                                                borderColor: "#974B1A",
+                                                borderRadius: 10,
+                                                backgroundColor: "#ffffff",
+                                                marginVertical: 15,
+                                            }}
+                                        >
+                                            <Text
+                                                style={{
+                                                    fontFamily:
+                                                        "Spoqa Han Sans Neo",
+                                                    fontWeight: "500",
+                                                    fontSize: 16,
+                                                    color: "#974B1A",
+                                                }}
+                                            >
+                                                취소
+                                            </Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                report();
+                                                toggleModal();
+                                            }}
+                                            style={{
+                                                width: 135,
+                                                height: 55,
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                borderRadius: 10,
+                                                backgroundColor: "#974B1A",
+                                                marginVertical: 15,
+                                            }}
+                                        >
+                                            <Text
+                                                style={{
+                                                    fontFamily:
+                                                        "Spoqa Han Sans Neo",
+                                                    fontWeight: "500",
+                                                    fontSize: 16,
+                                                    color: "#ffffff",
+                                                }}
+                                            >
+                                                확인
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            )}
+                            {modalType == "block" && (
+                                <View
+                                    style={{
+                                        width: 320,
+                                        backgroundColor: "#ffffff",
+                                        borderRadius: 10,
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    <TouchableOpacity
+                                        onPress={() => toggleModal()}
+                                        style={{
+                                            position: "absolute",
+                                            top: 20,
+                                            right: 20,
+                                        }}
+                                    >
+                                        <Text
+                                            style={{
+                                                fontFamily:
+                                                    "Spoqa Han Sans Neo",
+                                                fontWeight: "700",
+                                                fontSize: 18,
+                                                color: "#000000",
+                                            }}
+                                        >
+                                            X
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <Text
+                                        style={{
+                                            fontFamily: "Spoqa Han Sans Neo",
+                                            fontWeight: "700",
+                                            fontSize: 16,
+                                            marginTop: 20,
+                                            marginBottom: 20,
+                                            color: "#000000",
+                                        }}
+                                    >
+                                        차다한기
+                                    </Text>
+                                    <Text
+                                        style={{
+                                            fontFamily: "Spoqa Han Sans Neo",
+                                            fontWeight: "500",
+                                            fontSize: 14,
+                                            marginTop: 20,
+                                            marginBottom: 20,
+                                            color: "#000000",
+                                        }}
+                                    >
+                                        <Text
+                                            style={{
+                                                color: "#D6690F",
+                                                fontWeight: "700",
+                                            }}
+                                        >
+                                            {user.user_nick_name ?? ""}
+                                        </Text>
+                                        <Text>님을 정말 차단하시겠습니까?</Text>
+                                    </Text>
+                                    <View
+                                        style={{
+                                            width: 280,
+                                            flexDirection: "row",
+                                            justifyContent: "space-between",
+                                        }}
+                                    >
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                toggleModal();
+                                            }}
+                                            style={{
+                                                width: 133,
+                                                height: 53,
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                borderWidth: 1,
+                                                borderColor: "#974B1A",
+                                                borderRadius: 10,
+                                                backgroundColor: "#ffffff",
+                                                marginVertical: 15,
+                                            }}
+                                        >
+                                            <Text
+                                                style={{
+                                                    fontFamily:
+                                                        "Spoqa Han Sans Neo",
+                                                    fontWeight: "500",
+                                                    fontSize: 16,
+                                                    color: "#974B1A",
+                                                }}
+                                            >
+                                                취소
+                                            </Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                block();
+                                                toggleModal();
+                                            }}
+                                            style={{
+                                                width: 135,
+                                                height: 55,
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                borderRadius: 10,
+                                                backgroundColor: "#974B1A",
+                                                marginVertical: 15,
+                                            }}
+                                        >
+                                            <Text
+                                                style={{
+                                                    fontFamily:
+                                                        "Spoqa Han Sans Neo",
+                                                    fontWeight: "500",
+                                                    fontSize: 16,
+                                                    color: "#ffffff",
+                                                }}
+                                            >
+                                                확인
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            )}
+                        </View>
+                    </View>
+                </Modal>
                 {isSettingsVisible && (
                     <View
                         style={{
@@ -142,7 +723,11 @@ export default function SubPage_Profile({ navigation, route }: any) {
                         }}
                     >
                         <TouchableOpacity
-                            onPress={() => {}}
+                            onPress={() => {
+                                setModalType("block");
+                                toggleSettings();
+                                toggleModal();
+                            }}
                             style={{
                                 flex: 1,
                                 alignItems: "center",
@@ -168,7 +753,11 @@ export default function SubPage_Profile({ navigation, route }: any) {
                             }}
                         />
                         <TouchableOpacity
-                            onPress={() => {}}
+                            onPress={() => {
+                                setModalType("report");
+                                toggleSettings();
+                                toggleModal();
+                            }}
                             style={{
                                 flex: 1,
                                 alignItems: "center",

@@ -30,6 +30,11 @@ import Card_TasteNote_Whisky from "../components/Card_TasteNote_Whisky";
 import axios from "axios";
 import { REACT_APP_API_KEY } from "@env";
 
+import { useRecoilState } from "recoil";
+
+import { login_data, login_state } from "../atoms/login_state";
+import { user, user_state } from "../atoms/get_user";
+
 function transformArray(fruits: string[]) {
     const counts: any = {};
     fruits.forEach((fruit) => {
@@ -41,6 +46,8 @@ function transformArray(fruits: string[]) {
 
 export default function SubPage_Whisky({ navigation, route }: any) {
     let whisky_id = route.params.whisky_id;
+
+    const [userState, setUserState] = useRecoilState<user>(user_state);
 
     const [data, setData] = React.useState<any>(null);
     const [noteData, setNoteData] = React.useState<any>([]);
@@ -61,15 +68,35 @@ export default function SubPage_Whisky({ navigation, route }: any) {
                 .get(REACT_APP_API_KEY + "/notes/whisky/" + whisky_id)
                 .then((res) => {
                     setNoteData(res.data?.data);
-                    setViewNoteData(
-                        res.data?.data.slice().reverse().slice(0, 4)
-                    );
-                    setView(4);
                 });
 
             return () => {};
         }, [])
     );
+
+    const get_note = (): any[] => {
+        let filter_notes = noteData
+            .slice()
+            .reverse()
+            .filter((item: any) => {
+                if (
+                    userState.block_list.some((blocked) =>
+                        blocked.includes(item.user_id.trim())
+                    )
+                ) {
+                    return false;
+                }
+
+                return true;
+            });
+
+        return filter_notes;
+    };
+
+    React.useEffect(() => {
+        setViewNoteData(get_note().slice(0, 4));
+        setView(4);
+    }, [noteData]);
 
     const get_color = (index: number): string => {
         if (index == 0) return "#FFFFFF";
@@ -1084,10 +1111,7 @@ export default function SubPage_Whisky({ navigation, route }: any) {
                                     if (noteData.length > view) {
                                         setViewNoteData([
                                             ...viewNoteData,
-                                            ...noteData
-                                                .slice()
-                                                .reverse()
-                                                .slice(view, view + 4),
+                                            ...get_note().slice(view, view + 4),
                                         ]);
                                         setView(view + 4);
                                     }

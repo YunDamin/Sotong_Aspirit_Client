@@ -71,6 +71,7 @@ export default function Field_Text(props: Props) {
                         style={[
                             styles.box,
                             styles.inputView,
+                            style,
                             {
                                 borderWidth: 0,
                                 position: "absolute",

@@ -9,6 +9,7 @@ export type user = {
     user_notes: string[];
     user_av: number;
     img_urls: string[];
+    block_list: string[];
 };
 
 export const user_state = atom<user>({
@@ -22,5 +23,6 @@ export const user_state = atom<user>({
         user_notes: [],
         user_av: 0,
         img_urls: [],
+        block_list: [],
     },
 });
