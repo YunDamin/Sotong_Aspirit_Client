@@ -40,7 +40,8 @@ export default function CustomNavigator_Top(props: Props) {
                 onPress={
                     props.whatBtn === "share"
                         ? () => {}
-                        : props.whatBtn === "modify"
+                        : props.whatBtn === "modify" ||
+                          props.whatBtn === "share_modify"
                         ? () => {
                               props.onModify && props.onModify();
                           }
@@ -48,11 +49,15 @@ export default function CustomNavigator_Top(props: Props) {
                         ? () => {}
                         : () => {}
                 }
-                style={styles.backBtn}
+                style={[
+                    styles.backBtn,
+                    { flexDirection: "row", justifyContent: "flex-end" },
+                ]}
             >
                 {props.whatBtn === "share" ? (
                     <Btn_Share_Svg />
-                ) : props.whatBtn === "modify" ? (
+                ) : props.whatBtn === "modify" ||
+                  props.whatBtn === "share_modify" ? (
                     <Btn_Modify_Svg />
                 ) : props.whatBtn === "skip" ? (
                     <></>
@@ -60,6 +65,20 @@ export default function CustomNavigator_Top(props: Props) {
                     <></>
                 )}
             </TouchableOpacity>
+            {props.whatBtn === "share_modify" && (
+                <TouchableOpacity
+                    onPress={() => {
+                        props.onShare && props.onShare();
+                    }}
+                    style={[
+                        styles.backBtn,
+                        { flexDirection: "row", justifyContent: "flex-end" },
+                        { position: "absolute", right: 50 },
+                    ]}
+                >
+                    <Btn_Share_Svg />
+                </TouchableOpacity>
+            )}
         </View>
     );
 }

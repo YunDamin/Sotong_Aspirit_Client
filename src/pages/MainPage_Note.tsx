@@ -80,13 +80,7 @@ export default function MainPage_Note({ navigation }: any) {
         if (!loading) {
             setLoading(true);
 
-            setViewNoteData([
-                ...viewNoteData,
-                ...notes
-                    .slice()
-                    .reverse()
-                    .slice(view, view + 4),
-            ]);
+            setViewNoteData([...viewNoteData, ...notes.slice(view, view + 4)]);
             setView(view + 4);
 
             setLoading(false);
@@ -119,6 +113,7 @@ export default function MainPage_Note({ navigation }: any) {
         setSortModalVisible(!isSortModalVisible);
     };
 
+    const [originalNotes, setOriginalNotes] = React.useState<any>([]);
     const [notes, setNotes] = React.useState<any>([]);
     const [viewNoteData, setViewNoteData] = React.useState<any>([]);
     const [view, setView] = React.useState(0);
@@ -135,8 +130,8 @@ export default function MainPage_Note({ navigation }: any) {
             }
 
             axios.get(REACT_APP_API_KEY + "/notes/").then((res) => {
-                setNotes(res.data?.data.slice().reverse());
-                setViewNoteData(res.data?.data.slice().reverse().slice(0, 4));
+                setOriginalNotes(res.data?.data);
+                setViewNoteData(res.data?.data.slice(0, 4));
                 setView(4);
             });
 
@@ -145,30 +140,27 @@ export default function MainPage_Note({ navigation }: any) {
     );
 
     React.useEffect(() => {
-        const filter_notes = notes
-            .slice()
-            .reverse()
-            .filter((note: any) => {
-                const text = searchText.trim().toLowerCase();
+        const filter_notes = originalNotes.filter((note: any) => {
+            const text = searchText.trim().toLowerCase();
 
-                if (text.length == 0) return true;
+            if (text.length == 0) return true;
 
-                if (searchCategory == "content") {
-                    if (note.cont.toLowerCase().includes(text)) {
-                        return true;
-                    }
-                } else if (searchCategory == "user") {
-                    if (note.user_nick_name.toLowerCase().includes(text)) {
-                        return true;
-                    }
+            if (searchCategory == "content") {
+                if (note.cont.toLowerCase().includes(text)) {
+                    return true;
                 }
+            } else if (searchCategory == "user") {
+                if (note.user_nick_name.toLowerCase().includes(text)) {
+                    return true;
+                }
+            }
 
-                return false;
-            });
+            return false;
+        });
         setViewNoteData(filter_notes.slice(0, 4));
         setNotes(filter_notes);
         setView(4);
-    }, [searchText]);
+    }, [searchText, searchCategory]);
 
     return (
         <>
@@ -695,10 +687,8 @@ export default function MainPage_Note({ navigation }: any) {
                                     >
                                         <Text>전체 </Text>
                                         <Text style={{ color: "#D6690F" }}>{`(${
-                                            notes
-                                                .slice()
-                                                .reverse()
-                                                .length?.toLocaleString() ?? "0"
+                                            notes.length?.toLocaleString() ??
+                                            "0"
                                         })`}</Text>
                                     </Text>
                                     <TouchableOpacity
@@ -743,23 +733,25 @@ export default function MainPage_Note({ navigation }: any) {
                                 </View>
                                 <View style={{ height: 40 }} />
                                 {viewNoteData?.map(
-                                    (note: any, index: number) => {
+                                    (view_note: any, index: number) => {
                                         return (
                                             <Card_TasteNote_Whisky
                                                 key={index}
                                                 tasting_id={
-                                                    note?.tasting_id ?? ""
+                                                    view_note?.tasting_id ?? ""
                                                 }
-                                                user_id={note?.user_id ?? ""}
+                                                user_id={
+                                                    view_note?.user_id ?? ""
+                                                }
                                                 whisky_id={
-                                                    note?.whisky_id ?? ""
+                                                    view_note?.whisky_id ?? ""
                                                 }
                                                 onPress={() => {
                                                     navigation.navigate(
                                                         "SubPage_Whisky",
                                                         {
                                                             whisky_id:
-                                                                note?.whisky_id ??
+                                                                view_note?.whisky_id ??
                                                                 "",
                                                         }
                                                     );
@@ -769,13 +761,13 @@ export default function MainPage_Note({ navigation }: any) {
                                                         "SubPage_TastingNote_Single",
                                                         {
                                                             user_id:
-                                                                note?.user_id ??
+                                                                view_note?.user_id ??
                                                                 "",
                                                             whisky_id:
-                                                                note?.whisky_id ??
+                                                                view_note?.whisky_id ??
                                                                 "",
                                                             tasting_id:
-                                                                note?.tasting_id ??
+                                                                view_note?.tasting_id ??
                                                                 "",
                                                         }
                                                     );
@@ -785,7 +777,7 @@ export default function MainPage_Note({ navigation }: any) {
                                                         "SubPage_Profile",
                                                         {
                                                             user_id:
-                                                                note?.user_id ??
+                                                                view_note?.user_id ??
                                                                 "",
                                                         }
                                                     );

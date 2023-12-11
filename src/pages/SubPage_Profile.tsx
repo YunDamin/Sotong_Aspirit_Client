@@ -44,6 +44,7 @@ function transformArray(fruits: string[]) {
 }
 
 export default function SubPage_Profile({ navigation, route }: any) {
+    const [loginState, setLoginState] = useRecoilState<login_data>(login_state);
     const [userState, setUserState] = useRecoilState<user>(user_state);
     const [user, setUser] = React.useState<any>(null);
 
@@ -99,6 +100,11 @@ export default function SubPage_Profile({ navigation, route }: any) {
         }
     };
 
+    const [isSettingsVisible, setSettingsVisible] = React.useState(false);
+    const toggleSettings = () => {
+        setSettingsVisible(!isSettingsVisible);
+    };
+
     return (
         <>
             <SafeAreaView style={{ flex: 0, backgroundColor: "#FCECDE" }} />
@@ -109,9 +115,79 @@ export default function SubPage_Profile({ navigation, route }: any) {
                     goBack={() => {
                         navigation.goBack();
                     }}
-                    whatBtn="share"
+                    onModify={() => {
+                        toggleSettings();
+                    }}
+                    whatBtn={
+                        loginState.user_id == user_id ? "share" : "share_modify"
+                    }
                     background={true}
                 />
+                {isSettingsVisible && (
+                    <View
+                        style={{
+                            width: 70,
+                            height: 84,
+                            borderRadius: 10,
+                            borderColor: "#EDEDED",
+                            borderWidth: 1,
+                            position: "absolute",
+                            backgroundColor: "white",
+                            right: 20,
+                            top: 40,
+                            zIndex: 10,
+                            overflow: "hidden",
+                            alignItems: "center",
+                            justifyContent: "center",
+                        }}
+                    >
+                        <TouchableOpacity
+                            onPress={() => {}}
+                            style={{
+                                flex: 1,
+                                alignItems: "center",
+                                justifyContent: "center",
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontFamily: "Spoqa Han Sans Neo",
+                                    fontWeight: "500",
+                                    fontSize: 14,
+                                    color: "#000000",
+                                }}
+                            >
+                                차단
+                            </Text>
+                        </TouchableOpacity>
+                        <View
+                            style={{
+                                width: 50,
+                                height: 1,
+                                backgroundColor: "#F7F7F7",
+                            }}
+                        />
+                        <TouchableOpacity
+                            onPress={() => {}}
+                            style={{
+                                flex: 1,
+                                alignItems: "center",
+                                justifyContent: "center",
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontFamily: "Spoqa Han Sans Neo",
+                                    fontWeight: "500",
+                                    fontSize: 14,
+                                    color: "#000000",
+                                }}
+                            >
+                                신고
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                )}
                 <View
                     style={{
                         width: "100%",
