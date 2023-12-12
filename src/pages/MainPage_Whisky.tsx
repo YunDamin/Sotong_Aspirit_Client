@@ -1781,6 +1781,7 @@ export default function MainPage_Whisky({ navigation }: any) {
                                             display: "flex",
                                             flexDirection: "row",
                                             justifyContent: "center",
+                                            color: "white",
                                         }}
                                         onFocus={() => {
                                             setIsFocused(true);

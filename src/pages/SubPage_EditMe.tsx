@@ -756,6 +756,7 @@ export default function SubPage_EditMe({ navigation, route }: any) {
                             수정완료
                         </Text>
                     </TouchableOpacity>
+                    <View style={{ marginVertical: 10 }} />
                 </View>
             </SafeAreaView>
         </>

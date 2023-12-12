@@ -571,7 +571,7 @@ export default function MainPage_Note({ navigation }: any) {
                                     display: "flex",
                                     flexDirection: "row",
                                     alignItems: "center",
-                                    justifyContent: "flex-end",
+                                    justifyContent: "space-between",
                                     height: 50,
                                 }}
                                 onPress={() => {
@@ -594,18 +594,26 @@ export default function MainPage_Note({ navigation }: any) {
                                         }[searchCategory]
                                     }
                                 </Text>
-                                <View style={{ marginLeft: 5 }}>
-                                    <Btn_Drop />
-                                </View>
                                 <View
                                     style={{
-                                        width: 1,
-                                        height: 20,
-                                        backgroundColor: "#ffffff",
-                                        opacity: 0.1,
-                                        marginLeft: 20,
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        justifyContent: "flex-end",
                                     }}
-                                />
+                                >
+                                    <View style={{ marginLeft: 5 }}>
+                                        <Btn_Drop />
+                                    </View>
+                                    <View
+                                        style={{
+                                            width: 1,
+                                            height: 20,
+                                            backgroundColor: "#ffffff",
+                                            opacity: 0.1,
+                                            marginLeft: 20,
+                                        }}
+                                    />
+                                </View>
                             </TouchableOpacity>
                             <View
                                 style={{
@@ -650,6 +658,7 @@ export default function MainPage_Note({ navigation }: any) {
                                         display: "flex",
                                         flexDirection: "row",
                                         justifyContent: "center",
+                                        color: "white",
                                     }}
                                     onFocus={() => {
                                         setIsFocused(true);
@@ -678,136 +687,125 @@ export default function MainPage_Note({ navigation }: any) {
                             {/* 내용 탑 */}
                             <View
                                 style={{
-                                    width: "100%",
-                                    flexDirection: "column",
+                                    marginTop: 10,
+                                    height: 30,
+                                    display: "flex",
+                                    flexDirection: "row",
                                     alignItems: "center",
+                                    justifyContent: "space-between",
                                 }}
                             >
-                                <View
+                                <Text
                                     style={{
-                                        marginTop: 10,
-                                        width: 320,
+                                        fontFamily: "Spoqa Han Sans Neo",
+                                        fontWeight: "700",
+                                        fontSize: 16,
+                                        color: "#000000",
+                                        textAlign: "center",
+                                    }}
+                                >
+                                    <Text>전체 </Text>
+                                    <Text style={{ color: "#D6690F" }}>
+                                        {`(${get_note().length.toLocaleString()})`}
+                                    </Text>
+                                </Text>
+                                <TouchableOpacity
+                                    style={{
+                                        width: 80,
                                         height: 30,
+                                        borderRadius: 10,
+                                        borderWidth: 1,
+                                        borderColor: "#E4E4E4",
+                                        backgroundColor: "#FFFFFF",
+                                        paddingLeft: 10,
+                                        paddingRight: 10,
                                         display: "flex",
                                         flexDirection: "row",
                                         alignItems: "center",
                                         justifyContent: "space-between",
                                     }}
+                                    onPress={() => {
+                                        toggleSortModal();
+                                    }}
                                 >
                                     <Text
                                         style={{
                                             fontFamily: "Spoqa Han Sans Neo",
-                                            fontWeight: "700",
-                                            fontSize: 16,
+                                            fontWeight: "500",
+                                            fontSize: 12,
                                             color: "#000000",
                                             textAlign: "center",
                                         }}
                                     >
-                                        <Text>전체 </Text>
-                                        <Text style={{ color: "#D6690F" }}>
-                                            {`(${get_note().length.toLocaleString()})`}
-                                        </Text>
-                                    </Text>
-                                    <TouchableOpacity
-                                        style={{
-                                            width: 80,
-                                            height: 30,
-                                            borderRadius: 10,
-                                            borderWidth: 1,
-                                            borderColor: "#E4E4E4",
-                                            backgroundColor: "#FFFFFF",
-                                            paddingLeft: 10,
-                                            paddingRight: 10,
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            alignItems: "center",
-                                            justifyContent: "space-between",
-                                        }}
-                                        onPress={() => {
-                                            toggleSortModal();
-                                        }}
-                                    >
-                                        <Text
-                                            style={{
-                                                fontFamily:
-                                                    "Spoqa Han Sans Neo",
-                                                fontWeight: "500",
-                                                fontSize: 12,
-                                                color: "#000000",
-                                                textAlign: "center",
-                                            }}
-                                        >
+                                        {
                                             {
-                                                {
-                                                    new: "최신순",
-                                                }[sortCategory]
-                                            }
-                                        </Text>
-                                        <View style={{ width: 14, height: 14 }}>
-                                            <Btn_Drop_Black />
-                                        </View>
-                                    </TouchableOpacity>
-                                </View>
-                                <View style={{ height: 40 }} />
-                                {viewNoteData &&
-                                    viewNoteData.map(
-                                        (view_note: any, index: number) => {
-                                            return (
-                                                <Card_TasteNote_Whisky
-                                                    key={index}
-                                                    tasting_id={
-                                                        view_note?.tasting_id ??
-                                                        ""
-                                                    }
-                                                    user_id={
-                                                        view_note?.user_id ?? ""
-                                                    }
-                                                    whisky_id={
-                                                        view_note?.whisky_id ??
-                                                        ""
-                                                    }
-                                                    onPress={() => {
-                                                        navigation.navigate(
-                                                            "SubPage_Whisky",
-                                                            {
-                                                                whisky_id:
-                                                                    view_note?.whisky_id ??
-                                                                    "",
-                                                            }
-                                                        );
-                                                    }}
-                                                    onPressDetail={() => {
-                                                        navigation.navigate(
-                                                            "SubPage_TastingNote_Single",
-                                                            {
-                                                                user_id:
-                                                                    view_note?.user_id ??
-                                                                    "",
-                                                                whisky_id:
-                                                                    view_note?.whisky_id ??
-                                                                    "",
-                                                                tasting_id:
-                                                                    view_note?.tasting_id ??
-                                                                    "",
-                                                            }
-                                                        );
-                                                    }}
-                                                    onPressUser={() => {
-                                                        navigation.navigate(
-                                                            "SubPage_Profile",
-                                                            {
-                                                                user_id:
-                                                                    view_note?.user_id ??
-                                                                    "",
-                                                            }
-                                                        );
-                                                    }}
-                                                />
-                                            );
+                                                new: "최신순",
+                                            }[sortCategory]
                                         }
-                                    )}
-                                <View style={{ marginTop: 250 }} />
+                                    </Text>
+                                    <View style={{ width: 14, height: 14 }}>
+                                        <Btn_Drop_Black />
+                                    </View>
+                                </TouchableOpacity>
                             </View>
+                            <View style={{ height: 40 }} />
+                            {viewNoteData &&
+                                viewNoteData.map(
+                                    (view_note: any, index: number) => {
+                                        return (
+                                            <Card_TasteNote_Whisky
+                                                isBig={true}
+                                                key={index}
+                                                tasting_id={
+                                                    view_note?.tasting_id ?? ""
+                                                }
+                                                user_id={
+                                                    view_note?.user_id ?? ""
+                                                }
+                                                whisky_id={
+                                                    view_note?.whisky_id ?? ""
+                                                }
+                                                onPress={() => {
+                                                    navigation.navigate(
+                                                        "SubPage_Whisky",
+                                                        {
+                                                            whisky_id:
+                                                                view_note?.whisky_id ??
+                                                                "",
+                                                        }
+                                                    );
+                                                }}
+                                                onPressDetail={() => {
+                                                    navigation.navigate(
+                                                        "SubPage_TastingNote_Single",
+                                                        {
+                                                            user_id:
+                                                                view_note?.user_id ??
+                                                                "",
+                                                            whisky_id:
+                                                                view_note?.whisky_id ??
+                                                                "",
+                                                            tasting_id:
+                                                                view_note?.tasting_id ??
+                                                                "",
+                                                        }
+                                                    );
+                                                }}
+                                                onPressUser={() => {
+                                                    navigation.navigate(
+                                                        "SubPage_Profile",
+                                                        {
+                                                            user_id:
+                                                                view_note?.user_id ??
+                                                                "",
+                                                        }
+                                                    );
+                                                }}
+                                            />
+                                        );
+                                    }
+                                )}
+                            <View style={{ marginTop: 250 }} />
                         </ScrollView>
                     </Animated.View>
                 </View>

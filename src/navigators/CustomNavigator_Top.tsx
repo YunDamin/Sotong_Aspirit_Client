@@ -52,13 +52,21 @@ export default function CustomNavigator_Top(props: Props) {
                 style={[
                     styles.backBtn,
                     { flexDirection: "row", justifyContent: "flex-end" },
+                    { overflow: "hidden" },
                 ]}
             >
                 {props.whatBtn === "share" ? (
                     <Btn_Share_Svg />
                 ) : props.whatBtn === "modify" ||
                   props.whatBtn === "share_modify" ? (
-                    <Btn_Modify_Svg />
+                    <View
+                        style={{
+                            position: "absolute",
+                            right: 10,
+                        }}
+                    >
+                        <Btn_Modify_Svg />
+                    </View>
                 ) : props.whatBtn === "skip" ? (
                     <></>
                 ) : (
@@ -76,7 +84,14 @@ export default function CustomNavigator_Top(props: Props) {
                         { position: "absolute", right: 50 },
                     ]}
                 >
-                    <Btn_Share_Svg />
+                    <View
+                        style={{
+                            position: "absolute",
+                            right: 8,
+                        }}
+                    >
+                        <Btn_Share_Svg />
+                    </View>
                 </TouchableOpacity>
             )}
         </View>

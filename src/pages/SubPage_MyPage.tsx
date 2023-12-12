@@ -103,6 +103,11 @@ export default function SubPage_MyPage({ navigation }: any) {
                         {userState.user_email}
                     </Text>
                     <TouchableOpacity
+                        onPress={() => {
+                            navigation.navigate("SubPage_Profile", {
+                                user_id: loginState.user_id,
+                            });
+                        }}
                         style={{
                             width: 320,
                             height: 35,

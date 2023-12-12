@@ -24,6 +24,7 @@ interface Props {
     onPressUser: () => void;
     tasting_id: string;
     user_id: string;
+    isBig?: boolean;
 }
 
 import axios from "axios";
@@ -92,20 +93,25 @@ export default function Card_TasteNote_Whisky(props: Props) {
 
     return (
         <View
-            style={{
-                width: 316,
-                borderWidth: 2,
-                borderRadius: 10,
-                borderColor: "#F7F7F7",
-                overflow: "hidden",
-                justifyContent: "center",
-                paddingLeft: 13,
-                paddingRight: 13,
-                marginBottom: 20,
-            }}
+            style={[
+                {
+                    width: 316,
+                    borderWidth: 2,
+                    borderRadius: 10,
+                    borderColor: "#F7F7F7",
+                    overflow: "hidden",
+                    justifyContent: "center",
+                    paddingLeft: 13,
+                    paddingRight: 13,
+                    marginBottom: 20,
+                },
+                props.isBig && { width: "100%" },
+            ]}
         >
             {props.whisky_id ? (
-                <View style={{ width: 290 }}>
+                <View
+                    style={[{ width: 290 }, props.isBig && { width: "100%" }]}
+                >
                     <TouchableOpacity
                         onPress={() => {
                             props.onPress();
@@ -200,15 +206,23 @@ export default function Card_TasteNote_Whisky(props: Props) {
                         </View>
                     </TouchableOpacity>
                     <View
-                        style={{
-                            width: 290,
-                            height: 4,
-                            backgroundColor: "#F7F7F7",
-                        }}
+                        style={[
+                            {
+                                width: 290,
+                                height: 4,
+                                backgroundColor: "#F7F7F7",
+                            },
+                            props.isBig && { width: "100%" },
+                        ]}
                     />
                 </View>
             ) : null}
-            <View style={{ width: 290, marginTop: 20 }}>
+            <View
+                style={[
+                    { width: 290, marginTop: 20 },
+                    props.isBig && { width: "100%" },
+                ]}
+            >
                 <View
                     style={{
                         width: 290,
@@ -394,20 +408,26 @@ export default function Card_TasteNote_Whisky(props: Props) {
                 </View>
             </View>
             <View
-                style={{
-                    width: 290,
-                    height: 1,
-                    backgroundColor: "#F7F7F7",
-                    marginTop: 15,
-                    marginBottom: 15,
-                }}
+                style={[
+                    {
+                        width: 290,
+                        height: 1,
+                        backgroundColor: "#F7F7F7",
+                        marginTop: 15,
+                        marginBottom: 15,
+                    },
+                    props.isBig && { width: "100%" },
+                ]}
             />
             <View
-                style={{
-                    width: 290,
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                }}
+                style={[
+                    {
+                        width: 290,
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                    },
+                    props.isBig && { width: "100%" },
+                ]}
             >
                 <Text style={styles.text}>{"색"}</Text>
                 <View
@@ -440,20 +460,26 @@ export default function Card_TasteNote_Whisky(props: Props) {
                 </Text>
             </View>
             <View
-                style={{
-                    width: 290,
-                    height: 1,
-                    backgroundColor: "#F7F7F7",
-                    marginTop: 15,
-                    marginBottom: 15,
-                }}
+                style={[
+                    {
+                        width: 290,
+                        height: 1,
+                        backgroundColor: "#F7F7F7",
+                        marginTop: 15,
+                        marginBottom: 15,
+                    },
+                    props.isBig && { width: "100%" },
+                ]}
             />
             <View
-                style={{
-                    width: 290,
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                }}
+                style={[
+                    {
+                        width: 290,
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                    },
+                    props.isBig && { width: "100%" },
+                ]}
             >
                 <Text style={styles.text}>
                     {"노즈 "}
@@ -469,12 +495,15 @@ export default function Card_TasteNote_Whisky(props: Props) {
                 </Text>
             </View>
             <View
-                style={{
-                    width: 290,
-                    flexDirection: "row",
-                    justifyContent: "flex-start",
-                    marginTop: 7,
-                }}
+                style={[
+                    {
+                        width: 290,
+                        flexDirection: "row",
+                        justifyContent: "flex-start",
+                        marginTop: 7,
+                    },
+                    props.isBig && { width: "100%" },
+                ]}
             >
                 {note?.nose?.map((data: any, index: number) => {
                     return (
@@ -498,11 +527,14 @@ export default function Card_TasteNote_Whisky(props: Props) {
             </View>
             <View style={{ marginTop: 20 }} />
             <View
-                style={{
-                    width: 290,
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                }}
+                style={[
+                    {
+                        width: 290,
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                    },
+                    props.isBig && { width: "100%" },
+                ]}
             >
                 <Text style={styles.text}>
                     {"팔레트 "}
@@ -518,12 +550,15 @@ export default function Card_TasteNote_Whisky(props: Props) {
                 </Text>
             </View>
             <View
-                style={{
-                    width: 290,
-                    flexDirection: "row",
-                    justifyContent: "flex-start",
-                    marginTop: 7,
-                }}
+                style={[
+                    {
+                        width: 290,
+                        flexDirection: "row",
+                        justifyContent: "flex-start",
+                        marginTop: 7,
+                    },
+                    props.isBig && { width: "100%" },
+                ]}
             >
                 {note?.palate?.map((data: any, index: number) => {
                     return (
@@ -547,11 +582,14 @@ export default function Card_TasteNote_Whisky(props: Props) {
             </View>
             <View style={{ marginTop: 20 }} />
             <View
-                style={{
-                    width: 290,
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                }}
+                style={[
+                    {
+                        width: 290,
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                    },
+                    props.isBig && { width: "100%" },
+                ]}
             >
                 <Text style={styles.text}>
                     {"피니시 "}
@@ -567,12 +605,15 @@ export default function Card_TasteNote_Whisky(props: Props) {
                 </Text>
             </View>
             <View
-                style={{
-                    width: 290,
-                    flexDirection: "row",
-                    justifyContent: "flex-start",
-                    marginTop: 7,
-                }}
+                style={[
+                    {
+                        width: 290,
+                        flexDirection: "row",
+                        justifyContent: "flex-start",
+                        marginTop: 7,
+                    },
+                    props.isBig && { width: "100%" },
+                ]}
             >
                 {note?.finish?.map((data: any, index: number) => {
                     return (
@@ -599,14 +640,17 @@ export default function Card_TasteNote_Whisky(props: Props) {
                 onPress={() => {
                     props.onPressDetail();
                 }}
-                style={{
-                    width: 290,
-                    height: 30,
-                    borderRadius: 10,
-                    backgroundColor: "#EDEDED",
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}
+                style={[
+                    {
+                        width: 290,
+                        height: 30,
+                        borderRadius: 10,
+                        backgroundColor: "#EDEDED",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    },
+                    props.isBig && { width: "100%" },
+                ]}
             >
                 <Text
                     style={{
@@ -623,14 +667,17 @@ export default function Card_TasteNote_Whisky(props: Props) {
                 onPress={() => {
                     props.onPressUser();
                 }}
-                style={{
-                    width: 290,
-                    paddingLeft: 15,
-                    paddingRight: 15,
-                    borderRadius: 10,
-                    backgroundColor: "#FBF8F2",
-                    marginBottom: 20,
-                }}
+                style={[
+                    {
+                        width: 290,
+                        paddingLeft: 15,
+                        paddingRight: 15,
+                        borderRadius: 10,
+                        backgroundColor: "#FBF8F2",
+                        marginBottom: 20,
+                    },
+                    props.isBig && { width: "100%" },
+                ]}
             >
                 <View
                     style={{

@@ -1169,7 +1169,6 @@ export default function SubPage_Profile({ navigation, route }: any) {
                                 style={{
                                     fontFamily: "Spoqa Han Sans Neo",
                                     fontWeight: "500",
-                                    fontSize: 18,
                                     color: "#FFFFFF",
                                     textAlign: "center",
                                 }}

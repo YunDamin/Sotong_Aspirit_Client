@@ -87,6 +87,8 @@ type codeData = {
 export default function SubPage_TastingNoteWriting({ navigation, route }: any) {
     const edit = route.params?.edit ?? false;
     const edit_id = route.params?.edit_id ?? "";
+    const [isModify, setIsModify] = React.useState(false);
+    const [letEditData, setLetEditData] = React.useState(false);
 
     const [loginState, setLoginState] = useRecoilState<login_data>(login_state);
 
@@ -270,107 +272,6 @@ export default function SubPage_TastingNoteWriting({ navigation, route }: any) {
     const [tabIndex, setTabIndex] = React.useState(0);
     const [selectedFirst, setSelectedFirst] = React.useState("");
 
-    useFocusEffect(
-        React.useCallback(() => {
-            console.log("SubPage_TastingNoteWriting Focus");
-            axios.get(REACT_APP_API_KEY + "/whiskys/").then((res) => {
-                setWhiskyData(
-                    res.data.sort((a: any, b: any) =>
-                        a.name_kor.localeCompare(b.name_kor, "ko")
-                    )
-                );
-            });
-            axios.get(REACT_APP_API_KEY + "/code/list/").then((res) => {
-                setTasteData(res.data.results);
-            });
-
-            if (edit) {
-                axios
-                    .get(REACT_APP_API_KEY + "/notes/note/" + edit_id)
-                    .then((res) => {
-                        setSelectedWhisky(res.data.data.whisky_id);
-
-                        setColorIndex(
-                            change_color_to_index_from_kor(
-                                res.data.data.color_index
-                            )
-                        );
-
-                        let nosedata: selectedData[] = [];
-                        for (let data of res.data.data.nose) {
-                            for (let f_dat of tasteData) {
-                                for (let s_dat of f_dat.seconds) {
-                                    for (let t_dat of s_dat.thirds) {
-                                        if (
-                                            t_dat.KOR_CD_NM.trim() ==
-                                            data.trim()
-                                        ) {
-                                            nosedata.push({
-                                                first: f_dat.first,
-                                                second: s_dat.second,
-                                                third: t_dat,
-                                            });
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        setSelectedNoseData(nosedata);
-
-                        let palatedata: selectedData[] = [];
-                        for (let data of res.data.data.palate) {
-                            for (let f_dat of tasteData) {
-                                for (let s_dat of f_dat.seconds) {
-                                    for (let t_dat of s_dat.thirds) {
-                                        if (
-                                            t_dat.KOR_CD_NM.trim() ==
-                                            data.trim()
-                                        ) {
-                                            palatedata.push({
-                                                first: f_dat.first,
-                                                second: s_dat.second,
-                                                third: t_dat,
-                                            });
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        setSelectedPalateData(palatedata);
-
-                        let finishdata: selectedData[] = [];
-                        for (let data of res.data.data.finish) {
-                            for (let f_dat of tasteData) {
-                                for (let s_dat of f_dat.seconds) {
-                                    for (let t_dat of s_dat.thirds) {
-                                        if (
-                                            t_dat.KOR_CD_NM.trim() ==
-                                            data.trim()
-                                        ) {
-                                            finishdata.push({
-                                                first: f_dat.first,
-                                                second: s_dat.second,
-                                                third: t_dat,
-                                            });
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        setSelectedFinishData(finishdata);
-
-                        setReview(res.data.data.review);
-
-                        setNoseRate(res.data.data.noseRate);
-                        setPalateRate(res.data.data.palateRate);
-                        setFinishRate(res.data.data.finishRate);
-                        setAllRate(res.data.data.allRate);
-                    });
-            }
-            return () => {};
-        }, [])
-    );
-
     const [writing, setWriting] = React.useState(false);
 
     const next_step = () => {
@@ -545,6 +446,127 @@ export default function SubPage_TastingNoteWriting({ navigation, route }: any) {
     const [palateRate, setPalateRate] = React.useState(0.0);
     const [finishRate, setFinishRate] = React.useState(0.0);
     const [allRate, setAllRate] = React.useState(0.0);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            console.log("SubPage_TastingNoteWriting Focus");
+            axios.get(REACT_APP_API_KEY + "/whiskys/").then((res) => {
+                setWhiskyData(
+                    res.data.sort((a: any, b: any) =>
+                        a.name_kor.localeCompare(b.name_kor, "ko")
+                    )
+                );
+            });
+            axios.get(REACT_APP_API_KEY + "/code/list/").then((t_res) => {
+                setTasteData(t_res.data.results);
+
+                if (edit) {
+                    axios
+                        .get(REACT_APP_API_KEY + "/notes/note/" + edit_id)
+                        .then((res) => {
+                            setSelectedWhisky(res.data.data.whisky_id);
+
+                            setColorIndex(
+                                change_color_to_index_from_kor(
+                                    res.data.data.color_index
+                                )
+                            );
+
+                            let nosedata: selectedData[] = [];
+                            for (let data of res.data.data.nose) {
+                                for (let f_dat of t_res.data.results) {
+                                    for (let s_dat of f_dat.seconds) {
+                                        for (let t_dat of s_dat.thirds) {
+                                            if (
+                                                t_dat.KOR_CD_NM.trim() ==
+                                                data.trim()
+                                            ) {
+                                                nosedata.push({
+                                                    first: f_dat.first,
+                                                    second: s_dat.second,
+                                                    third: t_dat,
+                                                });
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            setSelectedNoseData(nosedata);
+
+                            let palatedata: selectedData[] = [];
+                            for (let data of res.data.data.palate) {
+                                for (let f_dat of t_res.data.results) {
+                                    for (let s_dat of f_dat.seconds) {
+                                        for (let t_dat of s_dat.thirds) {
+                                            if (
+                                                t_dat.KOR_CD_NM.trim() ==
+                                                data.trim()
+                                            ) {
+                                                palatedata.push({
+                                                    first: f_dat.first,
+                                                    second: s_dat.second,
+                                                    third: t_dat,
+                                                });
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            setSelectedPalateData(palatedata);
+
+                            let finishdata: selectedData[] = [];
+                            for (let data of res.data.data.finish) {
+                                for (let f_dat of t_res.data.results) {
+                                    for (let s_dat of f_dat.seconds) {
+                                        for (let t_dat of s_dat.thirds) {
+                                            if (
+                                                t_dat.KOR_CD_NM.trim() ==
+                                                data.trim()
+                                            ) {
+                                                finishdata.push({
+                                                    first: f_dat.first,
+                                                    second: s_dat.second,
+                                                    third: t_dat,
+                                                });
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            setSelectedFinishData(finishdata);
+
+                            setReview(res.data.data.review);
+
+                            setNoseRate(res.data.data.noseRate);
+                            setPalateRate(res.data.data.palateRate);
+                            setFinishRate(res.data.data.finishRate);
+                            setAllRate(res.data.data.allRate);
+
+                            setLetEditData(true);
+                        });
+                }
+            });
+
+            return () => {};
+        }, [])
+    );
+
+    React.useEffect(() => {
+        if (edit && letEditData) {
+            setIsModify(true);
+        }
+    }, [
+        selectedWhisky,
+        colorIndex,
+        selectedNoseData,
+        selectedPalateData,
+        selectedFinishData,
+        review,
+        noseRate,
+        palateRate,
+        finishRate,
+        allRate,
+    ]);
 
     return (
         <>
@@ -2679,7 +2701,9 @@ export default function SubPage_TastingNoteWriting({ navigation, route }: any) {
                                         palateRate != 0.0 &&
                                         finishRate != 0.0 &&
                                         allRate != 0.0
-                                    ) || writing
+                                    ) ||
+                                    writing ||
+                                    !(edit ? (isModify ? true : false) : true)
                                 }
                                 onPress={() => {
                                     next_step();
@@ -2697,7 +2721,12 @@ export default function SubPage_TastingNoteWriting({ navigation, route }: any) {
                                     noseRate != 0.0 &&
                                         palateRate != 0.0 &&
                                         finishRate != 0.0 &&
-                                        allRate != 0.0 && { opacity: 1.0 },
+                                        allRate != 0.0 &&
+                                        (edit
+                                            ? isModify
+                                                ? true
+                                                : false
+                                            : true) && { opacity: 1.0 },
                                 ]}
                             >
                                 <Text
