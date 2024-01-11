@@ -1475,9 +1475,6 @@ export default function SubPage_TastingNoteWriting({ navigation, route }: any) {
                                                     fontWeight: "400",
                                                     fontSize: 14,
                                                     color: "#000000",
-                                                    position: "absolute",
-                                                    left: 10,
-                                                    top: -6,
                                                 }}
                                             >
                                                 취소
@@ -1495,7 +1492,7 @@ export default function SubPage_TastingNoteWriting({ navigation, route }: any) {
                                         >
                                             위스키 선택
                                         </Text>
-                                        <View />
+                                        <View style={{ width: 20 }} />
                                     </View>
                                     {/* 선택 창 */}
                                     <ScrollView style={{ width: "100%" }}>
